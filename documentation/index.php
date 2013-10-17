@@ -6,44 +6,32 @@
 <link rel="stylesheet" type="text/css" href="documentation.css" />
 </head>
 <body id="top">
-<div id="header"><h1>UX <span class="myadmin">CMS</span></h1></div>
-
-<!-- TOP MENU -->
-<ul class="header">
-    <li><a href="#top">Top</a></li>
-    <li><a href="#require">Requirements</a></li>
-    <li><a href="#intro">Introduction</a></li>
-    <li><a href="#setup">Installation</a></li>
-    <li><a href="#setup_script">Setup script</a></li>
-    <li><a href="#config">Configuration</a></li>
-    <li><a href="#transformations">Transformations</a></li>
-    <li><a href="#faq"><abbr title="Frequently Asked Questions"> FAQ</abbr></a></li>
-    <li><a href="#developers">Developers</a></li>
-    <li><a href="#copyright">Copyright</a></li>
-    <li><a href="#credits">Credits</a></li>
-    <li><a href="#glossary">Glossary</a></li>
-</ul>
+    <div id="header"><h1>UX <span class="myadmin">CMS</span></h1></div>
+    <ul class="header">
+        <li><a href="#top">Top</a></li>
+        <li><a href="#links">Links</a></li>
+        <li><a href="#require">Requirements</a></li>
+        <li><a href="#intro">Introduction</a></li>
+        <li><a href="#setup">Installation</a></li>
+        <li><a href="#setup_script">Setup script</a></li>
+        <li><a href="#config">Configuration</a></li>
+        <li><a href="#transformations">Transformations</a></li>
+        <li><a href="#faq"><abbr title="Frequently Asked Questions"> FAQ</abbr></a></li>
+        <li><a href="#developers">Developers</a></li>
+        <li><a href="#copyright">Copyright</a></li>
+        <li><a href="#credits">Credits</a></li>
+        <li><a href="#glossary">Glossary</a></li>
+    </ul>
 
 <div id="body">
 
-<ul><li><a href="http://www.phpmyadmin.net/">
-            phpMyAdmin homepage</a></li>
-    <li><a href="https://sourceforge.net/projects/phpmyadmin/">
-            SourceForge phpMyAdmin project page</a></li>
-    <li><a href="http://wiki.phpmyadmin.net">
-            Official phpMyAdmin wiki</a></li>
-    <li><a href="https://github.com/phpmyadmin">
-            Git repositories on Github</a></li>
-    <li>Local documents:
-        <ul><li>Version history: <a href="changelog.php">ChangeLog</a></li>
-            <li>License: <a href="license.php">LICENSE</a></li>
-        </ul>
-    </li>
+<h2 id="links">Links</h2>
+<ul>
+    <li><a href="https://github.com/Ator9/UX-CMS" target="_blank">Git repositories on Github</a></li>
+    <li><a href="https://github.com/Ator9/UX-CMS/commits/master" target="_blank">Changelog</a></li>
 </ul>
 
-<!-- REQUIREMENTS -->
 <h2 id="require">Requirements</h2>
-
 <ul><li><b>PHP</b>
         <ul><li>You need PHP 5.2.0 or newer, with <tt>session</tt> support
                 (<a href="#faq1_31">see
