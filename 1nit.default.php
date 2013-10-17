@@ -1,5 +1,5 @@
 <?
-/* Create "1nit.php" & change test */
+/* Create "1nit.php" & change */
 
 require(dirname(__FILE__).'/../includes/1nit.php');
 
