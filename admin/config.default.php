@@ -2,7 +2,7 @@
 /* Create "config.php" & change */
 
 // Title:
-$GLOBALS['admin']['title'] = 'Admin | Site';
+$GLOBALS['admin']['title'] = 'UX CMS';
 
 // DOCTYPE
 // http://www.sencha.com/forum/showthread.php?137309-Summary-of-lt-!DOCTYPE-gt-Recommendations
