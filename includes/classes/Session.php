@@ -17,7 +17,6 @@ class Session
 {
 	public $session_name = '';
 
-
 	function __construct($custom = '')
 	{
 		$this->session_name = sha1(HOST.$custom);
