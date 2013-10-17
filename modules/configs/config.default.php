@@ -1,7 +1,7 @@
 <?
 $config = array(
     'enabled' => true,
-    'name'    => 'Config',
+    'name'    => 'Config1',
     'icon'    => 'hammer-screwdriver.png'
 );
 ?>
