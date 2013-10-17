@@ -1,0 +1,6 @@
+.crosstick-Y{background:url(icons/crosstick-Y.png) no-repeat;padding-left:16px}
+.crosstick-N{background:url(icons/crosstick-N.png) no-repeat;padding-left:16px}
+.status-Y{background:url(icons/status-Y.png) no-repeat;padding-left:16px}
+.status-N{background:url(icons/status-N.png) no-repeat;padding-left:16px}
+
+.x-grid-cell-inner-treecolumn{cursor:pointer}
