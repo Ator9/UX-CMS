@@ -32,39 +32,20 @@
 </ul>
 
 <h2 id="require">Requirements</h2>
-<ul><li><b>PHP</b>
-        <ul><li>You need PHP 5.2.0 or newer, with <tt>session</tt> support
-                (<a href="#faq1_31">see
-            <abbr title="Frequently Asked Questions">FAQ</abbr> 1.31</a>)
-        , the Standard PHP Library (SPL) extension and JSON support.
-                </li>
-        <li>To support uploading of ZIP files, you need the PHP <tt>zip</tt> extension.</li>
-        <li>For proper support of multibyte strings (eg. UTF-8, which is
-            currently the default), you should install the mbstring and ctype
-            extensions.
-        </li>
+<ul>
+    <li><b>PHP</b> 5.3.0 or newer
+        <ul>
+            <li>To support uploading of ZIP files, you need the PHP <tt>zip</tt> extension.</li>
+            <li>For proper support of multibyte strings (eg. UTF-8, which is
+                currently the default), you should install the mbstring and ctype
+                extensions.
+            </li>
             <li>You need GD2 support in PHP to display inline
                 thumbnails of JPEGs (&quot;image/jpeg: inline&quot;) with their
                 original aspect ratio</li>
-            <li>When using the &quot;cookie&quot;
-                <a href="#authentication_modes">authentication method</a>, the
-                <a href="http://www.php.net/mcrypt"><tt>mcrypt</tt></a> extension
-                is strongly suggested for most users and is <b>required</b> for
-                64&#8211;bit machines. Not using mcrypt will cause phpMyAdmin to
-                load pages significantly slower.
-                </li>
-                <li>To support upload progress bars, see <a href="#faq2_9">
-                    <abbr title="Frequently Asked Questions">FAQ</abbr> 2.9</a>.</li>
-                <li>To support BLOB streaming, see PHP and MySQL requirements
-                in <a href="#faq6_25">
-                    <abbr title="Frequently Asked Questions">FAQ</abbr> 6.25</a>.</li>
-                <li>To support XML and Open Document Spreadsheet importing,
-                you need PHP 5.2.17 or newer and the 
-                <a href="http://www.php.net/libxml"><tt>libxml</tt></a> extension.</li>
         </ul>
     </li>
-    <li><b>MySQL</b> 5.0 or newer (<a href="#faq1_17">details</a>);</li>
-    <li><b>Web browser</b> with cookies enabled.</li>
+    <li><b>MySQL</b> 5.0 or newer</li>
 </ul>
 
 <!-- INTRODUCTION -->
