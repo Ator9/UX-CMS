@@ -1,20 +1,15 @@
 <?
 require(dirname(__FILE__).'/1nit.php');
 
-// languages:
+// language:
 if(array_key_exists($_POST['locale'], $GLOBALS['admin']['locale'])) $session->set('locale', $_POST['locale']);
 elseif(!$session->exists('locale')) $session->set('locale', key($GLOBALS['admin']['locale']));
 
 if(isset($_POST['act_login']))
 {
     $db = new Admins();
-    if($data = $db->login($_POST['name'], $_POST['pass']))
+    if($db->login($_POST['name'], $_POST['pass']))
     {
-        $session->set('adminID',   $data['adminID']);
-        $session->set('superuser', $data['superuser']);
-        
-        $aLog->log('login');
-
         header('Location: '.ADMIN);
         exit;
     }

@@ -5,7 +5,7 @@ class ConnExt extends Conn
 	public $_index	= '';
 	public $_fields	= array();
 
-	protected $_dependant_classes = array(); // delete()
+	protected $_dependantClasses = array(); // delete()
 
 	public $_debug  = false;
 	
@@ -16,7 +16,11 @@ class ConnExt extends Conn
     // Save:
     public function extSave()
     {
-        if($this->save($_POST, $_POST[$this->_index])) $response['success'] = true;
+        $this->get($_POST[$this->_index]);
+        
+        $this->set($_POST);
+        
+        if($this->save()) $response['success'] = true;
         else $response['success'] = false;
 
         echo json_encode($response);
@@ -27,8 +31,8 @@ class ConnExt extends Conn
     public function extDelete()
     {
         $data = json_decode(stripslashes($_POST['data']));
-        
-        if($this->delete($data->{$this->_index})) $response['success'] = true;
+
+        if($this->get($data->{$this->_index}) && $this->delete()) $response['success'] = true;
         else $response['success'] = false;
 
         echo json_encode($response);

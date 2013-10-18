@@ -23,15 +23,24 @@ class Admins extends ConnExt
 
 	public function login($user, $pass)
 	{
-		$sql = 'SELECT * FROM '.$this->_table.' WHERE username="'.parent::escape($user).'" AND password="'.parent::escape($pass).'" AND active="Y"';
-		if($rs = parent::query($sql))
+        global $session, $aLog;
+	
+		$sql = 'SELECT * FROM '.$this->_table.' WHERE username="'.$this->escape($user).'" AND password="'.$this->escape($pass).'" AND active="Y"';
+		if(($rs = $this->query($sql)) && $rs->num_rows == 1)
 		{
-		    $row = $rs->fetch_assoc();
+		    $this->set($rs->fetch_assoc());
+
+		    $session->set('adminID',   $this->getID());
+            $session->set('superuser', $this->superuser);
+
+            // Log:
+            $aLog->log('login');
 
 		    // Last Login:
-		    parent::update(array('last_login'=>date('Y-m-d H:i:s')), $row[$this->_index]);
+		    $this->last_login = date('Y-m-d H:i:s');
+		    $this->update();
 		    
-		    return $row;
+		    return true;
 		}
 		return false;
 	}

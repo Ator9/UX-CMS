@@ -5,7 +5,7 @@ class Conn extends mysqli
 	public $_index	= 'table_primary';
 	public $_fields	= array();
 
-	protected $_dependant_classes = array(); // delete()
+	protected $_dependantClasses = array(); // delete()
 	
 	public $_debug  = false;
 
@@ -18,6 +18,8 @@ class Conn extends mysqli
 		parent::__construct($host, $user, $pass, $db);
 		if(mysqli_connect_errno()) throw new Exception(mysqli_connect_error());
 		if(!parent::set_charset('utf8')) throw new Exception(mysqli_error($this));
+		
+		array_push($this->_fields, $this->_index); // adds index to fields list
 	}
 
 
@@ -36,7 +38,11 @@ class Conn extends mysqli
 	public function get($indexID)
 	{
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$this->_index.' = "'.$this->escape($indexID).'" LIMIT 1';
-		if($rs = $this->query($sql)) return $rs->fetch_assoc();
+		if(($rs = $this->query($sql)) && $rs->num_rows == 1)
+		{
+		    $this->set($rs->fetch_assoc());
+		    return true;
+		}
 		return false;
 	}
 
@@ -47,7 +53,11 @@ class Conn extends mysqli
 		if(in_array($field, $this->_fields))
 		{
 			$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$field.' = "'.$this->escape($value).'" LIMIT 1';
-			if($rs = $this->query($sql)) return $rs->fetch_assoc();
+			if(($rs = $this->query($sql)) && $rs->num_rows == 1)
+			{
+			    $this->set($rs->fetch_assoc());
+			    return true;
+			}
 		}
 		return false;
 	}
@@ -72,15 +82,20 @@ class Conn extends mysqli
 	}
 
 
-	public function save($data, $id='')
+	public function save()
 	{
-        if($id=='') return $this->insert($data); // Insert
-        else return $this->update($data, $id); // Update
+        if($this->getID()) return $this->update();
+        return $this->insert();
 	}
 
 
-	public function insert($data)
+	public function insert()
 	{
+		foreach($this->_fields as $field)
+		{
+			$arr[$field] = '"'.$this->escape($this->$field).'"';
+		}
+
 		if(in_array('date_created', $this->_fields)) $arr['date_created'] = 'NOW()';
 		if(in_array('adminID_created', $this->_fields))
 		{
@@ -88,47 +103,48 @@ class Conn extends mysqli
 			if(is_object($session)) $arr['adminID_created'] = '"'.$session->get('adminID').'"';
 		}
 
-		foreach($this->_fields as $v)
+		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
+		if($this->query($sql))
 		{
-			if(isset($data[$v])) $arr[$v] = '"'.$this->escape($data[$v]).'"';
+		    $this->setID($this->insert_id);
+		    return true;
 		}
-
-		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',',array_keys($arr)).') VALUES ('.implode(',',$arr).')';
-		return $this->query($sql);
+		return false;
 	}
 
 
-	public function update($data, $id)
+	public function update()
 	{
+		foreach($this->_fields as $field)
+		{
+			$arr[$field] = $field.' = "'.$this->escape($this->$field).'"';
+		}
+        unset($arr['date_updated']);
+
 		if(in_array('adminID_updated', $this->_fields))
 		{
 			global $session;
-			if(is_object($session)) $arr[] = 'adminID_updated = "'.$session->get('adminID').'"';
+			if(is_object($session)) $arr['adminID_updated'] = 'adminID_updated = "'.$session->get('adminID').'"';
 		}
 
-		foreach($this->_fields as $v)
-		{
-			if(isset($data[$v])) $arr[] = $v.' = "'.$this->escape($data[$v]).'"';
-		}
-
-		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(',', $arr).' WHERE '. $this->_index.' = "'.$this->escape($id).'"';
+		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';
 		return $this->query($sql);
 	}
 
 
-	public function delete($indexID)
+	public function delete()
 	{
-		foreach($this->_dependant_classes as $className)
+		foreach($this->_dependantClasses as $className)
 		{
 			$db = new $className();
-			$rs = $db->getList(array('WHERE' => $this->_index.' = "'.$indexID.'"'));
+			$rs = $db->getList(array('WHERE' => $this->_index.' = "'.$this->getID().'"'));
 			while($row = $rs->fetch_assoc())
 			{
-				$db->delete($row[$db->_index]);
+			    if($db->get($row[$db->_index])) $db->delete();
 			}
 		}
 
-		$sql = 'DELETE FROM '.$this->_table.' WHERE '.$this->_index.' = "'.$this->escape($indexID).'"';
+		$sql = 'DELETE FROM '.$this->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"';
 		return $this->query($sql);
 	}
 
@@ -150,7 +166,7 @@ class Conn extends mysqli
     }
 
 
-	// Extra Methods -------------------------------------------------------------------------------------------------- //
+	// Extra -------------------------------------------------------------------------------------------------- //
 
 
     public function getID()
