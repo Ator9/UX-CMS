@@ -4,6 +4,6 @@ Ext.define('admins.view.Php', {
     initComponent: function() {
 
         this.src = 'admins/phpinfo.php';
-        this.callParent();
+        this.callParent(arguments);
     }
 });

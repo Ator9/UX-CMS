@@ -18,12 +18,12 @@ Ext.define('Ext.ux.DualCheckbox', {
     inputValueOff: 'N', // Value when checkbox is unchecked
 
     initComponent: function() {
-        this.callParent();
+        this.callParent(arguments);
     },
 
     onRender: function() {
         this.form = this.findParentByType('form').getForm();
-        this.callParent();
+        this.callParent(arguments);
     },
     
     listeners: {

@@ -28,7 +28,7 @@ Ext.define('Ext.ux.Search', {
         });
         this.items = [ 'Search', this.field ];
         
-        this.callParent();
+        this.callParent(arguments);
     },
     
     // Clear function:
@@ -61,6 +61,6 @@ Ext.define('Ext.ux.Search', {
             scope: this
         });
         
-        this.callParent();
+        this.callParent(arguments);
     }
 });

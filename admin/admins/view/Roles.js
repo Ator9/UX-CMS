@@ -8,7 +8,7 @@ Ext.define('admins.view.Roles', {
             Ext.create('Ext.ux.GridRowInsert', { grid: this.grid, form: this.form }), '-',
             Ext.create('Ext.ux.GridRowDelete', { grid: this.grid, form: this.form })
         ];
-        this.callParent();
+        this.callParent(arguments);
     },
     
     createGrid: function() {

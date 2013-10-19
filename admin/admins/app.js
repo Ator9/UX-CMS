@@ -1,7 +1,7 @@
 Ext.define('admins.app', {
     extend: 'Ext.tab.Panel',
     initComponent: function() {
-        var roleStore = Ext.create('admins.store.Roles').load(); // Shared store: avoid filters (pageSize/restrictions)
+        var roleStore = Ext.create('admins.store.Roles').load(); // Shared store: try to avoid filters (pageSize/restrictions)
         
         this.title = '';
         this.items = [
@@ -10,7 +10,7 @@ Ext.define('admins.app', {
             Ext.create('admins.view.Logs', { title: 'Logs' }),
             Ext.create('admins.view.Php', { title: 'PHP Info' })
         ];
-        this.callParent();
+        this.callParent(arguments);
     }
 });
 

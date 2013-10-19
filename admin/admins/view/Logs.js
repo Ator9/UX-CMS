@@ -12,6 +12,6 @@ Ext.define('admins.view.Logs', {
         ];
         this.store = Ext.create('admins.store.Logs').load(); // Store + Load
         this.bbar = Ext.create('Ext.toolbar.Paging', { store: this.store, displayInfo: true });
-        this.callParent();
+        this.callParent(arguments);
     }
 });

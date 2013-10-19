@@ -19,8 +19,7 @@ Ext.define('Ext.ux.GridRowDelete', {
     disabled: true,
 
     handler: function() {
-        if(this.grid.getSelectionModel().getSelection().length)
-        {
+        if(this.grid.getSelectionModel().getSelection().length) {
             Ext.MessageBox.confirm({
                 title: 'Confirm',
                 msg: 'Are you sure you want to delete this record?',
@@ -34,8 +33,7 @@ Ext.define('Ext.ux.GridRowDelete', {
     },
 
     rowDelete: function(btn) {
-        if(btn=='yes')
-        {
+        if(btn=='yes') {
             this.grid.getStore().remove(this.grid.getSelectionModel().getSelection()); // remove from grid
             this.grid.getStore().sync(); // sync store (calling delete method)
             this.disableComponents();
@@ -48,6 +46,6 @@ Ext.define('Ext.ux.GridRowDelete', {
     },
     
     initComponent: function() {
-        this.callParent();
+        this.callParent(arguments);
     }
 });

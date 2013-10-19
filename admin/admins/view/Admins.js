@@ -17,7 +17,7 @@ Ext.define('admins.view.Admins', {
             Ext.create('Ext.ux.GridRowDelete', { grid: this.grid, form: this.form }), '-',
             Ext.create('Ext.ux.Search', { store: this.store, columns: [ 'adminID', 'username' ] }) 
         ];
-        this.callParent();
+        this.callParent(arguments);
     },
     
     createGrid: function() {

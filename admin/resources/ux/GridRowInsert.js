@@ -27,6 +27,6 @@ Ext.define('Ext.ux.GridRowInsert', {
     },
     
     initComponent: function() {
-        this.callParent();
+        this.callParent(arguments);
     }
 });
