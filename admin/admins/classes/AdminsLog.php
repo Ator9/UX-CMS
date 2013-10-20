@@ -29,12 +29,12 @@ class AdminsLog extends ConnExt
     // Log:
     public function log($task, $comment='')
     {
-        global $session;
-        if(is_object($session)) $data['adminID'] = $session->get('adminID');
+        global $aSession;
+        if(is_object($aSession)) $this->adminID = $aSession->get('adminID');
         
-        $data['task']    = $task;
-        $data['comment'] = $comment;
-        $data['ip']      = $_SERVER['REMOTE_ADDR'];
+        $this->task    = $task;
+        $this->comment = $comment;
+        $this->ip      = $_SERVER['REMOTE_ADDR'];
 
         return parent::insert($data);
     }

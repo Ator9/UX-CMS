@@ -2,8 +2,8 @@
 require(dirname(__FILE__).'/1nit.php');
 
 // language:
-if(array_key_exists($_POST['locale'], $GLOBALS['admin']['locale'])) $session->set('locale', $_POST['locale']);
-elseif(!$session->exists('locale')) $session->set('locale', key($GLOBALS['admin']['locale']));
+if(array_key_exists($_POST['locale'], $GLOBALS['admin']['locale'])) $aSession->set('locale', $_POST['locale']);
+elseif(!$aSession->exists('locale')) $aSession->set('locale', key($GLOBALS['admin']['locale']));
 
 if(isset($_POST['act_login']))
 {
@@ -18,7 +18,7 @@ if(isset($_POST['act_login']))
 
 if(isset($_GET['logout']))
 {
-    $session->destroy();
+    $aSession->destroy();
 
     header('Location: '.ADMIN.'login.php');
     exit;
@@ -59,7 +59,7 @@ font-size:16px;height:auto;margin:5px 0 15px;padding:7px 9px}
 			<?
             foreach($GLOBALS['admin']['locale'] as $key => $lang)
             {
-                $sel = ($key==$session->get('locale')) ? ' selected' : '';
+                $sel = ($key==$aSession->get('locale')) ? ' selected' : '';
                 echo '<option value="'.$key.'"'.$sel.'>'.$lang.'</option>';
             }
 			?>

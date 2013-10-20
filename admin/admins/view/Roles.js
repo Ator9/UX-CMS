@@ -19,7 +19,7 @@ Ext.define('admins.view.Roles', {
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
                 { header: 'ID', dataIndex: 'roleID', width: 50 },
-                { header: 'Name', dataIndex: 'name', width: 150 },
+                { header: 'Name', dataIndex: 'name', width: 200 },
                 { header: 'Permission', dataIndex: 'permission', flex: 1 }
             ],
             listeners: {
@@ -38,10 +38,24 @@ Ext.define('admins.view.Roles', {
     },
     
     createForm: function() {
+
+        this.getModulePerms = function() {
+            var items = [];
+            
+            for(var i=0; i<13; i++) {
+                items.push({ fieldLabel: 'Admin', xtype: 'displayfield', labelWidth: 200, labelStyle: 'font-weight:700' });
+                items.push({ fieldLabel: 'Read', name: 'name', labelAlign: 'right', labelWidth: 60 });
+                items.push({ fieldLabel: 'Write', name: 'name', labelAlign: 'right', labelWidth: 60 });
+            }
+            return items;
+        };
+    
         this.form = Ext.create('Ext.form.Panel', {
             url: '1nit.php?_class=AdminsRoles&_method=extSave',
             region: 'east',
+            autoScroll: true, // true to show scroll bars automatically when necessary
             border: false,
+            width: 400,
             disabled: true,
             bodyStyle: 'padding:5px', // Custom CSS styles to be applied to the panel's body element
             items: [{
@@ -52,6 +66,12 @@ Ext.define('admins.view.Roles', {
                     { name: 'name', fieldLabel: 'Name', allowBlank: false },
                     { name: 'roleID', xtype: 'hidden' }
                 ]
+            },{
+                title: 'Módulos',
+                layout: { type: 'table', columns: 3 },
+                bodyStyle: 'padding:5px', // Custom CSS styles to be applied to the panel's body element
+                defaultType: 'dualcheckbox',
+                items: this.getModulePerms()
             }],
             bbar: ['->', {
                 text: 'Save',

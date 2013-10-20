@@ -5,8 +5,8 @@ if(file_exists(dirname(__FILE__).'/config.php')) require(dirname(__FILE__).'/con
 else require(dirname(__FILE__).'/config.default.php');
 
 // Login check:
-$session = new Session('admin');
-if(!$session->exists('adminID') && basename($_SERVER['PHP_SELF']) != 'login.php')
+$aSession = new Session('admin');
+if(!$aSession->exists('adminID') && basename($_SERVER['PHP_SELF']) != 'login.php')
 {
     header('Location: '.ADMIN.'login.php');
     exit;

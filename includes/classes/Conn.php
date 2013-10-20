@@ -5,7 +5,7 @@ class Conn extends mysqli
 	public $_index	= 'table_primary';
 	public $_fields	= array();
 
-	protected $_dependantClasses = array(); // delete()
+	protected $_dependantClasses = array(); // delete childrens
 	
 	public $_debug  = false;
 
@@ -99,8 +99,8 @@ class Conn extends mysqli
 		if(in_array('date_created', $this->_fields)) $arr['date_created'] = 'NOW()';
 		if(in_array('adminID_created', $this->_fields))
 		{
-			global $session;
-			if(is_object($session)) $arr['adminID_created'] = '"'.$session->get('adminID').'"';
+			global $aSession;
+			if(is_object($aSession)) $arr['adminID_created'] = '"'.$aSession->get('adminID').'"';
 		}
 
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
@@ -123,8 +123,8 @@ class Conn extends mysqli
 
 		if(in_array('adminID_updated', $this->_fields))
 		{
-			global $session;
-			if(is_object($session)) $arr['adminID_updated'] = 'adminID_updated = "'.$session->get('adminID').'"';
+			global $aSession;
+			if(is_object($aSession)) $arr['adminID_updated'] = 'adminID_updated = "'.$aSession->get('adminID').'"';
 		}
 
 		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';

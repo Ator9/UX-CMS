@@ -23,15 +23,15 @@ class Admins extends ConnExt
 
 	public function login($user, $pass)
 	{
-        global $session, $aLog;
+        global $aSession, $aLog;
 	
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE username="'.$this->escape($user).'" AND password="'.$this->escape($pass).'" AND active="Y"';
 		if(($rs = $this->query($sql)) && $rs->num_rows == 1)
 		{
 		    $this->set($rs->fetch_assoc());
 
-		    $session->set('adminID',   $this->getID());
-            $session->set('superuser', $this->superuser);
+		    $aSession->set('adminID',   $this->getID());
+            $aSession->set('superuser', $this->superuser);
 
             // Log:
             $aLog->log('login');
