@@ -2,7 +2,7 @@
  * DualCheckbox plugin - checkbox with on/off values
  *
  * @author Sebastián Gasparri
- * @version 11/05/2013 21:06:32
+ * @version 20/10/2013 20:30:48
  *
  * Usage: 
  * 1: Ext.create('Admin.extjs.DualCheckbox', { name: 'superuser', fieldLabel: 'Superuser' });
@@ -23,14 +23,16 @@ Ext.define('Ext.ux.DualCheckbox', {
 
     onRender: function() {
         this.form = this.findParentByType('form').getForm();
+        
+        if(!this.form.baseParams) this.form.baseParams = {}; // Start object if not exists
+        this.form.baseParams[this.name] = this.inputValueOff; // Add off param
+        
         this.callParent(arguments);
     },
     
     listeners: {
         change: function(field, newValue, oldValue, eOpts) {
-            var param = {}; // Start object
-            param[this.name] = this.inputValueOff; // Add param
-            this.form.baseParams = param;
+            this.form.baseParams[this.name] = this.inputValueOff; // Add off param
         }
     }
 });

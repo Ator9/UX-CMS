@@ -44,8 +44,8 @@ Ext.define('admins.view.Roles', {
             
             for(var i=0; i<13; i++) {
                 items.push({ fieldLabel: 'Admin', xtype: 'displayfield', labelWidth: 200, labelStyle: 'font-weight:700' });
-                items.push({ fieldLabel: 'Read', name: 'name', labelAlign: 'right', labelWidth: 60 });
-                items.push({ fieldLabel: 'Write', name: 'name', labelAlign: 'right', labelWidth: 60 });
+                items.push({ fieldLabel: 'Read', name: 'read', labelAlign: 'right', labelWidth: 60 });
+                items.push({ fieldLabel: 'Write', name: 'write', labelAlign: 'right', labelWidth: 60 });
             }
             return items;
         };
