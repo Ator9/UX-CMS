@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * A modal, floating Component which may be shown above a specified {@link Ext.Component Component} while loading data.
@@ -97,6 +97,8 @@ Ext.define('Ext.LoadMask', {
     useTargetEl: false,
 
     baseCls: Ext.baseCSSPrefix + 'mask-msg',
+    
+    ariaRole: 'presentation',
 
     childEls: [
         'msgEl',
@@ -104,7 +106,9 @@ Ext.define('Ext.LoadMask', {
     ],
 
     renderTpl: [
-        '<div id="{id}-msgEl" class="{[values.$comp.msgCls]} ',
+        '<div id="{id}-msgEl" role="{role}"',
+            '<tpl if="ariaAttr"> {ariaAttr}</tpl>',
+            ' class="{[values.$comp.msgCls]} ',
             Ext.baseCSSPrefix, 'mask-msg-inner{childElCls}">',
             '<div id="{id}-msgTextEl" class="', Ext.baseCSSPrefix ,'mask-msg-text',
                 '{childElCls}"></div>',
@@ -384,6 +388,7 @@ Ext.define('Ext.LoadMask', {
     getMaskEl: function(){
         var me = this;
         return me.maskEl || (me.maskEl = me.el.insertSibling({
+            role: 'presentation',
             cls: me.maskCls,
             style: {
                 zIndex: me.el.getStyle('zIndex') - 2

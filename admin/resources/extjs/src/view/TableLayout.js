@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  *  Component layout for {@link Ext.view.Table}
@@ -84,9 +84,13 @@ Ext.define('Ext.view.TableLayout', {
                 } else {
                     contentHeight = emptyEl.offsetHeight;
                 }
+                // If there is horizontal overflow, and the grid is shrinkwrapping height, then allow the horizontal scrollbar to contibute to contentHeight
+                if (ownerContext.headerContext.state.boxPlan.tooNarrow && ownerContext.ownerCtContext.sizeModel.height.shrinkWrap) {
+                    contentHeight += Ext.getScrollbarSize().height;
+                }
                 ownerContext.setProp('contentHeight', contentHeight);
             }
-            
+
             // If we are part of a twinned table view set (locking grid)
             // Then only complete when both sides are complete.
             if (lockingPartner && !lockingPartner.state.columnWidthsSynced) {

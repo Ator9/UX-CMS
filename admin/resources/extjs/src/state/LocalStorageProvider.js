@@ -16,27 +16,28 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
- * @class Ext.state.LocalStorageProvider
- * A Provider implementation which saves and retrieves state via the HTML5 localStorage object.
+ * A Provider implementation which saves and retrieves state via the HTML5 localStorage API
+ * or IE `userData` storage. For details see `Ext.util.LocalStorage`.
+ * 
  * If the browser does not support local storage, there will be no attempt to read the state.
- * Before creating this class, a check should be made to {@link Ext.supports#LocalStorage}.
+ * Before creating this class, check {@link Ext.util.LocalStorage#supported}.
  */
-
 Ext.define('Ext.state.LocalStorageProvider', {
-    /* Begin Definitions */
-    
     extend: 'Ext.state.Provider',
+    requires: [
+        'Ext.util.LocalStorage'
+    ],
     
     alias: 'state.localstorage',
-    
-    /* End Definitions */
    
-    constructor: function(){
+    constructor: function () {
         var me = this;
+
         me.callParent(arguments);
+
         me.store = me.getStorageObject();
         if (me.store) {
             me.state = me.readLocalStorage();
@@ -45,48 +46,49 @@ Ext.define('Ext.state.LocalStorageProvider', {
         }
     },
     
-    readLocalStorage: function(){
+    readLocalStorage: function () {
         var store = this.store,
-            i = 0,
-            len = store.length,
-            prefix = this.prefix,
-            prefixLen = prefix.length,
             data = {},
+            keys = store.getKeys(),
+            i = keys.length,
             key;
             
-        for (; i < len; ++i) {
-            key = store.key(i);
-            if (key.substring(0, prefixLen) == prefix) {
-                data[key.substr(prefixLen)] = this.decodeValue(store.getItem(key));
-            }            
+        while (i--) {
+            key = keys[i];
+            data[key] = this.decodeValue(store.getItem(key));
         }
+
         return data;
     },
     
-    set : function(name, value){
+    set: function (name, value) {
         var me = this;
         
         me.clear(name);
-        if (typeof value == "undefined" || value === null) {
-            return;
+        if (value != null) { // !== undefined && !== null
+            me.store.setItem(name, me.encodeValue(value));
+            me.callParent(arguments);
         }
-        me.store.setItem(me.prefix + name, me.encodeValue(value));
-        me.callParent(arguments);
     },
 
     // private
-    clear : function(name){
-        this.store.removeItem(this.prefix + name);
+    clear: function (name) {
+        this.store.removeItem(name);
         this.callParent(arguments);
     },
     
-    getStorageObject: function(){
-        if (Ext.supports.LocalStorage) {
-            return window.localStorage;
+    getStorageObject: function () {
+        var prefix = this.prefix,
+            id = prefix,
+            n = id.length - 1;
+
+        if (id.charAt(n) === '-') {
+            id = id.substring(0, n);
         }
-        //<debug>
-        Ext.Error.raise('LocalStorage is not supported by the current browser');
-        //</debug>
-        return false;
+
+        return new Ext.util.LocalStorage({
+            id: id,
+            prefix: prefix
+        });
     }    
 });

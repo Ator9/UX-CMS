@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * A display-only text field which is not validated and not submitted. This is useful for when you want to display a
@@ -57,8 +57,11 @@ Ext.define('Ext.form.field.Display', {
     alias: 'widget.displayfield',
     requires: ['Ext.util.Format', 'Ext.XTemplate'],
     alternateClassName: ['Ext.form.DisplayField', 'Ext.form.Display'],
+    
+    ariaRole: 'textbox',
+    
     fieldSubTpl: [
-        '<div id="{id}" role="input" ',
+        '<div id="{id}" role="{role}" {inputAttrTpl}',
         '<tpl if="fieldStyle"> style="{fieldStyle}"</tpl>', 
         ' class="{fieldCls}">{value}</div>',
         {
@@ -109,6 +112,14 @@ Ext.define('Ext.form.field.Display', {
     initEvents: Ext.emptyFn,
 
     submitValue: false,
+    
+    valueToRaw: function(value) {
+        if (!value && value !== 0) {
+            return '';
+        } else {
+            return value;
+        }
+    },
     
     isDirty: function(){
         return false;

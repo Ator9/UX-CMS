@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * The Ext.grid.plugin.RowEditing plugin injects editing at a row level for a Grid. When editing begins,
@@ -122,20 +122,38 @@ Ext.define('Ext.grid.plugin.RowEditing', {
         Ext.destroy(this.editor);
         this.callParent(arguments);
     },
+    
+    onBeforeReconfigure: function() {
+        this.callParent(arguments);
+        this.cancelEdit();
+    },
+    
+    onReconfigure: function(grid, store, columns) {
+        var ed = this.editor;
+        this.callParent(arguments);
+        // Only need to adjust column widths if we have new columns 
+        if (columns && ed && ed.rendered) {
+            ed.needsSyncFieldWidths = true;
+        }
+    },
 
     /**
      * Starts editing the specified record, using the specified Column definition to define which field is being edited.
      * @param {Ext.data.Model} record The Store data record which backs the row to be edited.
-     * @param {Ext.data.Model} columnHeader The Column object defining the column to be edited.
+     * @param {Ext.grid.column.Column/Number} columnHeader The Column object defining the column field to be focused, or index of the column.
      * @return {Boolean} `true` if editing was started, `false` otherwise.
      */
     startEdit: function(record, columnHeader) {
         var me = this,
             editor = me.getEditor(),
             context;
+            
+        if (Ext.isEmpty(columnHeader)) {
+            columnHeader = me.grid.getTopLevelVisibleColumnManager().getHeaderAtIndex(0);
+        }
 
         if (editor.beforeEdit() !== false) {
-            context = me.callParent(arguments);
+            context = me.callParent([record, columnHeader]);
             if (context) {
                 me.context = context;
 
@@ -144,6 +162,7 @@ Ext.define('Ext.grid.plugin.RowEditing', {
                     me.lockingPartner.cancelEdit();
                 }
                 editor.startEdit(context.record, context.column, context);
+                me.editing = true;
                 return true;
             }
         }
@@ -155,6 +174,7 @@ Ext.define('Ext.grid.plugin.RowEditing', {
         var me = this;
 
         if (me.editing) {
+            me.getContextFieldValues();
             me.getEditor().cancelEdit();
             me.callParent(arguments);
             return;
@@ -172,34 +192,18 @@ Ext.define('Ext.grid.plugin.RowEditing', {
             me.fireEvent('edit', me, me.context);
         }
     },
+    
+    onEnterKey: function() {
+        if (this.getEditor().getForm().isValid()) {
+            this.completeEdit();
+        }    
+    },
 
     // @private
     validateEdit: function() {
-        var me             = this,
-            editor         = me.editor,
-            context        = me.context,
-            record         = context.record,
-            newValues      = {},
-            originalValues = {},
-            editors        = editor.query('>[isFormField]'),
-            e,
-            eLen           = editors.length,
-            name, item;
-
-        for (e = 0; e < eLen; e++) {
-            item = editors[e];
-            name = item.name;
-
-            newValues[name]      = item.getValue();
-            originalValues[name] = record.get(name);
-        }
-
-        Ext.apply(context, {
-            newValues      : newValues,
-            originalValues : originalValues
-        });
-
-        return me.callParent(arguments) && me.getEditor().completeEdit();
+        this.getContextFieldValues();
+        this.editing = this.callParent(arguments) && this.getEditor().completeEdit();
+        return this.editing;
     },
 
     // @private
@@ -210,6 +214,30 @@ Ext.define('Ext.grid.plugin.RowEditing', {
             me.editor = me.initEditor();
         }
         return me.editor;
+    },
+
+    getContextFieldValues: function () {
+        var editor         = this.editor,
+            context        = this.context,
+            record         = context.record,
+            newValues      = {},
+            originalValues = {},
+            editors        = editor.query('>[isFormField]'),
+            len            = editors.length,
+            i, name, item;
+
+        for (i = 0; i < len; i++) {
+            item = editors[i];
+            name = item.name;
+
+            newValues[name]      = item.getValue();
+            originalValues[name] = record.get(name);
+        }
+
+        Ext.apply(context, {
+            newValues      : newValues,
+            originalValues : originalValues
+        });
     },
 
     // @private
@@ -296,7 +324,7 @@ Ext.define('Ext.grid.plugin.RowEditing', {
             // Only inform the editor about a new column if the editor has already been instantiated,
             // so do not use getEditor which instantiates the editor if not present.
             editor = me.editor;
-            if (editor && editor.onColumnAdd) {
+            if (editor) {
                 editor.onColumnAdd(column);
             }
         }
@@ -308,7 +336,7 @@ Ext.define('Ext.grid.plugin.RowEditing', {
             var me = this,
                 editor = me.getEditor();
 
-            if (editor && editor.onColumnRemove) {
+            if (editor) {
                 editor.onColumnRemove(ct, column);
             }
             me.removeFieldAccessors(column);
@@ -321,7 +349,7 @@ Ext.define('Ext.grid.plugin.RowEditing', {
             var me = this,
                 editor = me.getEditor();
 
-            if (editor && editor.onColumnResize) {
+            if (editor) {
                 editor.onColumnResize(column, width);
             }
         }
@@ -333,7 +361,7 @@ Ext.define('Ext.grid.plugin.RowEditing', {
         var me = this,
             editor = me.getEditor();
 
-        if (editor && editor.onColumnHide) {
+        if (editor) {
             editor.onColumnHide(column);
         }
     },
@@ -344,7 +372,7 @@ Ext.define('Ext.grid.plugin.RowEditing', {
         var me = this,
             editor = me.getEditor();
 
-        if (editor && editor.onColumnShow) {
+        if (editor) {
             editor.onColumnShow(column);
         }
     },
@@ -359,7 +387,7 @@ Ext.define('Ext.grid.plugin.RowEditing', {
         // the accessors will have been deleted but not added. They are added conditionally.
         me.initFieldAccessors(column);
 
-        if (editor && editor.onColumnMove) {
+        if (editor) {
             // Must adjust the toIdx to account for removal if moving rightwards
             // because RowEditor.onColumnMove just calls Container.move which does not do this.
             editor.onColumnMove(column, fromIdx, toIdx);
@@ -370,9 +398,27 @@ Ext.define('Ext.grid.plugin.RowEditing', {
     setColumnField: function(column, field) {
         var me = this,
             editor = me.getEditor();
-            
-        editor.removeField(column);
+
+        if (editor) {
+            // Remove the old editor and destroy it.
+            editor.removeColumnEditor(column, true);
+        }
+
         me.callParent(arguments);
-        me.getEditor().setField(column);
+
+        if (editor) {
+            editor.insertColumnEditor(column);
+        }
+    },
+
+    createColumnField: function(column, defaultField) {
+        var editor = this.editor,
+            def;
+
+        if (editor) {
+            def = editor.getDefaultFieldCfg();
+        }
+
+        return this.callParent([column, defaultField || def]);
     }
 });

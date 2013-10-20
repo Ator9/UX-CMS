@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Provides attractive and customizable tooltips for any element. The QuickTips
@@ -133,10 +133,17 @@ Ext.define('Ext.tip.QuickTipManager', {
                 Ext.onReady(function(){
                     Ext.tip.QuickTipManager.init(autoRender, config);
                 });
-                return;
+                return false;
             }
 
-            var tipConfig = Ext.apply({ disabled: me.disabled, id: 'ext-quicktips-tip' }, config),
+            var tipConfig = Ext.apply({
+                //<debug>
+                // tell the spec runner to ignore this element when checking if the dom is clean 
+                sticky: true,
+                //</debug>
+                disabled: me.disabled,
+                id: 'ext-quicktips-tip'
+            }, config),
                 className = tipConfig.className,
                 xtype = tipConfig.xtype;
 

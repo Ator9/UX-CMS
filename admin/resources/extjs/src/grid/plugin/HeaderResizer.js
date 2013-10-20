@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Plugin to add header resizing functionality to a HeaderContainer.
@@ -59,8 +59,14 @@ Ext.define('Ext.grid.plugin.HeaderResizer', {
      * AbstractComponent calls destroy on all its plugins at destroy time.
      */
     destroy: function() {
-        if (this.tracker) {
-            this.tracker.destroy();
+        var tracker = this.tracker;
+        if (tracker) {
+            delete tracker.onBeforeStart;
+            delete tracker.onStart;
+            delete tracker.onDrag;
+            delete tracker.onEnd;
+            tracker.destroy();
+            this.tracker = null;
         }
     },
 

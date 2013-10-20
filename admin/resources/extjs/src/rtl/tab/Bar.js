@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 Ext.define('Ext.rtl.tab.Bar', {
     override: 'Ext.tab.Bar',
@@ -51,7 +51,25 @@ Ext.define('Ext.rtl.tab.Bar', {
                 }
             }
         }
+    },
+
+    getCloseXY: function(closeEl, tabX, tabY, tabWidth, tabHeight, closeWidth, closeHeight, direction) {
+        var closeXY, closeX, closeY, xy;
+
+        if (this.isOppositeRootDirection()) {
+            closeXY = closeEl.getXY();
+            if (direction === 'right') {
+                closeX = tabX + closeXY[1] - tabY;
+                closeY = tabY + tabHeight - (closeXY[0] - (tabX + tabWidth - tabHeight)) - closeWidth;
+            } else {
+                closeX = tabX + tabWidth - (closeXY[1] - tabY) - closeHeight;
+                closeY = tabY + (closeXY[0] - (tabX + tabWidth - tabHeight));
+            }
+            xy = [closeX, closeY];
+        } else {
+            xy = this.callParent(arguments);
+        }
+
+        return xy;
     }
-})
-
-
+});

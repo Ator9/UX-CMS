@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * The Connection class encapsulates a connection to the page's originating domain, allowing requests to be made either
@@ -278,6 +278,9 @@ Ext.define('Ext.data.Connection', {
      * [multipart/form]: http://www.faqs.org/rfcs/rfc2388.html
      *
      * @param {Object} options.headers Request headers to set for the request.
+     * The XHR will attempt to set an appropriate Content-Type based on the params/data passed
+     * to the request. To prevent this, setting the Content-Type header to `null` or `undefined`
+     * will not attempt to set any Content-Type and it will be left to the browser.
      *
      * @param {Object} options.xmlData XML document to use for the post. Note: This will be used instead
      * of params for the post data. Any params will be appended to the URL.
@@ -735,10 +738,11 @@ Ext.define('Ext.data.Connection', {
             contentType = me.defaultPostHeader,
             jsonData = options.jsonData,
             xmlData = options.xmlData,
+            type = 'Content-Type',
             key,
             header;
 
-        if (!headers['Content-Type'] && (data || params)) {
+        if (!headers.hasOwnProperty(type) && (data || params)) {
             if (data) {
                 if (options.rawData) {
                     contentType = 'text/plain';
@@ -750,12 +754,19 @@ Ext.define('Ext.data.Connection', {
                     }
                 }
             }
-            headers['Content-Type'] = contentType;
+            headers[type] = contentType;
         }
 
         if (me.useDefaultXhrHeader && !headers['X-Requested-With']) {
             headers['X-Requested-With'] = me.defaultXhrHeader;
         }
+        
+        // If undefined/null, remove it and don't set the header. 
+        // Allow the browser to do so.
+        if (headers[type] === undefined || headers[type] === null) {
+            delete headers[type];
+        }
+        
         // set up all the request headers on the xhr object
         try {
             for (key in headers) {
@@ -1017,12 +1028,20 @@ Ext.define('Ext.data.Connection', {
     onComplete : function(request, xdrResult) {
         var me = this,
             options = request.options,
+            xhr,
             result,
             success,
             response;
 
         try {
-            result = me.parseStatus(request.xhr.status);
+            xhr = request.xhr;
+            result = me.parseStatus(xhr.status);
+            if (result.success) {
+                // This is quite difficult to reproduce, however if we abort a request just before
+                // it returns from the server, occasionally the status will be returned correctly
+                // but the request is still yet to be complete.
+                result.success = xhr.readyState === 4;
+            }
         } catch (e) {
             // in some browsers we can't access the status if the readyState is not 4, so the request has failed
             result = {

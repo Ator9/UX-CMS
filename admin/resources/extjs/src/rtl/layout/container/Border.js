@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 Ext.define('Ext.rtl.layout.container.Border', {
     override: 'Ext.layout.container.Border',
@@ -27,11 +27,7 @@ Ext.define('Ext.rtl.layout.container.Border', {
         if (me.owner.getHierarchyState().rtl) {
             me.padOnContainerProp = 'right';
             me.padNotOnContainerProp = 'left';  
-            me.horzMarginProp = 'right';
-        } else {
-            me.padOnContainerProp = 'left';
-            me.padNotOnContainerProp = 'right';   
-            me.horzMarginProp = 'left';
+            me.horzPositionProp = 'right';
         }
         me.callParent(arguments);    
     }

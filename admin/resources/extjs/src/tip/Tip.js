@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * This is the base class for {@link Ext.tip.QuickTip} and {@link Ext.tip.ToolTip} that provides the basic layout and
@@ -47,7 +47,7 @@ Ext.define('Ext.tip.Tip', {
     minWidth : 40,
     /**
      * @cfg {Number} maxWidth
-     * The maximum width of the tip in pixels.  The maximum supported value is 500.
+     * The maximum width of the tip in pixels.
      */
     maxWidth : 500,
     /**
@@ -96,8 +96,6 @@ Ext.define('Ext.tip.Tip', {
      * which will invoke the approriate closeAction.
      */
     closeAction: 'hide',
-
-    ariaRole: 'tooltip',
 
     // Flag to Renderable to always look up the framing styles for this Component
     alwaysFramed: true,

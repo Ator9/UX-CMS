@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Simple helper class for easily creating image components. This renders an image tag to
@@ -89,6 +89,8 @@ Ext.define('Ext.Img', {
      * the `@` symbol. For example '65@My Font Family'.
      */
 
+    ariaRole: 'img',
+
     initComponent: function() {
         if (this.glyph) {
             this.autoEl = 'div';
@@ -98,6 +100,7 @@ Ext.define('Ext.Img', {
 
     getElConfig: function() {
         var me = this,
+            autoEl = me.autoEl,
             config = me.callParent(),
             glyphFontFamily = Ext._glyphFontFamily,
             glyph = me.glyph,
@@ -105,7 +108,7 @@ Ext.define('Ext.Img', {
 
         // It is sometimes helpful (like in a panel header icon) to have the img wrapped
         // by a div. If our autoEl is not 'img' then we just add an img child to the el.
-        if (me.autoEl == 'img') {
+        if (autoEl === 'img' || (Ext.isObject(autoEl) && autoEl.tag === 'img')) {
             img = config;
         } else if (me.glyph) {
             if (typeof glyph === 'string') {
@@ -120,6 +123,7 @@ Ext.define('Ext.Img', {
         } else {
             config.cn = [img = {
                 tag: 'img',
+                role: me.ariaRole,
                 id: me.id + '-img'
             }];
         }
@@ -144,12 +148,19 @@ Ext.define('Ext.Img', {
 
     onRender: function () {
         var me = this,
+            autoEl = me.autoEl,
             el;
 
         me.callParent(arguments);
 
         el = me.el;
-        me.imgEl = (me.autoEl == 'img') ? el : el.getById(me.id + '-img');
+        
+        if (autoEl === 'img' || (Ext.isObject(autoEl) && autoEl.tag === 'img')) {
+            me.imgEl = el;
+        }
+        else {
+            me.imgEl = el.getById(me.id + '-img');
+        }
     },
 
     onDestroy: function () {

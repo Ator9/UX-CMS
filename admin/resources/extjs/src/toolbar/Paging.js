@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * As the number of records increases, the time required for the browser to render them increases. Paging is used to
@@ -240,7 +240,6 @@ Ext.define('Ext.toolbar.Paging', {
      */
     getPagingItems: function() {
         var me = this;
-
         return [{
             itemId: 'first',
             tooltip: me.firstText,
@@ -310,6 +309,7 @@ Ext.define('Ext.toolbar.Paging', {
             tooltip: me.refreshText,
             overflowText: me.refreshText,
             iconCls: Ext.baseCSSPrefix + 'tbar-loading',
+            disabled: me.store.isLoading(),
             handler: me.doRefresh,
             scope: me
         }];
@@ -317,9 +317,11 @@ Ext.define('Ext.toolbar.Paging', {
 
     initComponent : function(){
         var me = this,
-            pagingItems = me.getPagingItems(),
-            userItems   = me.items || me.buttons || [];
+            userItems = me.items || me.buttons || [],
+            pagingItems;
 
+        me.bindStore(me.store || 'ext-empty-store', true);
+        pagingItems = me.getPagingItems();
         if (me.prependButtons) {
             me.items = userItems.concat(pagingItems);
         } else {
@@ -372,10 +374,15 @@ Ext.define('Ext.toolbar.Paging', {
              */
             'beforechange'
         );
-        me.on('beforerender', me.onLoad, me, {single: true});
-
-        me.bindStore(me.store || 'ext-empty-store', true);
     },
+    
+    beforeRender: function() {
+        this.callParent(arguments);
+        if (!this.store.isLoading()) {
+            this.onLoad();    
+        }    
+    },
+    
     // @private
     updateInfo : function(){
         var me = this,
@@ -417,6 +424,13 @@ Ext.define('Ext.toolbar.Paging', {
             pageData = me.getPageData();
             currPage = pageData.currentPage;
             pageCount = pageData.pageCount;
+            
+             // Check for invalid current page.
+            if (currPage > pageCount) {
+                me.store.loadPage(pageCount);
+                return;
+            }
+            
             afterText = Ext.String.format(me.afterPageText, isNaN(pageCount) ? 1 : pageCount);
         } else {
             currPage = 0;
@@ -441,9 +455,7 @@ Ext.define('Ext.toolbar.Paging', {
         me.updateInfo();
         Ext.resumeLayouts(true);
 
-        if (me.rendered) {
-            me.fireEvent('change', me, pageData);
-        }
+        me.fireEvent('change', me, pageData);
     },
     
     setChildDisabled: function(selector, disabled){
@@ -470,9 +482,6 @@ Ext.define('Ext.toolbar.Paging', {
 
     // @private
     onLoadError : function(){
-        if (!this.rendered) {
-            return;
-        }
         this.setChildDisabled('#refresh', false);
     },
     
@@ -497,13 +506,6 @@ Ext.define('Ext.toolbar.Paging', {
         return pageNum;
     },
 
-    onPagingFocus : function(){
-        var inputItem = this.getInputItem();
-        if (inputItem) {
-            inputItem.select();
-        }
-    },
-
     // @private
     onPagingBlur : function(e){
         var inputItem = this.getInputItem(),
@@ -517,6 +519,10 @@ Ext.define('Ext.toolbar.Paging', {
 
     // @private
     onPagingKeyDown : function(field, e){
+        this.processKeyEvent(field, e);
+    },
+    
+    processKeyEvent: function(field, e) {
         var me = this,
             k = e.getKey(),
             pageData = me.getPageData(),
@@ -528,7 +534,7 @@ Ext.define('Ext.toolbar.Paging', {
             pageNum = me.readPageFromInput(pageData);
             if (pageNum !== false) {
                 pageNum = Math.min(Math.max(1, pageNum), pageData.pageCount);
-                if(me.fireEvent('beforechange', me, pageNum) !== false){
+                if (pageNum !== pageData.currentPage && me.fireEvent('beforechange', me, pageNum) !== false) {
                     me.store.loadPage(pageNum);
                 }
             }
@@ -548,56 +554,74 @@ Ext.define('Ext.toolbar.Paging', {
                     field.setValue(pageNum);
                 }
             }
-        }
+        }    
     },
 
     // @private
-    beforeLoad : function(){
-        if (this.rendered) {
-            this.setChildDisabled('#refresh', true);
-        }
+    beforeLoad : function() {
+        this.setChildDisabled('#refresh', true);
     },
 
     /**
      * Move to the first page, has the same effect as clicking the 'first' button.
+     * Fires the {@link #beforechange} event. If the event returns `false`, then
+     * the load will not be attempted.
+     * @return {Boolean} `true` if the load was passed to the store.
      */
     moveFirst : function(){
         if (this.fireEvent('beforechange', this, 1) !== false){
             this.store.loadPage(1);
+            return true;
         }
+        return false;
     },
 
     /**
      * Move to the previous page, has the same effect as clicking the 'previous' button.
+     * Fires the {@link #beforechange} event. If the event returns `false`, then
+     * the load will not be attempted.
+     * @return {Boolean} `true` if the load was passed to the store.
      */
     movePrevious : function(){
         var me = this,
-            prev = me.store.currentPage - 1;
+            store = me.store,
+            prev = store.currentPage - 1;
 
         if (prev > 0) {
             if (me.fireEvent('beforechange', me, prev) !== false) {
-                me.store.previousPage();
+                store.previousPage();
+                return true;
             }
         }
+        return false;
     },
 
     /**
      * Move to the next page, has the same effect as clicking the 'next' button.
+     * Fires the {@link #beforechange} event. If the event returns `false`, then
+     * the load will not be attempted.
+     * @return {Boolean} `true` if the load was passed to the store.
      */
     moveNext : function(){
         var me = this,
+            store = me.store,
             total = me.getPageData().pageCount,
-            next = me.store.currentPage + 1;
+            next = store.currentPage + 1;
 
         if (next <= total) {
             if (me.fireEvent('beforechange', me, next) !== false) {
-                me.store.nextPage();
+                store.nextPage();
+                return true;
             }
         }
+        return false;
     },
 
     /**
      * Move to the last page, has the same effect as clicking the 'last' button.
+     * Fires the {@link #beforechange} event. If the event returns `false`, then
+     * the load will not be attempted.
+     * @return {Boolean} `true` if the load was passed to the store.
      */
     moveLast : function(){
         var me = this,
@@ -605,19 +629,27 @@ Ext.define('Ext.toolbar.Paging', {
 
         if (me.fireEvent('beforechange', me, last) !== false) {
             me.store.loadPage(last);
+            return true;
         }
+        return false;
     },
 
     /**
      * Refresh the current page, has the same effect as clicking the 'refresh' button.
+     * Fires the {@link #beforechange} event. If the event returns `false`, then
+     * the load will not be attempted.
+     * @return {Boolean} `true` if the load was passed to the store.
      */
     doRefresh : function(){
         var me = this,
-            current = me.store.currentPage;
+            store = me.store,
+            current = store.currentPage;
 
         if (me.fireEvent('beforechange', me, current) !== false) {
-            me.store.loadPage(current);
+            store.loadPage(current);
+            return true;
         }
+        return false;
     },
     
     getStoreListeners: function() {

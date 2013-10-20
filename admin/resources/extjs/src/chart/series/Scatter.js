@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @class Ext.chart.series.Scatter
@@ -224,12 +224,14 @@ Ext.define('Ext.chart.series.Scatter', {
             boxHeight = bbox.height,
             items = me.items = [],
             attrs = [],
+            reverse = me.reverse,
             x, y, xValue, yValue, sprite;
 
         for (i = 0, ln = data.length; i < ln; i++) {
             record = data[i];
             xValue = record.get(me.xField);
             yValue = record.get(me.yField);
+            
             //skip undefined or null values
             if (typeof yValue == 'undefined' || (typeof yValue == 'string' && !yValue)
                 || xValue == null || yValue == null) {
@@ -247,8 +249,14 @@ Ext.define('Ext.chart.series.Scatter', {
             if (typeof yValue == 'string' || typeof yValue == 'object' && !Ext.isDate(yValue)) {
                 yValue = i;
             }
-            x = boxX + (xValue - minX) * xScale;
+            if (reverse) {
+                x = boxX + bbox.width - ((xValue - minX) * xScale);
+            } else {
+                x = boxX + (xValue - minX) * xScale;
+            }
+            
             y = boxY + boxHeight - (yValue - minY) * yScale;
+            
             attrs.push({
                 x: x,
                 y: y

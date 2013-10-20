@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  *
@@ -114,8 +114,7 @@ Ext.define('Ext.data.flash.BinaryXhr', {
          * @private
          */
         injectFlashPlugin: function() {
-            var divTag, pTag, aTag, iTag,
-                me=this,
+            var me = this,
                 flashLoaderPath, flashObjectPath;
                 // Generate the following HTML set of tags:
                // + '<div id="ext-flash-polyfill">'
@@ -123,25 +122,26 @@ Ext.define('Ext.data.flash.BinaryXhr', {
                 //+ '<a href="http://www.adobe.com/go/getflashplayer"><img src="' + window.location.protocol + '//www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a>'
                 //+ '</div>'
             
-            iTag=document.createElement("img");
-            iTag.setAttribute("src",  window.location.protocol + '//www.adobe.com/images/shared/download_buttons/get_flash_player.gif');
-            iTag.setAttribute("alt", "Get Adobe Flash player");
-            
-            aTag=document.createElement("a");
-            aTag.setAttribute("href", "http://www.adobe.com/go/getflashplayer");
-            aTag.appendChild(iTag);
-            
-            pTag=document.createElement("p");
-            pTag.innerHTML="To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed.";
-            
-            divTag=document.createElement("div");
-            divTag.setAttribute("id", "ext-flash-polyfill");
-            divTag.appendChild(pTag);
-            divTag.appendChild(iTag);
-            
-            Ext.getBody().dom.appendChild(divTag);
-            
-            
+            me.flashPolyfillEl = Ext.getBody().appendChild({
+                id: 'ext-flash-polyfill',
+                cn: [
+                    {
+                        tag: 'p',
+                        html: 'To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed.'
+                    },
+                    {
+                        tag: 'a',
+                        href: 'http://www.adobe.com/go/getflashplayer',
+                        cn: [
+                            {
+                                tag: 'img',
+                                src: window.location.protocol + '//www.adobe.com/images/shared/download_buttons/get_flash_player.gif',
+                                alt: 'Get Adobe Flash player'
+                            }
+                        ]
+                    }
+                ]
+            });
             
             // Now load the flash-loading script
             

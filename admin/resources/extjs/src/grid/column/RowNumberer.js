@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * A special type of Grid {@link Ext.grid.column.Column} that provides automatic
@@ -43,7 +43,7 @@ Ext.define('Ext.grid.column.RowNumberer', {
      * @cfg {String} text
      * Any valid text or HTML fragment to display in the header cell for the row number column.
      */
-    text: "&#160",
+    text: "&#160;",
 
     /**
      * @cfg {Number} width
@@ -82,6 +82,19 @@ Ext.define('Ext.grid.column.RowNumberer', {
         me.scope = me;
     },
 
+    beforeRender: function() {
+        var rowBody = this.up('gridpanel').view.findFeature('rowbody');
+
+        this.callParent(arguments);
+
+        // If there is a RowBody Feature, and this coliumn is index 1 (immediately after the expander)...
+        // the RowBody cell must not span this column, and this column must span into the expander row.
+        if (rowBody && this.ownerCt.items.indexOf(this) === 1) {
+            rowBody.colSpanDecrement = rowBody.colSpanDecrement + 1;
+            this.rowspan = 2;
+        }
+    },
+
     // private
     resizable: false,
     hideable: false,
@@ -93,20 +106,17 @@ Ext.define('Ext.grid.column.RowNumberer', {
     rowspan: undefined,
 
     // private
-    renderer: function(value, metaData, record, rowIdx, colIdx, store) {
+    renderer: function(value, metaData, record, rowIdx, colIdx, dataSource, view) {
         var rowspan = this.rowspan,
-            page = store.currentPage,
-            result = record.index;
-            
+            page = dataSource.currentPage,
+            result = view.store.indexOf(record);
+
         if (rowspan) {
             metaData.tdAttr = 'rowspan="' + rowspan + '"';
         }
 
-        if (result == null) {
-            result = rowIdx;
-            if (page > 1) {
-                result += (page - 1) * store.pageSize; 
-            }
+        if (page > 1) {
+            result += (page - 1) * dataSource.pageSize; 
         }
         return result + 1;
     }

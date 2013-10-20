@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * A class which handles submission of data from {@link Ext.form.Basic Form}s and processes the returned response.
@@ -119,7 +119,7 @@ Ext.define('Ext.form.action.Submit', {
             form = me.form,
             jsonSubmit = me.jsonSubmit || form.jsonSubmit,
             paramsProp = jsonSubmit ? 'jsonData' : 'params',
-            formEl, formInfo;
+            formInfo;
 
         // For uploads we need to create an actual form that contains the file upload fields,
         // and pass that to the ajax call so it can do its iframe-based submit method.
@@ -163,7 +163,7 @@ Ext.define('Ext.form.action.Submit', {
     getParams: function(useModelValues) {
         var falseVal = false,
             configParams = this.callParent(),
-            fieldParams = this.form.getValues(falseVal, falseVal, this.submitEmptyText !== falseVal, useModelValues);
+            fieldParams = this.form.getValues(falseVal, falseVal, this.submitEmptyText !== falseVal, useModelValues, /*isSubmitting*/ true);
         return Ext.apply({}, fieldParams, configParams);
     },
 
@@ -195,8 +195,7 @@ Ext.define('Ext.form.action.Submit', {
         for (i = 0; i < len; ++i) {
             field = fields[i];
 
-            // can only have a selected file value after being rendered
-            if (field.rendered && field.isFileUpload()) {
+            if (field.isFileUpload()) {
                 uploadFields.push(field);
             }
         }
@@ -218,6 +217,7 @@ Ext.define('Ext.form.action.Submit', {
 
         formSpec = {
             tag: 'form',
+            role: 'presentation',
             action: me.getUrl(),
             method: me.getMethod(),
             target: me.target || '_self',

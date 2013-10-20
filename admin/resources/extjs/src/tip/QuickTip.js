@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * A specialized tooltip class for tooltips that can be specified in markup and automatically managed
@@ -57,6 +57,8 @@ Ext.define('Ext.tip.QuickTip', {
         anchor : 'anchor',
         showDelay: 'qshowDelay'
     },
+    
+    shrinkWrapDock: true,
 
     // @private
     initComponent : function(){
@@ -321,7 +323,7 @@ Ext.define('Ext.tip.QuickTip', {
                  // Note that the quicktip could also have been registered with the QuickTipManager.
                  // If this was the case, then we don't want to veto showing it.
                  // Simply do a lookup in the registered targets collection.
-                 if (!text && !me.targets[target.target]) {
+                 if (!text && !me.targets[Ext.id(target.target)]) {
                      return true;
                  }
              }
@@ -348,7 +350,7 @@ Ext.define('Ext.tip.QuickTip', {
         var me = this,
             target = me.activeTarget,
             header = me.header,
-            cls;
+            dismiss, cls;
 
         if (target) {
             if (!me.rendered) {
@@ -364,7 +366,9 @@ Ext.define('Ext.tip.QuickTip', {
             }
             me.update(target.text);
             me.autoHide = target.autoHide;
-            me.dismissDelay = target.dismissDelay || me.dismissDelay;
+            dismiss = target.dismissDelay;
+            
+            me.dismissDelay = Ext.isNumber(dismiss) ? dismiss : me.dismissDelay;
             if (target.mouseOffset) {
                 xy[0] += target.mouseOffset[0];
                 xy[1] += target.mouseOffset[1];

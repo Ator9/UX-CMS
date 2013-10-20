@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @docauthor Jason Johnston <jason@sencha.com>
@@ -136,9 +136,9 @@ Ext.define('Ext.form.field.Number', {
     //<locale>
     /**
      * @cfg {String} decimalSeparator
-     * Character(s) to allow as the decimal separator
+     * Character(s) to allow as the decimal separator. Defaults to {@link Ext.util.Format#decimalSeparator decimalSeparator}.
      */
-    decimalSeparator : '.',
+    decimalSeparator : null,
     //</locale>
     
     //<locale>
@@ -232,6 +232,9 @@ Ext.define('Ext.form.field.Number', {
 
     initComponent: function() {
         var me = this;
+        if (me.decimalSeparator === null) {
+            me.decimalSeparator = Ext.util.Format.decimalSeparator;
+        }
         me.callParent();
 
         me.setMinValue(me.minValue);

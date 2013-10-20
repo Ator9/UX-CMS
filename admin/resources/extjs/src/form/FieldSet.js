@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @docauthor Jason Johnston <jason@sencha.com>
@@ -151,6 +151,8 @@ Ext.define('Ext.form.FieldSet', {
     layout: 'anchor',
 
     componentLayout: 'fieldset',
+    
+    ariaRole: null,
 
     autoEl: 'fieldset',
 
@@ -160,7 +162,7 @@ Ext.define('Ext.form.FieldSet', {
 
     renderTpl: [
         '{%this.renderLegend(out,values);%}',
-        '<div id="{id}-body" class="{baseCls}-body {bodyTargetCls}"<tpl if="bodyStyle"> style="{bodyStyle}"</tpl>>',
+        '<div id="{id}-body" class="{baseCls}-body {bodyTargetCls}" role="presentation"<tpl if="bodyStyle"> style="{bodyStyle}"</tpl>>',
             '{%this.renderContainer(out,values);%}',
         '</div>'
     ],
@@ -322,6 +324,8 @@ Ext.define('Ext.form.FieldSet', {
                 baseCls: me.baseCls + '-header',
                 id: me.id + '-legend',
                 autoEl: 'legend',
+                ariaRole: null,
+                ariaLabelledBy: '.' + me.baseCls + '-header-text',
                 items: items,
                 ownerCt: me,
                 shrinkWrap: true,
@@ -395,6 +399,7 @@ Ext.define('Ext.form.FieldSet', {
             cls: me.baseCls + '-header' + suffix,
             id: me.id + '-legendChk',
             checked: !me.collapsed,
+            msgTarget: 'none',
             listeners: {
                 change: me.onCheckChange,
                 scope: me
@@ -503,7 +508,7 @@ Ext.define('Ext.form.FieldSet', {
         }
         
         if (title || me.checkboxToggle || me.collapsible) {
-            me.addCls(baseCls + '-with-header');
+            me.addCls(baseCls + '-with-legend');
         }
     },
 

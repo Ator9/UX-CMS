@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @class Ext.chart.series.Gauge
@@ -291,6 +291,8 @@ Ext.define('Ext.chart.series.Gauge', {
             colorArrayLength = colorArrayStyle && colorArrayStyle.length || 0,
             cos = Math.cos,
             sin = Math.sin,
+            defaultStart = -180,
+            reverse = me.reverse,
             rendererAttributes, centerX, centerY, slice, slices, sprite, value,
             item, ln, record, i, j, startAngle, endAngle, middleAngle, sliceLength, path,
             p, spriteOptions, bbox, splitAngle, sliceA, sliceB;
@@ -324,34 +326,39 @@ Ext.define('Ext.chart.series.Gauge', {
             me.value = record.get(field);
         }
         
-        value = me.value;
+        value = reverse ? maximum - me.value : me.value;
         if (me.needle) {
             sliceA = {
                 series: me,
                 value: value,
-                startAngle: -180,
+                startAngle: defaultStart,
                 endAngle: 0,
                 rho: me.radius
             };
-            splitAngle = -180 * (1 - (value - minimum) / (maximum - minimum));
+            splitAngle = defaultStart * (1 - (value - minimum) / (maximum - minimum));
             slices.push(sliceA);
         } else {
-            splitAngle = -180 * (1 - (value - minimum) / (maximum - minimum));
+            splitAngle = defaultStart * (1 - (value - minimum) / (maximum - minimum));
             sliceA = {
                 series: me,
                 value: value,
-                startAngle: -180,
+                startAngle: defaultStart,
                 endAngle: splitAngle,
                 rho: me.radius
             };
             sliceB = {
                 series: me,
-                value: me.maximum - value,
+                value: maximum - value,
                 startAngle: splitAngle,
                 endAngle: 0,
                 rho: me.radius
             };
-            slices.push(sliceA, sliceB);
+            
+            if (reverse) {
+                slices.push(sliceB, sliceA);
+            } else {
+                slices.push(sliceA, sliceB);
+            }
         }
         
         //do pie slices after.

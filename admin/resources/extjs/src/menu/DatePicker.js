@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * A menu containing an Ext.picker.Date Component.
@@ -39,20 +39,16 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *     });
  *
  *     Ext.create('Ext.menu.Menu', {
- *         width: 100,
- *         height: 90,
- *         floating: false,  // usually you want this set to True (default)
- *         renderTo: Ext.getBody(),  // usually rendered by it's containing component
  *         items: [{
- *             text: 'choose a date',
+ *             text: 'Choose a date',
  *             menu: dateMenu
  *         },{
  *             iconCls: 'add16',
- *             text: 'icon item'
+ *             text: 'Icon item'
  *         },{
- *             text: 'regular item'
+ *             text: 'Regular item'
  *         }]
- *     });
+ *     }).showAt([5, 5]);
  */
  Ext.define('Ext.menu.DatePicker', {
      extend: 'Ext.menu.Menu',
@@ -95,10 +91,11 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
         Ext.apply(me, {
             showSeparator: false,
             plain: true,
-            border: false,
             bodyPadding: 0, // remove the body padding from the datepicker menu item so it looks like 3.3
             items: Ext.applyIf({
                 cls: Ext.baseCSSPrefix + 'menu-date-item',
+                margin: 0,
+                border: false,
                 id: me.pickerId,
                 xtype: 'datepicker'
             }, cfg)

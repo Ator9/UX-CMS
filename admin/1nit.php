@@ -4,8 +4,10 @@ require(dirname(__FILE__).'/../includes/1nit.php');
 if(file_exists(dirname(__FILE__).'/config.php')) require(dirname(__FILE__).'/config.php');
 else require(dirname(__FILE__).'/config.default.php');
 
-// Login check:
+// Admin Session:
 $aSession = new Session('admin');
+
+// Login check:
 if(!$aSession->exists('adminID') && basename($_SERVER['PHP_SELF']) != 'login.php')
 {
     header('Location: '.ADMIN.'login.php');

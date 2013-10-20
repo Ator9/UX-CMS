@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @private
@@ -28,10 +28,13 @@ Ext.define('Ext.grid.header.DragZone', {
     maxProxyWidth: 120,
 
     constructor: function(headerCt) {
-        this.headerCt = headerCt;
-        this.ddGroup =  this.getDDGroup();
-        this.callParent([headerCt.el]);
-        this.proxy.el.addCls(Ext.baseCSSPrefix + 'grid-col-dd');
+        var me = this;
+        
+        me.headerCt = headerCt;
+        me.ddGroup =  me.getDDGroup();
+        me.autoGroup = true;
+        me.callParent([headerCt.el]);
+        me.proxy.el.addCls(Ext.baseCSSPrefix + 'grid-col-dd');
     },
     
     getDDGroup: function() {
@@ -48,6 +51,7 @@ Ext.define('Ext.grid.header.DragZone', {
                 headerCmp = Ext.getCmp(header.id);
                 if (!this.headerCt.dragging && headerCmp.draggable && !(headerCmp.isOnLeftEdge(e) || headerCmp.isOnRightEdge(e))) {
                     ddel = document.createElement('div');
+                    ddel.role = 'presentation';
                     ddel.innerHTML = Ext.getCmp(header.id).text;
                     return {
                         ddel: ddel,

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * A {@link Ext.form.FieldContainer field container} which has a specialized layout for arranging
@@ -99,6 +99,8 @@ Ext.define('Ext.form.RadioGroup', {
 
     // private
     groupCls : Ext.baseCSSPrefix + 'form-radio-group',
+    
+    ariaRole: 'radiogroup',
 
     getBoxes: function(query) {
         return this.query('[isRadio]' + (query||''));
@@ -119,8 +121,35 @@ Ext.define('Ext.form.RadioGroup', {
     /**
      * Sets the value of the radio group. The radio with corresponding name and value will be set.
      * This method is simpler than {@link Ext.form.CheckboxGroup#setValue} because only 1 value is allowed
-     * for each name.
-     * 
+     * for each name. You can use the setValue method as:
+     *
+     *     var form = Ext.create('Ext.form.Panel', {
+     *         title       : 'RadioGroup Example',
+     *         width       : 300,
+     *         bodyPadding : 10,
+     *         renderTo    : Ext.getBody(),
+     *         items       : [
+     *             {
+     *                 xtype      : 'radiogroup',
+     *                 fieldLabel : 'Group',
+     *                 items      : [
+     *                     { boxLabel : 'Item 1', name : 'rb', inputValue : 1 },
+     *                     { boxLabel : 'Item 2', name : 'rb', inputValue : 2 }
+     *                 ]
+     *             }
+     *         ],
+     *         tbar        : [
+     *             {
+     *                 text    : 'setValue on RadioGroup',
+     *                 handler : function () {
+     *                     form.child('radiogroup').setValue({
+     *                         rb : 2
+     *                     });
+     *                 }
+     *             }
+     *         ]
+     *     });
+     *
      * @param {Object} value The map from names to values to be set.
      * @return {Ext.form.CheckboxGroup} this
      */

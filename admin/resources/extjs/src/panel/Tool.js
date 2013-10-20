@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * This class is used to display small visual icons in the header of a panel. There are a set of
@@ -98,7 +98,7 @@ Ext.define('Ext.panel.Tool', {
     ],
 
     renderTpl: [
-        '<img role="presentation" id="{id}-toolEl" src="{blank}" class="{baseCls}-img {baseCls}-{type}' +
+        '<img id="{id}-toolEl" src="{blank}" class="{baseCls}-img {baseCls}-{type}' +
             '{childElCls}" role="presentation"/>'
     ],
 
@@ -332,10 +332,18 @@ Ext.define('Ext.panel.Tool', {
 
     // inherit docs
     onDestroy: function(){
-        if (Ext.quickTipsActive && Ext.isObject(this.tooltip)) {
-            Ext.tip.QuickTipManager.unregister(this.id);
+        var me = this;
+        
+        if (Ext.quickTipsActive && Ext.isObject(me.tooltip)) {
+            Ext.tip.QuickTipManager.unregister(me.id);
         }
-        this.callParent();
+        
+        // ARIA overrides may create a keyMap on a Tool
+        if (me.keyMap) {
+            me.keyMap.destroy();
+        }
+        
+        me.callParent();
     },
 
     /**

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * This feature is used to place a summary row at the bottom of the grid. If using a grouping, 
@@ -115,6 +115,8 @@ Ext.define('Ext.grid.feature.Summary', {
     dockedSummaryCls: Ext.baseCSSPrefix + 'docked-summary',
 
     panelBodyCls: Ext.baseCSSPrefix + 'summary-',
+    
+    scrollPadProperty: 'padding-right',
 
     init: function(grid) {
         var me = this,
@@ -136,7 +138,7 @@ Ext.define('Ext.grid.feature.Summary', {
                     me.summaryBar = grid.addDocked({
                         childEls: ['innerCt'],
                         renderTpl: [
-                            '<div id="{id}-innerCt">',
+                            '<div id="{id}-innerCt" role="presentation">',
                                 '<table cellPadding="0" cellSpacing="0" class="' + tableCls.join(' ') + '">',
                                     '<tr class="' + me.summaryRowCls + '"></tr>',
                                 '</table>',
@@ -163,7 +165,16 @@ Ext.define('Ext.grid.feature.Summary', {
 
             // Stretch the innerCt of the summary bar upon headerCt layout
             grid.headerCt.afterComponentLayout = Ext.Function.createSequence(grid.headerCt.afterComponentLayout, function() {
-                me.summaryBar.innerCt.setWidth(this.getFullWidth() + Ext.getScrollbarSize().width);
+                var width = this.getFullWidth(),
+                    innerCt = me.summaryBar.innerCt,
+                    scrollWidth;
+                    
+                if (view.hasVerticalScroll()) {
+                    scrollWidth = Ext.getScrollbarSize().width;
+                    width -= scrollWidth;
+                    innerCt.down('table').setStyle(me.scrollPadProperty, scrollWidth + 'px');
+                }
+                innerCt.setWidth(width);
             });
         } else {
             me.view.addFooterFn(me.renderTFoot);
@@ -190,6 +201,17 @@ Ext.define('Ext.grid.feature.Summary', {
             out.push('<tfoot>');
             me.outputSummaryRecord(me.createSummaryRecord(view), values, out);
             out.push('</tfoot>');
+        }
+    },
+    
+    toggleSummaryRow: function(visible) {
+        var me = this,
+            bar = me.summaryBar;
+            
+        me.callParent(arguments);
+        if (bar) {
+            bar.setVisible(me.showSummaryRow);
+            me.onViewScroll();
         }
     },
     

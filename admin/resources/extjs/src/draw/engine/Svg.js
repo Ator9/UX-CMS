@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Provides specific methods to draw with SVG.
@@ -280,21 +280,21 @@ Ext.define('Ext.draw.engine.Svg', {
 
     render: function (container) {
         var me = this,
-            width,
-            height,
-            el,
-            defs,
-            bgRect,
-            webkitRect;
+            el, defs, bgRect, webkitRect;
+            
         if (!me.el) {
-            width = me.width || 0;
-            height = me.height || 0;
-            el = me.createSvgElement('svg', {
+            cfg = {
                 xmlns: "http:/" + "/www.w3.org/2000/svg",
                 version: 1.1,
-                width: width,
-                height: height
-            });
+                width: me.width || 0,
+                height: me.height || 0
+            };
+            
+            if (me.forceLtr) {
+                cfg.direction = 'ltr';
+            }
+            
+            el = me.createSvgElement('svg', cfg);
             defs = me.getDefs();
 
             // Create a rect that is always the same size as the svg root; this serves 2 purposes:

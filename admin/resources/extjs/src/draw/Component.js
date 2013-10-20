@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * The Draw Component is a surface in which sprites can be rendered. The Draw Component
@@ -236,6 +236,8 @@ Ext.define('Ext.draw.Component', {
      * @property {Ext.draw.Surface} surface
      * The Surface instance managed by this component.
      */
+    
+    suspendSizing: 0,
 
     initComponent: function() {
         this.callParent(arguments);
@@ -292,33 +294,31 @@ Ext.define('Ext.draw.Component', {
      * Create the Surface on initial render
      */
     onRender: function() {
+        this.callParent(arguments);
+        if (this.createSurface() !== false) {
+            this.configureSurfaceSize();
+        }
+    },
+    
+    configureSurfaceSize: function(){
         var me = this,
             viewBox = me.viewBox,
             autoSize = me.autoSize,
-            bbox, items, width, height, x, y;
-        me.callParent(arguments);
+            bbox;
 
-        if (me.createSurface() !== false) {
-            items = me.surface.items;
-
-            if (viewBox || autoSize) {
-                bbox = items.getBBox();
-                width = bbox.width;
-                height = bbox.height;
-                x = bbox.x;
-                y = bbox.y;
-                if (me.viewBox) {
-                    me.surface.setViewBox(x, y, width, height);
-                } else {
-                    me.autoSizeSurface();
-                }
+        if ((viewBox || autoSize) && !me.suspendSizing) {
+            bbox = me.surface.items.getBBox();
+            if (viewBox) {
+                me.surface.setViewBox(bbox.x, bbox.y, bbox.width, bbox.height);
+            } else {
+                me.autoSizeSurface(bbox);
             }
         }
     },
 
     // @private
-    autoSizeSurface: function() {
-        var bbox = this.surface.items.getBBox();
+    autoSizeSurface: function(bbox) {
+        bbox = bbox || this.surface.items.getBBox();
         this.setSurfaceSize(bbox.width, bbox.height);
     },
 
@@ -353,12 +353,14 @@ Ext.define('Ext.draw.Component', {
         if (!cfg.gradients) {
             cfg.gradients = me.gradients;
         }
+        me.initSurfaceCfg(cfg);
         surface = Ext.draw.Surface.create(cfg, me.enginePriority);
         if (!surface) {
             // In case we cannot create a surface, return false so we can stop
             return false;
         }
         me.surface = surface;
+        surface.owner = me;
 
 
         function refire(eventName) {
@@ -378,6 +380,8 @@ Ext.define('Ext.draw.Component', {
             dblclick: refire('dblclick')
         });
     },
+    
+    initSurfaceCfg: Ext.emptyFn,
 
 
     /**

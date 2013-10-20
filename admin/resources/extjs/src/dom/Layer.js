@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * An extended {@link Ext.Element} object that supports a shadow and shim, constrain to viewport and
@@ -177,9 +177,13 @@ Ext.define('Ext.dom.Layer', {
             me.shadowOffset = 0;
         }
         me.useShim = config.shim !== false && Ext.useShims;
+
+        // Keep the following only for cases where Ext.Layer would be instantiated
+        // directly.  We don't ever pass hidden in the config in the framework
+        // since this is handled by the Component lifecycle.
         if (config.hidden === true) {
             me.hide();
-        } else {
+        } else if (config.hidden === false) {
             me.show();
         }
     },
@@ -199,6 +203,10 @@ Ext.define('Ext.dom.Layer', {
             shim = me.self.shims.shift();
             if (!shim) {
                 shim = me.createShim();
+                //<debug>
+                // tell the spec runner to ignore this element when checking if the dom is clean 
+                shim.dom.setAttribute('data-sticky', true);
+                //</debug>
                 shim.enableDisplayMode('block');
                 shim.hide();
             }

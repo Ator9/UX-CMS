@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @author Ed Spencer
@@ -278,7 +278,6 @@ Ext.define('Ext.data.reader.Reader', {
         var me = this;
         
         me.mixins.observable.constructor.call(me, config);
-        me.fieldCount = 0;
         me.model = Ext.ModelManager.getModel(me.model);
 
         // Extractors can only be calculated if the fields MixedCollection has been set.
@@ -309,15 +308,24 @@ Ext.define('Ext.data.reader.Reader', {
      * @param {Boolean} setOnProxy True to also set on the Proxy, if one is configured
      */
     setModel: function(model, setOnProxy) {
-        var me = this;
+        var me = this,
+            oldModel = me.model,
+            force = true;
         
-        me.model = Ext.ModelManager.getModel(model);
+        model = me.model = Ext.ModelManager.getModel(model);
+        if (model && oldModel === model) {
+            // Setting the same model, only force the fn creation if the generation has changed.
+            // This is especially important when creating hasMany associations, since the model
+            // will get set during the store creation process for each record in the owner store.
+            force = me.lastFieldGeneration !== model.prototype.fields.generation;
+        }
+        
         if (model) {
-            me.buildExtractors(true);
+            me.buildExtractors(force);
         }
         
         if (setOnProxy && me.proxy) {
-            me.proxy.setModel(me.model, true);
+            me.proxy.setModel(model, true);
         }
     },
 

@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 // feature idea to enable Ajax loading and then the content
 // cache would actually make sense. Should we dictate that they use
@@ -61,9 +61,9 @@ Ext.define('Ext.grid.plugin.RowExpander', {
      */
     selectRowOnExpand: false,
 
-    rowBodyTrSelector: '.x-grid-rowbody-tr',
-    rowBodyHiddenCls: 'x-grid-row-body-hidden',
-    rowCollapsedCls: 'x-grid-row-collapsed',
+    rowBodyTrSelector: '.' + Ext.baseCSSPrefix + 'grid-rowbody-tr',
+    rowBodyHiddenCls: Ext.baseCSSPrefix + 'grid-row-body-hidden',
+    rowCollapsedCls: Ext.baseCSSPrefix + 'grid-row-collapsed',
 
     addCollapsedCls: {
         before: function(values, out) {
@@ -133,7 +133,11 @@ Ext.define('Ext.grid.plugin.RowExpander', {
     init: function(grid) {
         var me = this,
             reconfigurable = grid,
-            view, lockedView;
+            view, normalView, lockedView;
+
+        if (grid.lockable) {
+            grid = grid.lockedGrid;
+        }
 
         me.callParent(arguments);
         me.grid = grid;
@@ -199,10 +203,14 @@ Ext.define('Ext.grid.plugin.RowExpander', {
             expanderGrid.width += expanderHeader.width;
         }
         expanderGrid.headerCt.insert(0, expanderHeader);
+
+        // If a CheckboxModel, it must now put its checkbox in at position one because this
+        // cell spans 2 columns.
+        expanderGrid.getSelectionModel().injectCheckbox = 1;
     },
 
     getRowBodyFeatureData: function(record, idx, rowValues) {
-        var me = this
+        var me = this;
         me.self.prototype.setupRowData.apply(me, arguments);
 
         rowValues.rowBody = me.getRowBodyContents(record);
@@ -268,8 +276,13 @@ Ext.define('Ext.grid.plugin.RowExpander', {
             fireView = ownerLock.getView();
             view = ownerLock.lockedGrid.view;
             rowHeight = row.getHeight();
+            // EXTJSIV-9848: in Firefox the offsetHeight of a row may not match
+            // it's actual rendered height due to sub-pixel rounding errors. To ensure
+            // the rows heights on both sides of the grid are the same, we have to set
+            // them both.
+            row.setHeight(isCollapsed ? rowHeight : '');
             row = Ext.fly(view.getNode(rowIdx), '_rowExpander');
-            row.setHeight(rowHeight);
+            row.setHeight(isCollapsed ? rowHeight : '');
             row[addOrRemoveCls](me.rowCollapsedCls);
             view.refreshSize();
         } else {
@@ -340,10 +353,10 @@ Ext.define('Ext.grid.plugin.RowExpander', {
                 if (!me.grid.ownerLockable) {
                     metadata.tdAttr += ' rowspan="2"';
                 }
-                return '<div class="' + Ext.baseCSSPrefix + 'grid-row-expander"></div>';
+                return '<div class="' + Ext.baseCSSPrefix + 'grid-row-expander" role="presentation"></div>';
             },
             processEvent: function(type, view, cell, rowIndex, cellIndex, e, record) {
-                if (type == "mousedown" && e.getTarget('.x-grid-row-expander')) {
+                if (type == "mousedown" && e.getTarget('.' + Ext.baseCSSPrefix + 'grid-row-expander')) {
                     me.toggleRow(rowIndex, record);
                     return me.selectRowOnExpand;
                 }

@@ -31,8 +31,8 @@ Ext.define('admins.view.Admins', {
                 { header: 'ID', dataIndex: 'adminID', width: 50 },
                 { header: 'Username', dataIndex: 'username', width: 150 },
                 { header: 'Role', dataIndex: 'roleID', flex: 1, renderer: this.getRole, scope: this },
-                { header: 'Superuser', dataIndex: 'superuser', width: 60, align: 'center', renderer: this.getIcon },
-                { header: 'Active', dataIndex: 'active', width: 42, align: 'center', renderer: this.getIcon },
+                { header: 'Superuser', dataIndex: 'superuser', width: 62, align: 'center', renderer: this.getIcon },
+                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: this.getIcon },
                 { header: 'Last Login', dataIndex: 'last_login', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
             bbar: Ext.create('Ext.toolbar.Paging', { store: this.store, displayInfo: true }),

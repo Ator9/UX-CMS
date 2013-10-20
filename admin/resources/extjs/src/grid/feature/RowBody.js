@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * The rowbody feature enhances the grid's markup to have an additional
@@ -78,6 +78,13 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  *             }
  *         }]
  *     });
+ *
+ *  # Cell Editing and Cell Selection Model
+ *
+ * Note that if {@link Ext.grid.plugin.CellEditing cell editing} or the {@link Ext.selection.CellModel cell selection model} are going
+ * to be used, then the {@link Ext.grid.feature.RowWrap RowWrap} feature, or {@link Ext.grid.plugin.RowExpander RowExpander} plugin MUST
+ * be used for intra-cell navigation to be correct.
+ *
  */
 Ext.define('Ext.grid.feature.RowBody', {
     extend: 'Ext.grid.feature.Feature',
@@ -88,6 +95,8 @@ Ext.define('Ext.grid.feature.RowBody', {
     rowBodyTdSelector: 'td.' + Ext.baseCSSPrefix + 'grid-cell-rowbody',
     eventPrefix: 'rowbody',
     eventSelector: 'tr.' + Ext.baseCSSPrefix + 'grid-rowbody-tr',
+
+    colSpanDecrement: 0,
 
     tableTpl: {
         before: function(values, out) {
@@ -110,9 +119,9 @@ Ext.define('Ext.grid.feature.RowBody', {
             'values.view.rowBodyFeature.setupRowData(values.record, values.recordIndex, values);',
             'this.nextTpl.applyOut(values, out, parent);',
         '%}',
-        '<tr class="' + Ext.baseCSSPrefix + 'grid-rowbody-tr {rowBodyCls}">',
-            '<td class="' + Ext.baseCSSPrefix + 'grid-cell-rowbody' + '" colspan="{rowBodyColspan}">',
-                '<div class="' + Ext.baseCSSPrefix + 'grid-rowbody' + ' {rowBodyDivCls}">{rowBody}</div>',
+        '<tr class="', Ext.baseCSSPrefix, 'grid-rowbody-tr {rowBodyCls}" {ariaRowAttr}>',
+            '<td class="', Ext.baseCSSPrefix, 'grid-cell-rowbody', '" colspan="{rowBodyColspan}" {ariaCellAttr}>',
+                '<div class="', Ext.baseCSSPrefix, 'grid-rowbody', ' {rowBodyDivCls}" {ariaCellInnerAttr}>{rowBody}</div>',
             '</td>',
         '</tr>', {
             priority: 100,
@@ -239,7 +248,7 @@ Ext.define('Ext.grid.feature.RowBody', {
 
     setup: function(rows, rowValues) {
         rowValues.rowBodyCls = this.rowBodyCls;
-        rowValues.rowBodyColspan = rowValues.view.getGridColumns().length;
+        rowValues.rowBodyColspan = rowValues.view.getGridColumns().length - this.colSpanDecrement;
     },
 
     cleanup: function(rows, rowValues) {

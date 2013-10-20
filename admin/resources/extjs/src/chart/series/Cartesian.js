@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @class Ext.chart.series.Cartesian
@@ -144,16 +144,19 @@ Ext.define('Ext.chart.series.Cartesian', {
     getYValueAccessors: function() {
         var me = this,
             accessors = me.yValueAccessors,
-            yFields, yField, i, ln;
+            yFields, i, ln;
+
+        function getFieldAccessor(field) {
+            return function(record) {
+                return record.get(field);
+            }
+        }
+
         if (!accessors) {
             accessors = me.yValueAccessors = [];
             yFields = [].concat(me.yField);
-            
             for (i = 0, ln = yFields.length; i < ln; i++) {
-                yField = yFields[i];
-                accessors.push(function(record) {
-                    return record.get(yField);
-                });
+                accessors.push(getFieldAccessor(yFields[i]));
             }
         }
         return accessors;
@@ -278,6 +281,7 @@ Ext.define('Ext.chart.series.Cartesian', {
     getAxesForXAndYFields: function() {
         var me = this,
             axes = me.chart.axes,
+            reverse = me.reverse,
             axis = [].concat(me.axis),
             yFields = {}, yFieldList = [].concat(me.yField),
             xFields = {}, xFieldList = [].concat(me.xField),
@@ -303,14 +307,14 @@ Ext.define('Ext.chart.series.Cartesian', {
                 for (i = 0, ln = fields.length; i < ln; i++) {
                     if (xFields[fields[i]]) {
                         xAxis = 'bottom';
-                        break
+                        break;
                     }
                 }
                 fields = [].concat(axes.get('top').fields);
                 for (i = 0, ln = fields.length; i < ln; i++) {
                     if (xFields[fields[i]]) {
                         xAxis = 'top';
-                        break
+                        break;
                     }
                 }
             } else if (axes.get('top')) {
@@ -319,10 +323,11 @@ Ext.define('Ext.chart.series.Cartesian', {
                 xAxis = 'bottom';
             }
         }
+        
         if (Ext.Array.indexOf(axis, 'left') > -1) {
-            yAxis = 'left';
+            yAxis = flipXY ? 'right' : 'left';
         } else if (Ext.Array.indexOf(axis, 'right') > -1) {
-            yAxis = 'right';
+            yAxis = flipXY ? 'left' : 'right';
         } else {
             if (axes.get('left') && axes.get('right')) {
                 for (i = 0, ln = yFieldList.length; i < ln; i++) {
@@ -331,15 +336,14 @@ Ext.define('Ext.chart.series.Cartesian', {
                 fields = [].concat(axes.get('right').fields);
                 for (i = 0, ln = fields.length; i < ln; i++) {
                     if (yFields[fields[i]]) {
-
-                        break
+                        break;
                     }
                 }
                 fields = [].concat(axes.get('left').fields);
                 for (i = 0, ln = fields.length; i < ln; i++) {
                     if (yFields[fields[i]]) {
                         yAxis = 'left';
-                        break
+                        break;
                     }
                 }
             } else if (axes.get('left')) {

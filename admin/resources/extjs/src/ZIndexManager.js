@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * A class that manages a group of {@link Ext.Component#floating} Components and provides z-order management,
@@ -41,7 +41,7 @@ Ext.define('Ext.ZIndexManager', {
     constructor: function(container) {
         var me = this;
 
-        me.list = {};
+        me.map = {};
         me.zIndexStack = [];
         me.front = null;
 
@@ -161,6 +161,9 @@ Ext.define('Ext.ZIndexManager', {
         // Go down through the z-index stack.
         // Activate the next visible one down.
         // If that was modal, then we're done
+        
+        // Note that we're using an empty loop body here
+        // This is intentional!
         for (; i >= 0 && stack[i].hidden; --i);
 
         // The loop found a visible floater to activate
@@ -205,7 +208,12 @@ Ext.define('Ext.ZIndexManager', {
         if (!mask) {
             if (Ext.isIE6) {
                 shim = me.maskShim = Ext.getBody().createChild({
+                    //<debug>
+                    // tell the spec runner to ignore this element when checking if the dom is clean 
+                    'data-sticky': true,
+                    //</debug>
                     tag: 'iframe',
+                    role: 'presentation',
                     cls : Ext.baseCSSPrefix + 'shim ' + Ext.baseCSSPrefix + 'mask-shim'
                 });
                 shim.setVisibilityMode(Ext.Element.DISPLAY);
@@ -213,6 +221,11 @@ Ext.define('Ext.ZIndexManager', {
 
             // Create the mask at zero size so that it does not affect upcoming target measurements.
             mask = me.mask = Ext.getBody().createChild({
+                //<debug>
+                // tell the spec runner to ignore this element when checking if the dom is clean 
+                'data-sticky': true,
+                //</debug>
+                role: 'presentation',
                 cls: Ext.baseCSSPrefix + 'mask',
                 style: 'height:0;width:0'
             });
@@ -317,7 +330,7 @@ Ext.define('Ext.ZIndexManager', {
         }
         comp.zIndexManager = me;
 
-        me.list[comp.id] = comp;
+        me.map[comp.id] = comp;
         me.zIndexStack.push(comp);
         
         // Hook into Component's afterHide processing
@@ -335,11 +348,11 @@ Ext.define('Ext.ZIndexManager', {
      */
     unregister : function(comp) {
         var me = this,
-            list = me.list;
+            map = me.map;
         
         delete comp.zIndexManager;
-        if (list && list[comp.id]) {
-            delete list[comp.id];
+        if (map && map[comp.id]) {
+            delete map[comp.id];
             
             // Relinquish control of Component's afterHide processing
             delete comp.afterHide;
@@ -356,7 +369,7 @@ Ext.define('Ext.ZIndexManager', {
      * @return {Ext.Component}
      */
     get : function(id) {
-        return id.isComponent ? id : this.list[id];
+        return id.isComponent ? id : this.map[id];
     },
 
    /**
@@ -418,13 +431,13 @@ Ext.define('Ext.ZIndexManager', {
      * Hides all Components managed by this ZIndexManager.
      */
     hideAll : function() {
-        var list = this.list,
+        var map = this.map,
             item,
             id;
             
-        for (id in list) {
-            if (list.hasOwnProperty(id)) {
-                item = list[id];
+        for (id in map) {
+            if (map.hasOwnProperty(id)) {
+                item = map[id];
                 if (item.isComponent && item.isVisible()) {
                     item.hide();
                 }
@@ -515,13 +528,13 @@ Ext.define('Ext.ZIndexManager', {
      * is executed. Defaults to the current Component in the iteration.
      */
     each : function(fn, scope) {
-        var list = this.list,
+        var map = this.map,
             id,
             comp;
             
-        for (id in list) {
-            if (list.hasOwnProperty(id)) {
-                comp = list[id];
+        for (id in map) {
+            if (map.hasOwnProperty(id)) {
+                comp = map[id];
                 if (comp.isComponent && fn.call(scope || comp, comp) === false) {
                     return;
                 }
@@ -574,13 +587,13 @@ Ext.define('Ext.ZIndexManager', {
 
     destroy: function() {
         var me   = this,
-            list = me.list,
+            map = me.map,
             comp,
             id;
 
-        for (id in list) {
-            if (list.hasOwnProperty(id)) {
-                comp = list[id];
+        for (id in map) {
+            if (map.hasOwnProperty(id)) {
+                comp = map[id];
 
                 if (comp.isComponent) {
                     comp.destroy();
@@ -588,8 +601,10 @@ Ext.define('Ext.ZIndexManager', {
             }
         }
 
+        Ext.destroy(me.mask);
+        Ext.destroy(me.maskShim);
         delete me.zIndexStack;
-        delete me.list;
+        delete me.map;
         delete me.container;
         delete me.targetEl;
     }

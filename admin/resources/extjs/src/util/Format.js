@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 // @tag extras,core
 // @require ../Ext-more.js
@@ -407,10 +407,11 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
                 var originalFormatString = formatString,
                     comma = UtilFormat.thousandSeparator,
                     decimalSeparator = UtilFormat.decimalSeparator,
+                    precision = 0,
+                    trimPart = '',
                     hasComma,
                     splitFormat,
                     extraChars,
-                    precision = 0,
                     multiplier,
                     trimTrailingZeroes,
                     code;
@@ -447,18 +448,24 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
 
                     // Formatting ending in .##### means maximum 5 trailing significant digits
                     trimTrailingZeroes = allHashes.test(splitFormat[1]);
+                    if (trimTrailingZeroes) {
+                        // Need to escape, since this will be '.' by default
+                        trimPart = 'trailingZeroes=new RegExp(Ext.String.escapeRegex(utilFormat.decimalSeparator) + "?0+$")'
+                    }
                 }
                 
                 // The function we create is called immediately and returns a closure which has access to vars and some fixed values; RegExes and the format string.
                 code = [
-                    'var utilFormat=Ext.util.Format,extNumber=Ext.Number,neg,fnum,parts' +
+                    'var utilFormat=Ext.util.Format,extNumber=Ext.Number,neg,absVal,fnum,parts' +
                         (hasComma ? ',thousandSeparator,thousands=[],j,n,i' : '') +
                         (extraChars  ? ',formatString="' + formatString + '",formatPattern=/[\\d,\\.#]+/' : '') +
-                        (trimTrailingZeroes ? ',trailingZeroes=/\\.?0+$/;' : ';') +
+                        ',trailingZeroes;' +
                     'return function(v){' +
                     'if(typeof v!=="number"&&isNaN(v=extNumber.from(v,NaN)))return"";' +
                     'neg=v<0;',
-                    'fnum=Ext.Number.toFixed(Math.abs(v), ' + precision + ');'
+                    'absVal=Math.abs(v);',
+                    'fnum=Ext.Number.toFixed(absVal, ' + precision + ');',
+                    trimPart, ';'
                 ];
 
                 if (hasComma) {
@@ -470,7 +477,7 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
                         code[code.length] = 'fnum=parts[0];';
                     }
                     code[code.length] =
-                        'if(v>=1000) {';
+                        'if(absVal>=1000) {';
                             code[code.length] = 'thousandSeparator=utilFormat.thousandSeparator;' +
                             'thousands.length=0;' +
                             'j=fnum.length;' +
@@ -544,7 +551,7 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
                     name;
 
                 for (name in attributes) {
-                    result.push(name, '="', name === 'style' ? Ext.DomHelper.generateStyles(attributes[name]) : Ext.htmlEncode(attributes[name]), '"');
+                    result.push(name, '="', name === 'style' ? Ext.DomHelper.generateStyles(attributes[name], null, true) : Ext.htmlEncode(attributes[name]), '"');
                 }
                 attributes = result.join('');
             }

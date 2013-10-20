@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * The Editor class is used to provide inline editing for elements on the page. The editor
@@ -187,10 +187,8 @@ Ext.define('Ext.Editor', {
         var me = this,
             field = me.field = Ext.ComponentManager.create(me.field, 'textfield');
 
-        Ext.apply(field, {
-            inEditor: true,
-            msgTarget: field.msgTarget == 'title' ? 'title' :  'qtip'
-        });
+        field.inEditor = true;
+        field.msgTarget = field.msgTarget || 'qtip';
         me.mon(field, {
             scope: me,
             blur: me.onFieldBlur,
@@ -303,15 +301,13 @@ Ext.define('Ext.Editor', {
             // Must defer this slightly to prevent exiting edit mode before the field's own
             // key nav can handle the enter key, e.g. selecting an item in a combobox list
             Ext.defer(function() {
+                // Hide (which will blur) the editor.
                 if (complete) {
                     me.completeEdit();
                 } else {
                     me.cancelEdit();
                 }
-                if (field.triggerBlur) {
-                    field.triggerBlur(event);
-                }
-            }, 10);
+            }, 1);
         }
 
         me.fireEvent('specialkey', me, field, event);
@@ -352,7 +348,7 @@ Ext.define('Ext.Editor', {
             field.setValue(value);
             field.resumeEvents();
             me.realign(true);
-            field.focus();
+            field.focus([field.getRawValue().length]);
             if (field.autoSize) {
                 field.autoSize();
             }
@@ -437,13 +433,16 @@ Ext.define('Ext.Editor', {
             value;
 
         if (me.editing) {
-            value = me.getValue();
-            // temporarily suspend events on field to prevent the "change" event from firing when setValue() is called
-            field.suspendEvents();
-            me.setValue(startValue);
-            field.resumeEvents();
+            if (field) {
+                value = me.editedValue = me.getValue();
+                // temporarily suspend events on field to prevent the "change" event from firing when setValue() is called
+                field.suspendEvents();
+                me.setValue(startValue);
+                field.resumeEvents();
+            }
             me.hideEdit(remainVisible);
             me.fireEvent('canceledit', me, value, startValue);
+            delete me.editedValue;
         }
     },
 

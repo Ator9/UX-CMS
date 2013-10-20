@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @class Ext.view.AbstractView
@@ -192,6 +192,9 @@ Ext.define('Ext.view.AbstractView', {
      */
     preserveScrollOnRefresh: false,
 
+    ariaRole: 'listbox',
+    itemAriaRole: 'option',
+    
     //private
     last: false,
 
@@ -223,7 +226,7 @@ Ext.define('Ext.view.AbstractView', {
                 me.itemSelector = '.' + me.itemCls;
             }
 
-            itemTpl = Ext.String.format('<tpl for="."><div class="{0}">{1}</div></tpl>', me.itemCls, itemTpl);
+            itemTpl = Ext.String.format('<tpl for="."><div class="{0}" role="{2}">{1}</div></tpl>', me.itemCls, itemTpl, me.itemAriaRole);
             me.tpl = new Ext.XTemplate(itemTpl, memberFn);
         }
 
@@ -780,12 +783,16 @@ Ext.define('Ext.view.AbstractView', {
             nodes = me.bufferRender(records, index, true),
             all = me.all,
             count = all.getCount(),
-            i, l;
+            i, l, nodeContainer, fragment;
 
         if (count === 0) {
+            nodeContainer = this.getNodeContainer();
+            fragment = document.createDocumentFragment();
+
             for (i = 0, l = nodes.length; i < l; i++) {
-                this.getNodeContainer().appendChild(nodes[i]);
+                fragment.appendChild(nodes[i]);
             }
+            nodeContainer.appendChild(fragment);
         } else if (index < count) {
             if (index === 0) {
                 all.item(index).insertSibling(nodes, 'before', true);
@@ -955,6 +962,9 @@ Ext.define('Ext.view.AbstractView', {
 
     onBindStore: function(store, initial, propName) {
         this.setMaskBind(store);
+
+        // After the oldStore (.store) has been unbound/bound,
+        // do the same for the old data source (.dataSource).
         if (!initial && propName === 'store') {
             this.bindStore(store, false, 'dataSource');
         }

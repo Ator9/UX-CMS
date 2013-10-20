@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Component layout for grid column headers which have a title element at the top followed by content.
@@ -31,29 +31,19 @@ Ext.define('Ext.grid.ColumnComponentLayout', {
     setWidthInDom: true,
 
     beginLayout: function(ownerContext) {
-        var me = this;
-
-        me.callParent(arguments);
+        this.callParent(arguments);
         ownerContext.titleContext = ownerContext.getEl('titleEl');
         ownerContext.triggerContext = ownerContext.getEl('triggerEl');
     },
 
     beginLayoutCycle: function(ownerContext) {
-        var me = this,
-            owner = me.owner;
+        var owner = this.owner;
 
-        me.callParent(arguments);
+        this.callParent(arguments);
 
         // If shrinkwrapping, allow content width to stretch the element
         if (ownerContext.widthModel.shrinkWrap) {
             owner.el.setWidth('');
-        }
-
-        // When we are the last subheader, bordering is provided by our owning header, so we need
-        // to set border width to zero
-        var borderRightWidth = owner.isLast && owner.isSubHeader ? '0' : '';
-        if (borderRightWidth !== me.lastBorderRightWidth) {
-            owner.el.dom.style.borderRightWidth = me.lasBorderRightWidth = borderRightWidth;
         }
 
         owner.titleEl.setStyle({
@@ -159,10 +149,17 @@ Ext.define('Ext.grid.ColumnComponentLayout', {
     // Push content width outwards when we are shrinkwrapping
     calculateOwnerWidthFromContentWidth: function (ownerContext, contentWidth) {
         var owner = this.owner,
-            inner = Math.max(contentWidth, owner.textEl.getWidth() + ownerContext.titleContext.getPaddingInfo().width),
             padWidth = ownerContext.getPaddingInfo().width,
-            triggerOffset = this.getTriggerOffset(owner, ownerContext);
+            triggerOffset = this.getTriggerOffset(owner, ownerContext),
+            inner;
             
+        // Only measure the content if we're not grouped, otherwise
+        // the size should be governed by the children
+        if (owner.isGroupHeader) {
+            inner = contentWidth;
+        } else {
+            inner = Math.max(contentWidth, owner.textEl.getWidth() + ownerContext.titleContext.getPaddingInfo().width);
+        }
         return inner + padWidth + triggerOffset;
     },
     

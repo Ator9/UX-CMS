@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Base class for all Ext components.
@@ -337,7 +337,7 @@ Ext.define('Ext.Component', {
     bubbleEvents: [],
 
     defaultComponentLayoutType: 'autocomponent',
-
+    
     //renderTpl: new Ext.XTemplate(
     //    '<div id="{id}" class="{baseCls} {cls} {cmpCls}<tpl if="typeof ui !== \'undefined\'"> {uiBase}-{ui}</tpl>"<tpl if="typeof style !== \'undefined\'"> style="{style}"</tpl>></div>', {
     //        compiled: true,
@@ -558,6 +558,7 @@ Ext.define('Ext.Component', {
             // Then we have to create a pseudo-Component out of the resizer to drag that,
             // otherwise, we just drag this Component
             dragTarget = (me.resizer && me.resizer.el !== me.el) ? me.resizerComponent = new Ext.Component({
+                ariaRole: 'presentation',
                 el: me.resizer.el,
                 rendered: true,
                 container: me.container
@@ -910,8 +911,8 @@ Ext.define('Ext.Component', {
                 me.pendingShow = true;
             }
         } else if (rendered && me.isVisible()) {
-            if (me.toFrontOnShow && me.floating) {
-                me.toFront();
+            if (me.floating) {
+                me.onFloatShow();
             }
         } else {
             if (me.fireEvent('beforeshow', me) !== false) {
@@ -1080,7 +1081,6 @@ Ext.define('Ext.Component', {
     onShowComplete: function(cb, scope) {
         var me = this;
         if (me.floating) {
-            me.toFront();
             me.onFloatShow();
         }
         Ext.callback(cb, scope || me);
@@ -1138,7 +1138,13 @@ Ext.define('Ext.Component', {
         var me = this,
             ghostPanel,
             fromSize,
-            toBox;
+            toBox,
+            activeEl = Ext.Element.getActiveElement();
+
+        // If hiding a Component which is focused, or contains focus: blur the focused el.
+        if (activeEl === me.el || me.el.contains(activeEl)) {
+            Ext.fly(activeEl).blur();
+        }
 
         // Default to configured animate target if none passed
         animateTarget = me.getAnimateTarget(animateTarget);
@@ -1164,6 +1170,7 @@ Ext.define('Ext.Component', {
                     afteranimate: function() {
                         delete ghostPanel.componentLayout.lastComponentSize;
                         ghostPanel.el.hide();
+                        ghostPanel.setHiddenState(true);
                         ghostPanel.el.setSize(fromSize);
                         me.afterHide(cb, scope);
                     }
@@ -1188,19 +1195,13 @@ Ext.define('Ext.Component', {
      * @protected
      */
     afterHide: function(cb, scope) {
-        var me = this,
-            activeEl = Ext.Element.getActiveElement();
+        var me = this;
 
         me.hiddenByLayout = null;
 
         // we are the back-end method of onHide at this level, but our call to our parent
         // may need to be async... so callParent won't quite work here...
         Ext.AbstractComponent.prototype.onHide.call(me);
-
-        // If hiding a Component which is focused, or contains focus: blur the focused el. 
-        if (activeEl === me.el || me.el.contains(activeEl)) {
-            Ext.fly(activeEl).blur();
-        }
 
         Ext.callback(cb, scope || me);
         me.fireEvent('hide', me);
@@ -1242,7 +1243,7 @@ Ext.define('Ext.Component', {
 
     /**
      * Try to focus this component.
-     * @param {Boolean} [selectText] If applicable, true to also select the text in this component
+     * @param {Mixed} [selectText] If applicable, `true` to also select all the text in this component, or an array consisting of start and end (defaults to start) position of selection.
      * @param {Boolean/Number} [delay] Delay the focus this number of milliseconds (true for 10 milliseconds).
      * @param {Function} [callback] Only needed if the `delay` parameter is used. A function to call upon focus.
      * @param {Function} [scope] Only needed if the `delay` parameter is used. The scope (`this` reference) in which to execute the callback.
@@ -1258,12 +1259,7 @@ Ext.define('Ext.Component', {
 
         // If delay is wanted, queue a call to this function.
         if (delay) {
-            if (!me.focusTask) {
-                // One global DelayedTask to assign focus
-                // So that the last focus call wins.
-                Ext.Component.prototype.focusTask = new Ext.util.DelayedTask(me.focus);
-            }
-            me.focusTask.delay(Ext.isNumber(delay) ? delay : 10, null, me, [selectText, false, callback, scope]);
+            me.getFocusTask().delay(Ext.isNumber(delay) ? delay : 10, me.focus, me, [selectText, false, callback, scope]);
             return me;
         }
 
@@ -1296,8 +1292,14 @@ Ext.define('Ext.Component', {
                 // The focusEl has a DOM focus listener on it which invokes the Component's onFocus method
                 // to perform Component-specific focus processing
                 focusEl.focus();
-                if (selectText === true) {
-                    focusElDom.select();
+                if (selectText) {
+                    if (Ext.isArray(selectText)) {
+                        if (me.selectText) {
+                            me.selectText.apply(me, selectText);
+                        }
+                    } else {
+                        focusElDom.select();
+                    }
                 }
 
                 // Call the callback when focus is done
@@ -1307,13 +1309,28 @@ Ext.define('Ext.Component', {
             // Focusing a floating Component brings it to the front of its stack.
             // this is performed by its zIndexManager. Pass preventFocus true to avoid recursion.
             if (me.floating) {
-                me.toFront(true);
+                // Every component that doesn't have preventFocus set gets a delayed call to focus().
+                // Only bring to front if the current component isn't the manager's topmost component.
+                if (me !== me.zIndexManager.getActive()) {
+                    me.toFront(true);
+                }
+
                 if (containerScrollTop !== undefined) {
                     me.container.dom.scrollTop = containerScrollTop;
                 }
             }
         }
         return me;
+    },
+
+    // Private
+    getFocusTask: function() {
+        if (!this.focusTask) {
+            // One global DelayedTask to assign focus
+            // So that the last focus call wins.
+            Ext.Component.prototype.focusTask = new Ext.util.DelayedTask();
+        }
+        return this.focusTask;
     },
 
     /**
@@ -1329,11 +1346,15 @@ Ext.define('Ext.Component', {
 
     // @private
     blur: function() {
-        var focusEl;
-        if (this.rendered && (focusEl = this.getFocusEl())) {
+        var me = this,
+            focusEl;
+            
+        if (me.rendered && (focusEl = me.getFocusEl())) {
+            me.blurring = true;
             focusEl.blur();
+            delete me.blurring;
         }
-        return this;
+        return me;
     },
 
     getEl: function() {

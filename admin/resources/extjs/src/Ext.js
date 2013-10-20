@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 // @tag foundation,core
 // @define Ext
@@ -44,8 +44,6 @@ Ext._startTime = new Date().getTime();
         nonWhitespaceRe = /\S/,
         ExtApp,
         iterableRe = /\[object\s*(?:Array|Arguments|\w*Collection|\w*List|HTML\s+document\.all\s+class)\]/;
-
-    Function.prototype.$extIsFunction = true;
 
     Ext.global = global;
 
@@ -539,8 +537,13 @@ Ext._startTime = new Date().getTime();
          * @return {Boolean}
          * @method
          */
-        isFunction: function(value) {
-            return !!(value && value.$extIsFunction);
+        isFunction:
+        // Safari 3.x and 4.x returns 'function' for typeof <NodeList>, hence we need to fall back to using
+        // Object.prototype.toString (slower)
+        (typeof document !== 'undefined' && typeof document.getElementsByTagName('body') === 'function') ? function(value) {
+            return !!value && toString.call(value) === '[object Function]';
+        } : function(value) {
+            return !!value && typeof value === 'function';
         },
 
         /**
@@ -619,7 +622,7 @@ Ext._startTime = new Date().getTime();
          */
         isIterable: function(value) {
             // To be iterable, the object must have a numeric length property and must not be a string or function.
-            if (!value || typeof value.length !== 'number' || typeof value === 'string' || value.$extIsFunction) {
+            if (!value || typeof value.length !== 'number' || typeof value === 'string' || Ext.isFunction(value)) {
                 return false;
             }
 

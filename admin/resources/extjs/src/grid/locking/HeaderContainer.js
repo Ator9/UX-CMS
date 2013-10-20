@@ -16,11 +16,11 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Private class which acts as a HeaderContainer for the Lockable which aggregates all columns
- * from both sides of the Loackable. It is never rendered, it's just used to interrogate the
+ * from both sides of the Lockable. It is never rendered, it's just used to interrogate the
  * column collection.
  * @private
  */
@@ -42,10 +42,15 @@ Ext.define('Ext.grid.locking.HeaderContainer', {
         me.callParent();
 
         // Create the unified column manager for the lockable grid assembly
+        lockedGrid.visibleColumnManager.rootColumns =
+            normalGrid.visibleColumnManager.rootColumns =
+            lockable.visibleColumnManager =
+            me.visibleColumnManager = new Ext.grid.ColumnManager(true, lockedGrid.headerCt, normalGrid.headerCt);
+            
         lockedGrid.columnManager.rootColumns =
             normalGrid.columnManager.rootColumns =
             lockable.columnManager =
-            me.columnManager = new Ext.grid.ColumnManager(lockedGrid.headerCt, normalGrid.headerCt);
+            me.columnManager = new Ext.grid.ColumnManager(false, lockedGrid.headerCt, normalGrid.headerCt);
 
         // Relay events from both sides' headerCts
         events = lockedGrid.headerCt.events;

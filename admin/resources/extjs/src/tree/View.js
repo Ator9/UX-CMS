@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Used as a view by {@link Ext.tree.Panel TreePanel}.
@@ -47,6 +47,8 @@ Ext.define('Ext.tree.View', {
     // collapsed or expanded. During the animation, UI interaction is forbidden by testing
     // for an ancestor node with this class.
     nodeAnimWrapCls: Ext.baseCSSPrefix + 'tree-animator-wrap',
+    
+    ariaRole: 'tree',
 
     blockRefresh: true,
 
@@ -83,28 +85,23 @@ Ext.define('Ext.tree.View', {
     // fields that will trigger a change in the ui that aren't likely to be bound to a column
     uiFields: ['expanded', 'loaded', 'checked', 'expandable', 'leaf', 'icon', 'iconCls', 'loading', 'qtip', 'qtitle'],
 
-    // treeRowTpl which is inserted into thwe rowTpl chain before the base rowTpl. Sets tree-specific classes and attributes
+    // treeRowTpl which is inserted into the rowTpl chain before the base rowTpl. Sets tree-specific classes and attributes
     treeRowTpl: [
         '{%',
             'this.processRowValues(values);',
             'this.nextTpl.applyOut(values, out, parent);',
-            'delete values.rowAttr["data-qtip"];',
-            'delete values.rowAttr["data-qtitle"];',
         '%}', {
             priority: 10,
             processRowValues: function(rowValues) {
                 var record = rowValues.record,
-                    view = rowValues.view,
-                    qtip = record.get('qtip'),
-                    qtitle = record.get('qttle');
+                    view = rowValues.view;
 
                 rowValues.rowAttr = {};
-                if (qtip) {
-                    rowValues.rowAttr['data-qtip'] = qtip;
-                }
-                if (qtitle) {
-                    rowValues.rowAttr['data-qtitle'] = qtitle;
-                }
+                // We always need to set the qtip/qtitle, because they may have been
+                // emptied, which means we still need to flush that change to the DOM
+                // so the old values are overwritten
+                rowValues.rowAttr['data-qtip'] = record.get('qtip') || '';
+                rowValues.rowAttr['data-qtitle'] = record.get('qtitle') || '';
                 if (record.isExpanded()) {
                     rowValues.rowClasses.push(view.expandedCls);
                 }
@@ -312,12 +309,13 @@ Ext.define('Ext.tree.View', {
         me.renderColumnSizer(columnSizer);
         nodeEl = Ext.get(node);
         tmpEl = nodeEl.insertSibling({
+            role: 'presentation',
             tag: 'tr',
             html: [
-                '<td colspan="' + me.panel.headerCt.getColumnCount() + '">',
-                    '<div class="' + me.nodeAnimWrapCls + '">',
+                '<td colspan="' + me.panel.headerCt.getColumnCount() + '" role="presentation">',
+                    '<div class="' + me.nodeAnimWrapCls + '" role="presentation">',
                         // Table has to have correct classes to get sized by the dynamic CSS rules
-                        '<table class="' + Ext.baseCSSPrefix + me.id + '-table ' + Ext.baseCSSPrefix + 'grid-table" style="border:0" cellspacing="0" cellpadding="0">',
+                        '<table class="' + Ext.baseCSSPrefix + me.id + '-table ' + Ext.baseCSSPrefix + 'grid-table" style="border:0" cellspacing="0" cellpadding="0" role="presentation">',
                         columnSizer.join(''),
                         '<tbody></tbody></table>',
                     '</div>',
@@ -519,6 +517,7 @@ Ext.define('Ext.tree.View', {
         animWrap = me.getAnimWrap(parent, false);
 
         if (!animWrap) {
+            me.refreshSelection();
             parent.isExpandingOrCollapsing = false;
             me.fireEvent('afteritemexpand', parent, index, node);
             me.refreshSize();
@@ -557,6 +556,7 @@ Ext.define('Ext.tree.View', {
                 }
             },
             callback: function() {
+                me.refreshSelection();
                 parent.isExpandingOrCollapsing = false;
                 me.fireEvent('afteritemexpand', parent, index, node);
             }
@@ -595,6 +595,9 @@ Ext.define('Ext.tree.View', {
                 me.onCollapseCallback = callback;
                 me.onCollapseScope = scope;
             }
+            // deselect the first child so that the "before" selected and focused classes
+            // will be removed from the parent.
+            me.onRowDeselect(me.indexOf(parent.firstChild));
         }
     },
 
@@ -616,6 +619,7 @@ Ext.define('Ext.tree.View', {
 
         // Not animating, all items will have been added, so updateLayout and resume layouts
         if (!animWrap) {
+            me.refreshSelection();
             parent.isExpandingOrCollapsing = false;
             me.fireEvent('afteritemcollapse', parent, index, node);
             me.refreshSize();
@@ -646,6 +650,7 @@ Ext.define('Ext.tree.View', {
                 }
             },
             callback: function() {
+                me.refreshSelection();
                 parent.isExpandingOrCollapsing = false;
                 me.fireEvent('afteritemcollapse', parent, index, node);
 

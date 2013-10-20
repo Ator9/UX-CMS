@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @class Ext.chart.axis.Axis
@@ -444,7 +444,10 @@ Ext.define('Ext.chart.axis.Axis', {
             dashLength = dashSize * dashDirection,
             series = me.chart.series.items,
             firstSeries = series[0],
-            gutters = firstSeries ? firstSeries.nullGutters : me.nullGutters,
+            gutters = Ext.clone(firstSeries ? firstSeries.nullGutters : me.nullGutters),
+            seriesGutters,
+            hasGutters,
+            sameDirectionGutters,
             padding,
             subDashes,
             subDashValue,
@@ -486,7 +489,7 @@ Ext.define('Ext.chart.axis.Axis', {
         stepCount = steps.length;
 
 
-        // Get the gutters for this series
+        // Get the gutters for the matching series
         for (i = 0, ln = series.length; i < ln; i++) {
             if (series[i].seriesIsHidden) {
                 continue;
@@ -496,20 +499,30 @@ Ext.define('Ext.chart.axis.Axis', {
             }
             axes = series[i].getAxesForXAndYFields();
             if (!axes.xAxis || !axes.yAxis || (axes.xAxis === position) || (axes.yAxis === position)) {
-                gutters = series[i].getGutters();
-                if ((gutters.verticalAxis !== undefined) && (gutters.verticalAxis != verticalAxis)) {
-                    // This series has gutters that don't apply to the direction of this axis
-                    // (for instance, gutters for Bars apply to the vertical axis while gutters  
-                    // for Columns apply to the horizontal axis). Since there is no gutter, the 
-                    // padding is all that is left to take into account.
-                    padding = series[i].getPadding();
-                    if (verticalAxis) {
-                        gutters = { lower: padding.bottom, upper: padding.top, verticalAxis: true };
-                    } else {
-                        gutters = { lower: padding.left, upper: padding.right, verticalAxis: false };
+                seriesGutters = Ext.clone(series[i].getGutters());
+                hasGutters = (seriesGutters.verticalAxis !== undefined);
+                sameDirectionGutters = (hasGutters && (seriesGutters.verticalAxis == verticalAxis));
+                if (hasGutters) {
+                    if (!sameDirectionGutters) {
+                        // This series has gutters that don't apply to the direction of this axis
+                        // (for instance, gutters for Bars apply to the vertical axis while gutters  
+                        // for Columns apply to the horizontal axis). Since there is no gutter, the 
+                        // padding is all that is left to take into account.
+                        padding = series[i].getPadding();
+                        if (verticalAxis) {
+                            seriesGutters = { lower: padding.bottom, upper: padding.top, verticalAxis: true };
+                        } else {
+                            seriesGutters = { lower: padding.left, upper: padding.right, verticalAxis: false };
+                        }
                     }
+                    if (gutters.lower < seriesGutters.lower) {
+                        gutters.lower = seriesGutters.lower;
+                    }
+                    if (gutters.upper < seriesGutters.upper) {
+                        gutters.upper = seriesGutters.upper;
+                    }
+                    gutters.verticalAxis = verticalAxis;
                 }
-                break;
             }
         }
 
@@ -822,7 +835,8 @@ Ext.define('Ext.chart.axis.Axis', {
             adjustEnd = me.adjustEnd,
             hasLeft = axes.findIndex('position', 'left') != -1,
             hasRight = axes.findIndex('position', 'right') != -1,
-            textLabel, text,
+            reverse = me.reverse,
+            textLabel, text, idx,
             last, x, y, i, firstLabel;
 
         last = ln - 1;
@@ -833,7 +847,11 @@ Ext.define('Ext.chart.axis.Axis', {
 
         for (i = 0; i < ln; i++) {
             point = inflections[i];
-            text = me.label.renderer(labels[i]);
+            idx = i;
+            if (reverse) {
+                idx = ln - i - 1;
+            }
+            text = me.label.renderer(labels[idx]);
             textLabel = me.getOrCreateLabel(i, text);
             bbox = textLabel._bbox;
             maxHeight = max(maxHeight, bbox.height + me.dashSize + me.label.padding);

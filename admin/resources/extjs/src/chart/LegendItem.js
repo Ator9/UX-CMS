@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @class Ext.chart.LegendItem
@@ -276,36 +276,42 @@ Ext.define('Ext.chart.LegendItem', {
         var me = this,
             items = me.items,
             ln = items.length,
-            i = 0,
-            item;
+            currentX = me.x,
+            currentY = me.y,
+            item, i, x, y, translate, o,
+            relativeX, relativeY;
+            
         if (!relativeTo) {
             relativeTo = me.legend;
         }
-        for (; i < ln; i++) {
+        
+        relativeX = relativeTo.x;
+        relativeY = relativeTo.y;
+        for (i = 0; i < ln; i++) {
+            translate = true;
             item = items[i];
             switch (item.type) {
                 case 'text':
-                    item.setAttributes({
-                        x: 20 + relativeTo.x + me.x,
-                        y: relativeTo.y + me.y
-                    }, true);
+                    x = 20 + relativeX + currentX;
+                    y = relativeY + currentY;
+                    translate = false;
                     break;
                 case 'rect':
-                    item.setAttributes({
-                        translate: {
-                            x: relativeTo.x + me.x,
-                            y: relativeTo.y + me.y - 6
-                        }
-                    }, true);
+                    x = relativeX + currentX;
+                    y = relativeY + currentY - 6;
                     break;
                 default:
-                    item.setAttributes({
-                        translate: {
-                            x: relativeTo.x + me.x,
-                            y: relativeTo.y + me.y
-                        }
-                    }, true);
+                    x = relativeX + currentX;
+                    y = relativeY + currentY;
             }
+            
+            o = {
+                x: x,
+                y: y
+            };
+            item.setAttributes(translate ? {
+                translate: o
+            } : o, true);
         }
     }
 });

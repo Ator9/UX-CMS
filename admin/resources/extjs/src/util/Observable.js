@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 // @tag core
 /**
@@ -58,11 +58,12 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
  */
 Ext.define('Ext.util.Observable', function(Observable) {
 
-    // Private Destroyable class which removes listeners
-    var emptyArray = [],
+    var emptyFn = Ext.emptyFn,
+        emptyArray = [],
         arrayProto = Array.prototype,
         arraySlice = arrayProto.slice,
         ExtEvent = Ext.util.Event,
+        // Private Destroyable class which removes listeners
         ListenerRemover = function(observable) {
 
             // Passed a ListenerRemover: return it
@@ -354,20 +355,22 @@ Ext.define('Ext.util.Observable', function(Observable) {
                     scope = scope || me;
                     fn = Ext.resolveMethod(fn, scope);
                 }
-                
-                managedListeners.push({
-                    item: item,
-                    ename: ename,
-                    fn: fn,
-                    scope: scope,
-                    options: options
-                });
 
-                item.on(ename, fn, scope, options);
+                if (fn !== emptyFn) {
+                    managedListeners.push({
+                        item: item,
+                        ename: ename,
+                        fn: fn,
+                        scope: scope,
+                        options: options
+                    });
 
-                // The 'noDestroy' flag is sent if we're looping through a hash of listeners passing each one to addManagedListener separately
-                if (!noDestroy && options && options.destroyable) {
-                    return new ListenerRemover(me, item, ename, fn, scope);
+                    item.on(ename, fn, scope, options);
+
+                    // The 'noDestroy' flag is sent if we're looping through a hash of listeners passing each one to addManagedListener separately
+                    if (!noDestroy && options && options.destroyable) {
+                        return new ListenerRemover(me, item, ename, fn, scope);
+                    }
                 }
             }
         },
@@ -387,7 +390,7 @@ Ext.define('Ext.util.Observable', function(Observable) {
                 config,
                 managedListeners,
                 length,
-                i, func;
+                i;
 
             if (typeof ename !== 'string') {
                 options = ename;
@@ -672,15 +675,18 @@ Ext.define('Ext.util.Observable', function(Observable) {
                     scope = scope || me;
                     fn = Ext.resolveMethod(fn, scope);
                 }
-                event.addListener(fn, scope, options);
 
-                // If a new listener has been added (Event.addListener rejects duplicates of the same fn+scope)
-                // then increment the hasListeners counter
-                if (event.listeners.length !== prevListenerCount) {
-                    me.hasListeners._incr_(ename);
-                }
-                if (options && options.destroyable) {
-                    return new ListenerRemover(me, ename, fn, scope, options);
+                if (fn !== emptyFn) {
+                    event.addListener(fn, scope, options);
+
+                    // If a new listener has been added (Event.addListener rejects duplicates of the same fn+scope)
+                    // then increment the hasListeners counter
+                    if (event.listeners.length !== prevListenerCount) {
+                        me.hasListeners._incr_(ename);
+                    }
+                    if (options && options.destroyable) {
+                        return new ListenerRemover(me, ename, fn, scope, options);
+                    }
                 }
             }
         },

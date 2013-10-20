@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * @author Ed Spencer
@@ -240,19 +240,23 @@ associations: [{
         return function() {
             var me = this,
                 config, filter,
-                modelDefaults = {};
+                modelDefaults = {},
+                id;
                 
             if (me[storeName] === undefined) {
+                id = me.get(primaryKey);
                 if (filterProperty) {
                     filter = {
                         property  : filterProperty,
                         value     : me.get(filterProperty),
                         exactMatch: true
                     };
-                } else {
+                } else if (me.hasId(id)) {
+                    // We only want to add this filter if the record has
+                    // a value for the primary key.
                     filter = {
                         property  : foreignKey,
-                        value     : me.get(primaryKey),
+                        value     : id,
                         exactMatch: true
                     };
                 }
@@ -261,7 +265,7 @@ associations: [{
                 
                 config = Ext.apply({}, storeConfig, {
                     model        : associatedModel,
-                    filters      : [filter],
+                    filters      : filter ? [filter] : undefined,
                     remoteFilter : false,
                     modelDefaults: modelDefaults,
                     disableMetaChangeEvent: true

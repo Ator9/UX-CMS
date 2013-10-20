@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Internal utility class that provides default configuration for cell editing.
@@ -113,10 +113,15 @@ Ext.define('Ext.grid.CellEditor', {
         var me = this,
             boundEl = me.boundEl,
             innerCell = boundEl.first(),
+            innerCellTextNode = innerCell.dom.firstChild,
             width = boundEl.getWidth(),
             offsets = Ext.Array.clone(me.offsets),
             grid = me.grid,
-            xOffset;
+            xOffset,
+            v = '',
+
+            // innerCell is empty if there are no children, or there is one text node, and it contains whitespace
+            isEmpty = !innerCellTextNode || (innerCellTextNode.nodeType === 3 && !(Ext.String.trim(v = innerCellTextNode.data).length));
 
         if (me.isForTree) {
             // When editing a tree, adjust the width and offsets of the editor to line
@@ -137,21 +142,35 @@ Ext.define('Ext.grid.CellEditor', {
             me.field.setWidth(width);
         }
 
+        // https://sencha.jira.com/browse/EXTJSIV-10871 Ensure the data bearing element has a height from text.
+        if (isEmpty) {
+            innerCell.dom.innerHTML = 'X';
+        }
         me.alignTo(innerCell, me.alignment, offsets);
+        if (isEmpty) {
+            innerCell.dom.firstChild.data = v;
+        }
     },
 
     // private
     getTreeNodeOffset: function(innerCell) {
         return innerCell.child(this.treeNodeSelector).getOffsetsTo(innerCell)[0];
     },
-    
+
     onEditorTab: function(e){
         var field = this.field;
         if (field.onEditorTab) {
             field.onEditorTab(e);
         }
     },
-    
+
+    onFieldBlur : function() {
+        this.callParent(arguments);
+        // Reset the flag that may have been set by CellEditing#startEdit to prevent
+        // Ext.Editor#onFieldBlur from canceling editing.
+        this.selectSameEditor = false;
+    },
+
     alignment: "l-l",
     hideEl : false,
     cls: Ext.baseCSSPrefix + 'small-editor ' +

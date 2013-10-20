@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 // @tag dom,core
 // @require AbstractQuery.js
@@ -72,7 +72,7 @@ Ext.define('Ext.dom.AbstractHelper', {
                     if (!me.confRe.test(attr)) {
                         if (typeof val == "object") {
                             buffer.push(' ', attr, '="');
-                            me.generateStyles(val, buffer).push('"');
+                            me.generateStyles(val, buffer, true).push('"');
                         } else {
                             buffer.push(' ', me.attributeTransform[attr] || attr, '="', val, '"');
                         }
@@ -132,16 +132,26 @@ Ext.define('Ext.dom.AbstractHelper', {
      * 
      * @param {Object} styles The object describing the styles.
      * @param {String[]} [buffer] The output buffer.
+     * @param {Boolean} [encode] `true` to {@link Ext.String.htmlEncode} property values if they
+     * are going to be inserted as HTML attributes.
      * @return {String/String[]} If buffer is passed, it is returned. Otherwise the style
      * string is returned.
      */
-    generateStyles: function (styles, buffer) {
+    generateStyles: function (styles, buffer, encode) {
         var a = buffer || [],
-            name;
+            name, val;
 
         for (name in styles) {
             if (styles.hasOwnProperty(name)) {
-                a.push(this.decamelizeName(name), ':', styles[name], ';');
+                val = styles[name];
+                // Since a majority of attributes won't have html characters (basically
+                // restricted to fonts), we'll check first before we try and encode it
+                // because it's less expensive and this method gets called a lot.
+                name = this.decamelizeName(name);
+                if (encode && Ext.String.hasHtmlCharacters(val)) {
+                    val = Ext.String.htmlEncode(val);
+                }
+                a.push(name, ':', val, ';');
             }
         }
 
@@ -215,8 +225,8 @@ Ext.define('Ext.dom.AbstractHelper', {
         where = where.toLowerCase();
 
         // add these here because they are used in both branches of the condition.
-        hash['beforebegin'] = ['BeforeBegin', 'previousSibling'];
-        hash['afterend'] = ['AfterEnd', 'nextSibling'];
+        hash.beforebegin = ['BeforeBegin', 'previousSibling'];
+        hash.afterend = ['AfterEnd', 'nextSibling'];
 
         range = el.ownerDocument.createRange();
         setStart = 'setStart' + (this.endRe.test(where) ? 'After' : 'Before');

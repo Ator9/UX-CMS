@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * Simple header class which is used for on {@link Ext.panel.Panel} and {@link Ext.window.Window}.
@@ -54,14 +54,18 @@ Ext.define('Ext.panel.Header', {
     renderTpl: [
         '<div id="{id}-body" class="{headerCls}-body {baseCls}-body {bodyCls} {bodyTargetCls}',
         '<tpl for="uiCls"> {parent.baseCls}-body-{parent.ui}-{.}</tpl>"',
-        '<tpl if="bodyStyle"> style="{bodyStyle}"</tpl>>',
+        '<tpl if="bodyStyle"> style="{bodyStyle}"</tpl> role="presentation">',
             '{%this.renderContainer(out,values)%}',
         '</div>'
     ],
 
     headingTpl: [
         // unselectable="on" is required for Opera, other browsers inherit unselectability from the header
-        '<span id="{id}-textEl" class="{headerCls}-text {cls}-text {cls}-text-{ui}" unselectable="on">{title}</span>'
+        '<span id="{id}-textEl" class="{headerCls}-text {cls}-text {cls}-text-{ui}" unselectable="on"',
+            '<tpl if="headerRole">',
+                ' role="{headerRole}"',
+            '</tpl>',
+        '>{title}</span>'
     ],
 
     shrinkWrap: 3,
@@ -140,7 +144,8 @@ Ext.define('Ext.panel.Header', {
         me.orientation = me.orientation || 'horizontal';
         me.dock = (me.dock) ? me.dock : (me.orientation == 'horizontal') ? 'top' : 'left';
 
-        if (ownerCt ? (!ownerCt.border && !ownerCt.frame) : !me.border) {
+        // test for border === false is needed because undefined is the same as true
+        if (ownerCt ? (ownerCt.border === false && !ownerCt.frame) : me.border === false) {
             uiClasses.push(me.orientation + '-noborder');
         }
         me.addClsWithUI(uiClasses);
@@ -163,7 +168,7 @@ Ext.define('Ext.panel.Header', {
 
         // Add Title
         me.titleCmp = new Ext.Component({
-            ariaRole  : 'heading',
+            ariaRole  : 'presentation',
             focusable : false,
             noWrap    : true,
             flex      : 1,
@@ -178,6 +183,7 @@ Ext.define('Ext.panel.Header', {
                 title: me.title,
                 cls  : me.baseCls,
                 headerCls: me.headerCls,
+                headerRole: me.headerRole,
                 ui   : me.ui
             },
             childEls  : ['textEl'],
@@ -221,6 +227,17 @@ Ext.define('Ext.panel.Header', {
             element: 'el',
             scope: me
         });
+    },
+
+    /**
+     * Sets the position of the title in the header's items
+     * @param {Number} index
+     */
+    setTitlePosition: function(index) {
+        var me = this;
+    
+        me.titlePosition = index = Math.min(index, me.items.length - 1);
+        me.insert(index, me.titleCmp);
     },
 
     initIconCmp: function() {
@@ -599,7 +616,7 @@ Ext.define('Ext.panel.Header', {
         this.add(Ext.ComponentManager.create(tool, 'tool'));
     },
 
-    syncBeforeAfterTitleClasses: function() {
+    syncBeforeAfterTitleClasses: function(force) {
         var me = this,
             items = me.items,
             childItems = items.items,
@@ -609,7 +626,7 @@ Ext.define('Ext.panel.Header', {
             syncGen = me.syncBeforeAfterGen,
             afterCls, beforeCls, i, item;
 
-        if (syncGen === itemGeneration) {
+        if (!force && (syncGen === itemGeneration)) {
             return;
         }
         me.syncBeforeAfterGen = itemGeneration;
@@ -671,7 +688,7 @@ Ext.define('Ext.panel.Header', {
             cls = me.callParent(),
             owner = me.ownerCt;
             
-        if (!me.expanding && (owner && owner.collapsed) || me.isCollapsedExpander) {
+        if (!me.expanding && owner && (owner.collapsed || me.isCollapsedExpander)) {
             cls += '-' + owner.collapsedCls; 
         }
         return cls + '-' + me.dock;

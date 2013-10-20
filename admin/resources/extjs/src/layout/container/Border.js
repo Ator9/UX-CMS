@@ -16,7 +16,7 @@ requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 If you are unsure which license is appropriate for your use, please contact the sales department
 at http://www.sencha.com/contact.
 
-Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
+Build date: 2013-09-18 17:18:59 (940c324ac822b840618a3a8b2b4b873f83a1a9b1)
 */
 /**
  * This is a multi-pane, application-oriented UI layout style that supports multiple nested panels, automatic bars
@@ -104,10 +104,23 @@ Ext.define('Ext.layout.container.Border', {
     isBorderLayout: true,
 
     /**
-     * @cfg {Boolean} split
+     * @cfg {Boolean/Ext.resizer.BorderSplitter} split
      * This configuration option is to be applied to the **child `items`** managed by this layout.
      * Each region with `split:true` will get a {@link Ext.resizer.BorderSplitter Splitter} that
      * allows for manual resizing of the container. Except for the `center` region.
+     *
+     * This option can also accept an object of configurations from the {@link Ext.resizer.BorderSplitter}.
+     * An example of this would be:
+     *
+     *     {
+     *         title: 'North',
+     *         region: 'north',
+     *         height: 100,
+     *         collapsible: true,
+     *         split: {
+     *             size: 20
+     *         }
+     *     }
      */
     
     /**
@@ -138,7 +151,7 @@ Ext.define('Ext.layout.container.Border', {
 
     percentageRe: /(\d+)%/,
     
-    horzMarginProp: 'left',
+    horzPositionProp: 'left',
     padOnContainerProp: 'left',
     padNotOnContainerProp: 'right',
 
@@ -563,7 +576,7 @@ Ext.define('Ext.layout.container.Border', {
     finishPositions: function (childItems) {
         var length = childItems.length,
             index, childContext,
-            marginProp = this.horzMarginProp;
+            marginProp = this.horzPositionProp;
 
         for (index = 0; index < length; ++index) {
             childContext = childItems[index];
@@ -734,27 +747,38 @@ Ext.define('Ext.layout.container.Border', {
         this.callParent();
     },
 
-    onRemove: function (item) {
+    onRemove: function (comp, isDestroying) {
         var me = this,
-            region = item.region,
-            splitter = item.splitter;
+            region = comp.region,
+            splitter = comp.splitter,
+            owner = me.owner,
+            destroying = owner.destroying,
+            el;
 
         if (region) {
-            if (item.isCenter) {
+            if (comp.isCenter) {
                 me.centerRegion = null;
             }
 
-            delete item.isCenter;
-            delete item.isHorz;
-            delete item.isVert;
+            delete comp.isCenter;
+            delete comp.isHorz;
+            delete comp.isVert;
 
-            if (splitter) {
-                me.owner.doRemove(splitter, true); // avoid another layout
-                delete item.splitter;
+            // If the owner is destroying, the splitter will be cleared anyway
+            if (splitter && !owner.destroying) {
+                owner.doRemove(splitter, true); // avoid another layout
             }
+            delete comp.splitter;
         }
 
         me.callParent(arguments);
+        
+        if (!destroying && !isDestroying && comp.rendered) {
+            // Clear top/left styles
+            el = comp.getEl();
+            el.setStyle('top', '');
+            el.setStyle(me.horzPositionProp, '');
+        }
     },
 
     //----------------------------------
