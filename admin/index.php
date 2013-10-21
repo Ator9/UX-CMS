@@ -25,13 +25,13 @@ Ext.application({
         Admin.firstModule = (location.hash!='') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : <? echo (int) $GLOBALS['admin']['default_module']; ?>;
         Admin.loadedModules = []; // Fills with loaded modules
         
-        Admin.cards = Ext.create('Ext.panel.Panel', { region: 'center', layout: 'card', margin: '0 0 5 0', border: false } );
+        Admin.cards = Ext.create('Ext.panel.Panel', { region: 'center', layout: 'card', margin: '5 0 5 0', border: false } );
 
         Admin.tree = Ext.create('Ext.tree.Panel', {
             region: 'west',
             title: 'Módulos',
             width: 160,
-            margin: '0 5 5 0',
+            margin: '5 5 5 0',
             collapsible: true, // True to make the panel collapsible and have an expand/collapse toggle Tool added into the header tool button area
             rootVisible: false, // Show root node
             root: { children: <? echo json_encode(array_values($tree)); ?> },
@@ -62,7 +62,6 @@ Ext.application({
                 title: '<? echo $GLOBALS['admin']['title']; ?>', // HTML is allowed
                 region: 'north',
                 border: false,
-                margin: '0 0 5 0',
                 tools: [{ type: 'close', handler: function(event, toolEl, panel) { location.href = 'login.php?logout=1'; } }]
             }, this.tree, this.cards ]
         });
