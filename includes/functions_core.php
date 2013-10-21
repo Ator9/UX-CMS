@@ -60,7 +60,7 @@ function getAdminTreeButtons()
 
     if(is_array($GLOBALS['admin']['fbar_buttons']))
     foreach($GLOBALS['admin']['fbar_buttons'] as $val) {
-        $fbar[] = "{text:'".$val['text']."', type:'button', width:'".(100 / count($GLOBALS['admin']['fbar_buttons']))."%', scale:'medium', url:'".$val['url']."'}";
+        $fbar[] = "{text:'".$val['text']."', type:'button', width:'".(100 / count($GLOBALS['admin']['fbar_buttons']))."%', scale:'small', url:'".$val['url']."'}";
     }
     echo implode(',', $fbar);
 }
