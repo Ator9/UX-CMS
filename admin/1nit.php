@@ -1,4 +1,4 @@
-<?
+<?php
 require(dirname(__FILE__).'/../includes/1nit.php');
 
 if(file_exists(dirname(__FILE__).'/config.php')) require(dirname(__FILE__).'/config.php');
