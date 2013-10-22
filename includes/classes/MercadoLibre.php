@@ -1,4 +1,4 @@
-<?
+<?php
 class MercadoLibre extends Conn
 {
 	public $_table	= '';
@@ -167,4 +167,4 @@ class MercadoLibre extends Conn
 
 set_time_limit(0); // Algunos procesos lentos
 //ini_set('memory_limit', '512M');
-?>
+

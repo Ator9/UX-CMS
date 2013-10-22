@@ -1,4 +1,4 @@
-<?
+<?php
 class ConnExt extends Conn
 {
 	public $_table	= '';
@@ -80,4 +80,4 @@ class ConnExt extends Conn
     	echo json_encode($response);
     }
 }
-?>
+

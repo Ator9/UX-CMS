@@ -1,4 +1,4 @@
-<?
+<?php
 // You can create an empty "functions.php" & change it
 // Core Functions:
 
@@ -315,4 +315,4 @@ function emailBody($content)
 
 	return $html;
 }
-?>
+

@@ -1,4 +1,4 @@
-<?
+<?php
 class Conn extends mysqli
 {
 	public $_table	= 'table';
@@ -238,4 +238,4 @@ class Conn extends mysqli
 		return false;
 	}
 }
-?>
+

@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  *
@@ -31,4 +31,4 @@
  */
 
 require(dirname(__FILE__).'/../lib/phpmailer/class.phpmailer.php');
-?>
+

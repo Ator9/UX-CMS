@@ -1,4 +1,4 @@
-<?
+<?php
 // Database & Site Config:
 if(file_exists(dirname(__FILE__).'/config.php')) require(dirname(__FILE__).'/config.php');
 else require(dirname(__FILE__).'/config.default.php');
@@ -17,4 +17,4 @@ define('ADMIN'    , HOST.'admin/');
 define('MODULES'  , HOST.'modules/');
 define('RESOURCES', HOST.'resources/');
 define('UPLOAD'   , HOST.'upload/');
-?>
+

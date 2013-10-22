@@ -1,4 +1,4 @@
-<?
+<?php
 /* Create "config.php" & change */
 
 // Title:

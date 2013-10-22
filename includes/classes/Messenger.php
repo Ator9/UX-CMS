@@ -1,4 +1,4 @@
-<?
+<?php
 class Messenger
 {
 	private $type	  = 1;
@@ -76,4 +76,4 @@ class Messenger
 		return $this->html;
 	}
 }
-?>
+

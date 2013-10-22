@@ -1,4 +1,4 @@
-<?
+<?php
 /**
     Powered by Ator:
     Clase para validar campos.
@@ -165,4 +165,4 @@ class Validator
         return $this->errors;
     }
 }
-?>
+

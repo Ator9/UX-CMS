@@ -1,4 +1,4 @@
-<?
+<?php
 class Paginator
 {
 	public  $sql;
@@ -113,4 +113,4 @@ class Paginator
 		return $this->html;
 	}
 }
-?>
+

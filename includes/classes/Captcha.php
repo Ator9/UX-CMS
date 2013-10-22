@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  *
  * @author http://recaptcha.net/
@@ -46,4 +46,4 @@ class Captcha
 }
 
 require(dirname(__FILE__).'/../lib/recaptcha/recaptchalib.php');
-?>
+

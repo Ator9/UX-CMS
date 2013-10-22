@@ -29,4 +29,3 @@ if(isset($_GET['_class']))
 
 // http://code.google.com/speed/page-speed/docs/rendering.html#SpecifyCharsetEarly
 header('Content-type: text/html; charset=UTF-8');
-?>

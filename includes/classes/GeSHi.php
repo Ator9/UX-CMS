@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
  *
@@ -16,4 +16,4 @@
  */
 
 require(dirname(__FILE__).'/../lib/geshi/geshi.php');
-?>
+

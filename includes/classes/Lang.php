@@ -1,4 +1,4 @@
-<?
+<?php
 class Lang
 {
 	private $type	  = 1;
@@ -17,4 +17,4 @@ class Lang
 		}
 	}
 }
-?>
+

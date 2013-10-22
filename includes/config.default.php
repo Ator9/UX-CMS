@@ -1,4 +1,4 @@
-<?
+<?php
 /* Create "config.php" & change */
 
 // Define local/online:
@@ -32,4 +32,3 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 // ----------------------------------------------------------------------------------------------------------------------- //
 
 
-?>

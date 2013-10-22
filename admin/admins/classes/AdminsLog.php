@@ -1,4 +1,4 @@
-<?
+<?php
 class AdminsLog extends ConnExt
 {
 	public $_table	= 'admins_logs';
@@ -39,4 +39,3 @@ class AdminsLog extends ConnExt
         return parent::insert($data);
     }
 }
-?>

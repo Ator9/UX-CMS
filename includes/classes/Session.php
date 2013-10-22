@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  *
  * @name 	Session Manager
@@ -99,4 +99,4 @@ class Session
 		session_destroy();
 	}
 }
-?>
+

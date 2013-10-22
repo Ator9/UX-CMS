@@ -1,4 +1,4 @@
-<?
+<?php
 class Admins extends ConnExt
 {
 	public $_table	= 'admins';
@@ -45,4 +45,3 @@ class Admins extends ConnExt
 		return false;
 	}
 }
-?>
