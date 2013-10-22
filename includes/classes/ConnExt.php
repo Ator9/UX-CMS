@@ -52,10 +52,10 @@ class ConnExt extends Conn
             
             foreach($_REQUEST['columns'] as $field)
             {
-                $filter[] = $field.' LIKE "%'.$this->escape($_REQUEST['search']).'%"';
+                $where[] = $field.' LIKE "%'.$this->escape($_REQUEST['search']).'%"';
             }
 
-            $sql = str_replace('WHERE 1', 'WHERE 1 AND ('.implode(' OR ', $filter).') ', $sql);
+            $sql = str_replace('WHERE 1', 'WHERE 1 AND ('.implode(' OR ', $where).') ', $sql);
         }
 
         if(strpos($sql, 'ORDER BY')===false && $_GET['sort']) $sql.= ' ORDER BY '.$this->escape($_REQUEST['sort']).' '.$this->escape($_REQUEST['dir']);
