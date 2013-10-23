@@ -1,11 +1,11 @@
 <?php
 require(dirname(__FILE__).'/1nit.php');
 
-// language:
+// Language:
 if(array_key_exists($_POST['locale'], $GLOBALS['admin']['locale'])) $aSession->set('locale', $_POST['locale']);
 elseif(!$aSession->exists('locale')) $aSession->set('locale', key($GLOBALS['admin']['locale']));
 
-if(isset($_POST['act_login']))
+if(isset($_POST['login']))
 {
     $db = new Admins();
     if($db->login($_POST['name'], $_POST['pass']))
@@ -13,7 +13,8 @@ if(isset($_POST['act_login']))
         header('Location: '.ADMIN);
         exit;
     }
-    else $error = true;
+    
+    $error = true;
 }
 
 if(isset($_GET['logout']))
@@ -29,12 +30,8 @@ require(dirname(__FILE__).'/common/header.bootstrap.php');
 <style type="text/css">
 body{padding:40px 0;background-color:#eee}
 .form-signin{max-width:300px;padding:20px 30px;margin:0 auto;background-color:#fff;border:1px solid #e5e5e5;
--webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;
--webkit-box-shadow:0 1px 2px rgba(0,0,0,.05);
--moz-box-shadow:0 1px 2px rgba(0,0,0,.05);
-box-shadow:0 1px 2px rgba(0,0,0,.05);
-}
-.form-signin select,.form-signin input[type="text"],.form-signin input[type="password"]{font-size:16px;height:auto;margin:5px 0 12px;padding:7px 9px}
+-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px}
+.form-control{font-size:16px;height:auto;margin:5px 0 12px;padding:7px 9px}
 </style>
 </head>
 <body>
@@ -48,15 +45,15 @@ box-shadow:0 1px 2px rgba(0,0,0,.05);
         <? } ?>
 		<legend><? echo $GLOBALS['admin']['title']; ?></legend>
 		<label>
-			Usuario<br>
+			Usuario
 			<input type="text" name="name" class="form-control" required autofocus />
 		</label>
 		<label>
-			Password<br>
+			Password
 			<input type="password" name="pass" class="form-control" required />
 		</label>
 		<label>
-			Language<br>
+			Language
 			<select name="locale" class="form-control">
 			<?
             foreach($GLOBALS['admin']['locale'] as $key => $lang)
@@ -67,7 +64,7 @@ box-shadow:0 1px 2px rgba(0,0,0,.05);
 			?>
 			</select>
 		</label>
-		<input type="hidden" name="act_login" value="1" />
+		<input type="hidden" name="login" value="1" />
 		<button type="submit" class="btn btn-lg btn-primary btn-block">Login</button>
 	</form>
 </div>
