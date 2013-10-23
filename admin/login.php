@@ -46,7 +46,7 @@ box-shadow:0 1px 2px rgba(0,0,0,.05);
             <strong>Warning!</strong><br>No match for Username / Password
         </div>
         <? } ?>
-		<legend>Login</legend>
+		<legend><? echo $GLOBALS['admin']['title']; ?></legend>
 		<label>
 			Usuario<br>
 			<input type="text" name="name" class="form-control" required autofocus />
