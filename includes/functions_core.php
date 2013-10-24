@@ -1,6 +1,5 @@
 <?php
 // You can create an empty "functions.php" & change it
-// Core Functions:
 
 // Class autoload:
 // Example 1: class task{} = modules/task/task.php
@@ -17,7 +16,7 @@ function __autoload($class)
 }
 
 
-// Current URL:
+// Get current URL:
 function getCurrentUrl($strip_query=false)
 {
     $url = HOST.substr($_SERVER['REQUEST_URI'], 1);
@@ -27,55 +26,44 @@ function getCurrentUrl($strip_query=false)
 }
 
 
+function cleanUserInput($data)
+{
+	$data = array_map_recursive('strip_tags',$data);
+	$data = array_map_recursive('trim', $data);
+
+	return $data;
+}
+
+
+function array_map_recursive($func, $arr)
+{
+   $newArr = array();
+   foreach($arr as $key => $value)
+   {
+       $newArr[$key] = (is_array($value)) ? array_map_recursive($func, $value) : $func($value);
+   }
+   return $newArr;
+}
+
+
+function dateFormat($format, $datetime)
+{
+	if($datetime!='' && !strstr($datetime,'0000-00-00')) return date($format, strtotime($datetime));
+	return false;
+}
+
+
+function isEmail($email)
+{
+	if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) return false;
+	return true;
+}
+
+
+// Get subdomain:
 function getSubdomain()
 {
     return array_shift(explode('.', $_SERVER['HTTP_HOST']));
-}
-
-
-// Traigo los modulos para armar el arbol del admin:
-function getAdminTree()
-{
-    $dirs = array_merge(getFilesFromDir(ROOT.'admin'), getFilesFromDir(ROOT.'modules'));
-    foreach($dirs as $module)
-    {
-        if(!is_dir($module['path'])) continue;
-
-        $config = getModuleConfig($module['name']);
-        if($config['enabled'] !== true) continue;
-        
-        $tree[$config['name']] = array('text'=>$config['name'], 'panel'=>basename($module['path']), 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
-    }
-    
-    ksort($tree); // Orden alfabético
-
-    return $tree;
-}
-
-
-// get admin tree footer buttons (custom config):
-function getAdminTreeButtons()
-{
-    $fbar = array();
-
-    if(is_array($GLOBALS['admin']['fbar_buttons']))
-    foreach($GLOBALS['admin']['fbar_buttons'] as $val) {
-        $fbar[] = "{text:'".$val['text']."', type:'button', width:'".(100 / count($GLOBALS['admin']['fbar_buttons']))."%', scale:'small', url:'".$val['url']."'}";
-    }
-    echo implode(',', $fbar);
-}
-
-
-// Traigo la configuracion del módulo:
-function getModuleConfig($module='')
-{
-    if(file_exists(ROOT.'modules/'.$module.'/config.php')) require(ROOT.'modules/'.$module.'/config.php');
-    elseif(file_exists(ROOT.'modules/'.$module.'/config.default.php')) require(ROOT.'modules/'.$module.'/config.default.php');
-    
-    elseif(file_exists(ROOT.'admin/'.$module.'/config.php')) require(ROOT.'admin/'.$module.'/config.php');
-    elseif(file_exists(ROOT.'admin/'.$module.'/config.default.php')) require(ROOT.'admin/'.$module.'/config.default.php');
-
-    return $config;
 }
 
 
@@ -123,26 +111,6 @@ function recursiveTree($db, $table, $indexID, $parentID, $IDs, $backwards=false)
 }
 
 
-function cleanUserInput($data)
-{
-	$data = array_map_recursive('strip_tags',$data);
-	$data = array_map_recursive('trim', $data);
-
-	return $data;
-}
-
-
-function array_map_recursive($func, $arr)
-{
-   $newArr = array();
-   foreach($arr as $key => $value)
-   {
-       $newArr[$key] = (is_array($value)) ? array_map_recursive($func, $value) : $func($value);
-   }
-   return $newArr;
-}
-
-
 function youtube($code, $size='640x385', $img=0)
 {
 	list($w, $h) = explode('x', $size);
@@ -183,6 +151,7 @@ function getFilesFromDir($dir)
 }
 
 
+// Truncate string:
 function truncate($str, $num)
 {
     if(strlen($str) > $num)
@@ -194,6 +163,7 @@ function truncate($str, $num)
 }
 
 
+// SEO URL:
 function seo($txt)
 {
 	$txt = mb_strtolower($txt, 'UTF-8');
@@ -236,21 +206,10 @@ function meses($num='')
 }
 
 
-function date_mysql($format, $datetime)
-{
-	if($datetime!='' && !strstr($datetime,'0000-00-00')) return date($format, strtotime($datetime));
-	return false;
+function now()
+{ 
+    return date('Y-m-d H:i:s');
 }
-
-
-function isEmail($email)
-{
-	if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE) return false;
-	return true;
-}
-
-
-function NOW(){ return date('Y-m-d H:i:s'); }
 
 
 function vd($data)
@@ -261,58 +220,72 @@ function vd($data)
 }
 
 
-// E-mail que recibe el encargado del sitio cuando se contactan:
-function emailContact($data, $auth=false, $smtp=false)
+// Admin Functions -----------------------------------------------------------------------------------------
+
+
+// Traigo los modulos para armar el arbol del admin:
+function getAdminTree()
 {
-	global $CONFIG;
+    $dirs = array_merge(getFilesFromDir(ROOT.'admin'), getFilesFromDir(ROOT.'modules'));
+    foreach($dirs as $module)
+    {
+        if(!is_dir($module['path'])) continue;
 
-	if(isset($data['nombre'])) $cuerpo = '<strong>Nombre:</strong> '.$data['nombre'].'<br>';
-    $cuerpo.= '<strong>E-Mail:</strong> '.$data['email'].'<br><br>
-    		   <strong>Mensaje:</strong> '.nl2br($data['mensaje']).'<br>';
-
-	$mail= new PHPMailer();
-	$mail->ContentType = 'text/html';
-	$mail->CharSet 	   = 'utf-8';
-	//$mail->AddReplyTo($data['email']);
-	$mail->SetFrom($data['email'], $data['nombre']);
-	$mail->Sender      = $CONFIG['email'];
-	$mail->Subject 	   = ($data['subject']!='') ? $data['subject'] : $CONFIG['sitename'].' - Contacto';
-	$mail->Body 	   = emailBody($cuerpo);
-	$mail->AddAddress($CONFIG['email']);
-
-    if(LOCAL || $auth)
-	{
-		$mail->IsSMTP();
-		$mail->SMTPAuth = true;
+        $config = getModuleConfig($module['name']);
+        if($config['enabled'] !== true) continue;
+        
+        $tree[$config['name']] = array('text'=>$config['name'], 'panel'=>basename($module['path']), 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
     }
+    
+    ksort($tree); // Orden alfabético
 
-	if(LOCAL || $smtp)
-	{
-		$mail->Host	    = SMTP_HOST;
-		$mail->Port     = SMPT_PORT;
-		$mail->Username = SMTP_USER;
-		$mail->Password = SMTP_PASS;
-	}
-
-	return $mail->Send();
+    return $tree;
 }
 
 
-// Body generico simple listo para incluir contenido:
-function emailBody($content)
+// Get module config:
+function getModuleConfig($module='')
 {
-	global $CONFIG;
+    if(file_exists(ROOT.'modules/'.$module.'/config.php')) require(ROOT.'modules/'.$module.'/config.php');
+    elseif(file_exists(ROOT.'modules/'.$module.'/config.default.php')) require(ROOT.'modules/'.$module.'/config.default.php');
+    
+    elseif(file_exists(ROOT.'admin/'.$module.'/config.php')) require(ROOT.'admin/'.$module.'/config.php');
+    elseif(file_exists(ROOT.'admin/'.$module.'/config.default.php')) require(ROOT.'admin/'.$module.'/config.default.php');
 
-	$html = '<html>
-				<head>
-				   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-				   <title>'.$CONFIG['sitename'].'</title>
-				</head>
-				<body style="font-family:verdana,helvetica,arial,sans-serif;font-size:12px">
-				'.$content.'
-				</body>
-			</html>';
-
-	return $html;
+    return $config;
 }
+
+
+// Get admin tree footer buttons (admin config):
+function getAdminTreeButtons()
+{
+    $fbar = array();
+
+    if(is_array($GLOBALS['admin']['fbar_buttons']))
+    foreach($GLOBALS['admin']['fbar_buttons'] as $val) {
+        $fbar[] = "{text:'".$val['text']."', type:'button', width:'".(100 / count($GLOBALS['admin']['fbar_buttons']))."%', scale:'small', url:'".$val['url']."'}";
+    }
+    echo implode(',', $fbar);
+}
+
+
+// IP restriction (admin config):
+function checkAdminIpAccess()
+{
+    if(!empty($GLOBALS['admin']['allowed_ips']))
+    {
+        if(in_array($_SERVER['REMOTE_ADDR'], $GLOBALS['admin']['allowed_ips'])) return true;
+        else
+        {
+            foreach($GLOBALS['admin']['allowed_ips'] as $ip)
+            {
+                if(preg_match('/'.$ip.'/', $_SERVER['REMOTE_ADDR'])) return true;
+            }
+        }
+
+        header('HTTP/1.0 403 Forbidden');
+        exit('access denied');
+    }
+}
+
 

@@ -1,7 +1,7 @@
 <?php
 /* Create "config.php" & change */
 
-// Title:
+// Admin title:
 $GLOBALS['admin']['title'] = 'UX CMS';
 
 // DOCTYPE
@@ -17,4 +17,7 @@ $GLOBALS['admin']['default_module'] = 0;
 
 // Buttons tree footer (2 max): 
 $GLOBALS['admin']['fbar_buttons'][] = array('url' => HOST, 'text' => 'Home Page');
+
+// IP restriction:
+$GLOBALS['admin']['allowed_ips'] = array(); // Example: array('192.168.1.1', '200.55.*.*', '200.100.*.50');
 ?>

@@ -1,6 +1,9 @@
 <?php
 require(dirname(__FILE__).'/1nit.php');
 
+// IP restriction:
+checkAdminIpAccess();
+
 // Language:
 if(array_key_exists($_POST['locale'], $GLOBALS['admin']['locale'])) $aSession->set('locale', $_POST['locale']);
 elseif(!$aSession->exists('locale')) $aSession->set('locale', key($GLOBALS['admin']['locale']));
@@ -13,7 +16,6 @@ if(isset($_POST['login']))
         header('Location: '.ADMIN);
         exit;
     }
-    
     $error = true;
 }
 
