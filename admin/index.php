@@ -1,5 +1,5 @@
 <?php
-require(dirname(__FILE__).'/1nit.php');
+require(dirname(__FILE__).'/common/1nit.php');
 
 $tree = getAdminTree(); // Traigo los modulos para armar el arbol del admin
 foreach($tree as $values) { 

@@ -1,8 +1,8 @@
 <?php
-require(dirname(__FILE__).'/../includes/1nit.php');
+require(dirname(__FILE__).'/../../includes/1nit.php');
 
-if(file_exists(dirname(__FILE__).'/config.php')) require(dirname(__FILE__).'/config.php');
-else require(dirname(__FILE__).'/config.default.php');
+if(file_exists(dirname(__FILE__).'/../config.php')) require(dirname(__FILE__).'/../config.php');
+else require(dirname(__FILE__).'/../config.default.php');
 
 // Admin Session:
 $aSession = new Session('admin');
@@ -19,7 +19,7 @@ if(!$aSession->exists('adminID') && basename($_SERVER['PHP_SELF']) != 'login.php
 // Admin Log:
 $aLog = new AdminsLog;
 
-// Class loader:
+// Ajax class loader:
 if(isset($_GET['_class']))
 {
 	$db = new $_GET['_class'];

@@ -12,8 +12,8 @@ Ext.define('admins.store.Admins', {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)
         api: {
-            read: '1nit.php?_class=Admins&_method=extGrid', // reader
-            destroy: '1nit.php?_class=Admins&_method=extDelete' // writer
+            read: 'index.php?_class=Admins&_method=extGrid', // reader
+            destroy: 'index.php?_class=Admins&_method=extDelete' // writer
         },
         reader: {
             type: 'json',

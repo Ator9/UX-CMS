@@ -63,7 +63,7 @@ Ext.define('admins.view.Admins', {
         });
     
         this.form = Ext.create('Ext.form.Panel', {
-            url: '1nit.php?_class=Admins&_method=extSave',
+            url: 'index.php?_class=Admins&_method=extSave',
             region: 'east',
             border: false,
             disabled: true,

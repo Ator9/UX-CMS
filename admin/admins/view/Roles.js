@@ -51,7 +51,7 @@ Ext.define('admins.view.Roles', {
         };
     
         this.form = Ext.create('Ext.form.Panel', {
-            url: '1nit.php?_class=AdminsRoles&_method=extSave',
+            url: 'index.php?_class=AdminsRoles&_method=extSave',
             region: 'east',
             autoScroll: true, // true to show scroll bars automatically when necessary
             border: false,
