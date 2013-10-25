@@ -1,6 +1,6 @@
 Ext.define('admins.store.Admins', {
     extend: 'Ext.data.Store',
-    //idProperty: 'adminID',
+    
     fields: [ // Model
         'adminID', 'roleID', 'username', 'email', 'firstname', 'lastname','superuser', 'active',
         { name: 'last_login', type: 'date', dateFormat: 'c' } // dateFormat fix explorer bug
@@ -12,18 +12,17 @@ Ext.define('admins.store.Admins', {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)
         api: {
-            read: '1nit.php?_class=Admins&_method=extGrid',
-            destroy: '1nit.php?_class=Admins&_method=extDelete'
+            read: '1nit.php?_class=Admins&_method=extGrid', // reader
+            destroy: '1nit.php?_class=Admins&_method=extDelete' // writer
         },
         reader: {
             type: 'json',
-            root: 'data',
-            totalProperty: 'totalCount' // PagingToolbar
+            root: 'data', // php response name
+            totalProperty: 'totalCount' // PagingToolbar (php response name)
         },
         writer: {
             type: 'json',
-            root: 'data',
-            writeAllFields: true,
+            root: 'data', // php submit name (destroy)
             encode: true // True to send record data as a JSON encoded HTTP parameter named by the root configuration.
         }
     }

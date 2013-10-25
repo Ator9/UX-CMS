@@ -3,7 +3,6 @@ Ext.define('admins.view.Admins', {
     requires: ['Ext.ux.DualCheckbox'],
 
     // Renderers:
-    getIcon: function(value) { return '<span class="status-'+value+'"></span>'; }, // getIcon Y/N
     getRole: function(value, metaData, record, rowIndex, colIndex, store, gridView) { // getRole from store
         var find = this.roleStore.findRecord('roleID', value); // Finds the first matching Record in this store by a specific field value.
         return (find) ? find.get('name') : '';
@@ -31,8 +30,8 @@ Ext.define('admins.view.Admins', {
                 { header: 'ID', dataIndex: 'adminID', width: 50 },
                 { header: 'Username', dataIndex: 'username', width: 150 },
                 { header: 'Role', dataIndex: 'roleID', flex: 1, renderer: this.getRole, scope: this },
-                { header: 'Superuser', dataIndex: 'superuser', width: 62, align: 'center', renderer: this.getIcon },
-                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: this.getIcon },
+                { header: 'Superuser', dataIndex: 'superuser', width: 64, align: 'center', renderer: Admin.getStatusIcon },
+                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon },
                 { header: 'Last Login', dataIndex: 'last_login', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
             bbar: Ext.create('Ext.toolbar.Paging', { store: this.store, displayInfo: true }),

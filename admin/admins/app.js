@@ -1,5 +1,6 @@
 Ext.define('admins.app', {
     extend: 'Ext.tab.Panel',
+    
     initComponent: function() {
         var roleStore = Ext.create('admins.store.Roles').load(); // Shared store: try to avoid filters (pageSize/restrictions)
         

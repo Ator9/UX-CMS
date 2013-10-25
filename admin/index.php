@@ -18,9 +18,9 @@ Ext.application({
     name: 'Admin',
     appFolder: 'admin', // The path to the directory which contains application's classes. Defaults to: 'app'
     paths: { 'Ext.ux': 'resources/ux'<? echo $paths; ?> },
+    
     launch: function() {
         Admin = this;
-
         Admin.modules = <? echo json_encode($modules); ?>;
         Admin.firstModule = (location.hash!='') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : <? echo (int) $GLOBALS['admin']['default_module']; ?>;
         Admin.loadedModules = []; // Fills with loaded modules
@@ -55,6 +55,9 @@ Ext.application({
                 }
             }
         });
+
+        // Global Renderers:
+        Admin.getStatusIcon = function(value) { return '<span class="status-'+value+'"></span>'; }; // status-Y/N icons
     
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
@@ -64,7 +67,7 @@ Ext.application({
                 border: false,
                 tools: [{ type: 'close', handler: function(event, toolEl, panel) { location.href = 'login.php?logout=1'; } }]
             }, this.tree, this.cards ]
-        });
+        });  
     }
 });
 </script>
