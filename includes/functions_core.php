@@ -10,8 +10,7 @@ function __autoload($class)
 	if(file_exists(ROOT.'includes/classes/'.$class.'.php')) require(ROOT.'includes/classes/'.$class.'.php');
 	else {
 	    $dir = strtolower(current(preg_split('/(?<=[a-z]) (?=[A-Z])/x', $class)));
-	    if(file_exists(ROOT.'admin/'.$dir.'/classes/'.$class.'.php')) require(ROOT.'admin/'.$dir.'/classes/'.$class.'.php');
-	    else require(ROOT.'modules/'.$dir.'/classes/'.$class.'.php');
+        require(ROOT.'modules/'.$dir.'/classes/'.$class.'.php');
     }
 }
 
@@ -226,8 +225,7 @@ function vd($data)
 // Traigo los modulos para armar el arbol del admin:
 function getAdminTree()
 {
-    $dirs = array_merge(getFilesFromDir(ROOT.'admin'), getFilesFromDir(ROOT.'modules'));
-    foreach($dirs as $module)
+    foreach(getFilesFromDir(ROOT.'modules') as $module)
     {
         if(!is_dir($module['path'])) continue;
 
@@ -244,13 +242,10 @@ function getAdminTree()
 
 
 // Get module config:
-function getModuleConfig($module='')
+function getModuleConfig($module)
 {
     if(file_exists(ROOT.'modules/'.$module.'/config.php')) require(ROOT.'modules/'.$module.'/config.php');
     elseif(file_exists(ROOT.'modules/'.$module.'/config.default.php')) require(ROOT.'modules/'.$module.'/config.default.php');
-    
-    elseif(file_exists(ROOT.'admin/'.$module.'/config.php')) require(ROOT.'admin/'.$module.'/config.php');
-    elseif(file_exists(ROOT.'admin/'.$module.'/config.default.php')) require(ROOT.'admin/'.$module.'/config.default.php');
 
     return $config;
 }

@@ -1,10 +1,10 @@
 <?php
-require(dirname(__FILE__).'/common/1nit.php');
+require(dirname(__FILE__).'/1nit.php');
 
-$tree = getAdminTree(); // Traigo los modulos para armar el arbol del admin
+$tree = getAdminTree(); // Get module list to build tree panel
 foreach($tree as $values) { 
     $modules[] = $values['panel'];
-    if($values['panel'] != 'admins') $paths.= ", '".$values['panel']."': '../modules/".$values['panel']."/admin'";
+    $paths.= ", '".$values['panel']."': '../modules/".$values['panel']."/admin'";
 }
 
 require(dirname(__FILE__).'/common/header.extjs.php');
@@ -17,7 +17,7 @@ Ext.Loader.setConfig({
 Ext.application({
     name: 'Admin',
     appFolder: 'admin', // The path to the directory which contains application's classes. Defaults to: 'app'
-    paths: { 'Ext.ux': 'resources/ux'<? echo $paths; ?> },
+    paths: { 'Ext.ux': 'resources/ux' <? echo $paths; ?> },
     
     launch: function() {
         Admin = this;
@@ -56,8 +56,12 @@ Ext.application({
             }
         });
 
-        // Global Renderers:
+        // Global renderers/functions:
         Admin.getStatusIcon = function(value) { return '<span class="status-'+value+'"></span>'; }; // status-Y/N icons
+        Admin.getModulesUrl = function(module) {
+            var current_module = (module) ? module['$className'].split('.')[0]+'/admin' : '';
+            return '<? echo MODULES; ?>'+current_module;
+        };
     
         Ext.create('Ext.container.Viewport', {
             layout: 'border',

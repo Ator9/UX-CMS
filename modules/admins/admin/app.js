@@ -14,5 +14,3 @@ Ext.define('admins.app', {
         this.callParent(arguments);
     }
 });
-
-// console.log(this.__proto__['$className']);
