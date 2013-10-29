@@ -37,21 +37,17 @@ Ext.application({
             root: { children: <? echo json_encode(array_values($tree)); ?> },
             fbar: [ <? echo getAdminTreeButtons(); ?> ], // Footer Bar
             listeners: {
-                itemclick: {
-                    fn: function(view, record, item, index, e) {
-                        if(Ext.Array.indexOf(Admin.loadedModules, index) == -1) {
-                            Admin.loadedModules[Admin.loadedModules.length] = index;
-                            Admin.cards.add( Ext.create(record.raw.panel+'.app', { title: record.raw.text }) );
-                        }
-                        Admin.cards.layout.setActiveItem(Ext.Array.indexOf(Admin.loadedModules, index));
-                        location.hash = record.raw.panel;
+                itemclick: function(view, record, item, index, e) {
+                    if(Ext.Array.indexOf(Admin.loadedModules, index) == -1) {
+                        Admin.loadedModules[Admin.loadedModules.length] = index;
+                        Admin.cards.add( Ext.create(record.raw.panel+'.app', { title: record.raw.text }) );
                     }
+                    Admin.cards.layout.setActiveItem(Ext.Array.indexOf(Admin.loadedModules, index));
+                    location.hash = record.raw.panel;
                 },
-                afterrender: {
-                    fn: function(view, model) {
-                        this.getSelectionModel().select(Admin.firstModule); // select firstModule
-                        this.fireEvent('itemclick', this, this.getSelectionModel().getLastSelected(), '', Admin.firstModule); // activate firstModule
-                    }
+                afterrender: function(view, model) {
+                    this.getSelectionModel().select(Admin.firstModule); // select firstModule
+                    this.fireEvent('itemclick', this, this.getSelectionModel().getLastSelected(), '', Admin.firstModule); // activate firstModule
                 }
             }
         });
@@ -62,6 +58,11 @@ Ext.application({
             var current_module = (module) ? module['$className'].split('.')[0]+'/admin' : '';
             return '<? echo MODULES; ?>'+current_module;
         };
+        Admin.Msg = function(text, type) {
+            var title = (type) ? 'OK :)' : 'Error :(';
+            var icon  = (type) ? Ext.Msg.INFO : Ext.Msg.ERROR;
+            Ext.Msg.show({ title: title, msg: text, buttons: Ext.Msg.OK, icon: icon });
+        }
     
         Ext.create('Ext.container.Viewport', {
             layout: 'border',

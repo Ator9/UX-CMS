@@ -91,31 +91,12 @@ Ext.define('admins.view.Roles', {
                                         this.grid.fireEvent('itemclick', this.grid, this.grid.getSelectionModel().getLastSelected()); // Keep new inserted id
                                     }
                                 });
-                                Ext.Msg.show({
-                                    title: 'OK :)',
-                                    msg: 'Record saved succesfully.',
-                                    buttons: Ext.Msg.OK,
-                                    icon: Ext.Msg.INFO
-                                });
+                                Admin.Msg('Record saved succesfully.', true);
                             },
-                            failure: function(form, action) {
-                                Ext.Msg.show({
-                                    title: 'Error :(',
-                                    msg: 'An error ocurred.',
-                                    buttons: Ext.Msg.OK,
-                                    icon: Ext.Msg.ERROR
-                                });
-                            }
+                            failure: function(form, action) { Admin.Msg('An error ocurred.', false); }
                         });
                     }
-                    else {
-                        Ext.Msg.show({
-                            title: 'Error :(',
-                            msg: 'Please complete required fields',
-                            buttons: Ext.Msg.OK,
-                            icon: Ext.Msg.ERROR
-                        });
-                    }
+                    else Admin.Msg('Please complete required fields', false);
                 }
             }]
         });

@@ -61,6 +61,27 @@ Ext.define('admins.view.Admins', {
             forceSelection: true, // true to restrict the selected value to one of the values in the list, false to allow the user to set arbitrary text into the field.
             store: this.roleStore
         });
+
+        var form_handler = function() {
+            if(this.form.isValid()) {
+                this.form.submit({
+                    scope: this,
+                    success: function(form, action) {
+                        this.store.load({ // Use reload() if callback is not needed
+                            scope: this,
+                            callback: function(records, operation, success) {
+                                var index = this.store.findExact('adminID', form.getValues()['adminID']); // Search modified row grid position
+                                this.grid.getSelectionModel().select(Math.max(0, index)); // Select modified row (need "0" for new inserts)
+                                this.grid.fireEvent('itemclick', this.grid, this.grid.getSelectionModel().getLastSelected()); // Keep new inserted id
+                            }
+                        });
+                        Admin.Msg('Record saved succesfully.', true);
+                    },
+                    failure: function(form, action) { Admin.Msg('An error ocurred.', false); }
+                });
+            }
+            else Admin.Msg('Please complete required fields', false);
+        }
     
         this.form = Ext.create('Ext.form.Panel', {
             url: 'index.php?_class=Admins&_method=extSave',
@@ -88,45 +109,7 @@ Ext.define('admins.view.Admins', {
                 icon: 'resources/icons/disk-return-black.png',
                 height: 24,
                 scope: this,
-                handler: function() {
-                    if(this.form.isValid()) {
-                        this.form.submit({
-                            scope: this,
-                            success: function(form, action) {
-                                this.store.load({ // Use reload() if callback is not needed
-                                    scope: this,
-                                    callback: function(records, operation, success) {
-                                        var index = this.store.findExact('adminID', form.getValues()['adminID']); // Search modified row grid position
-                                        this.grid.getSelectionModel().select(Math.max(0, index)); // Select modified row (need "0" for new inserts)
-                                        this.grid.fireEvent('itemclick', this.grid, this.grid.getSelectionModel().getLastSelected()); // Keep new inserted id
-                                    }
-                                });
-                                Ext.Msg.show({
-                                    title: 'OK :)',
-                                    msg: 'Record saved succesfully.',
-                                    buttons: Ext.Msg.OK,
-                                    icon: Ext.Msg.INFO
-                                });
-                            },
-                            failure: function(form, action) {
-                                Ext.Msg.show({
-                                    title: 'Error :(',
-                                    msg: 'An error ocurred.',
-                                    buttons: Ext.Msg.OK,
-                                    icon: Ext.Msg.ERROR
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        Ext.Msg.show({
-                            title: 'Error :(',
-                            msg: 'Please complete required fields',
-                            buttons: Ext.Msg.OK,
-                            icon: Ext.Msg.ERROR
-                        });
-                    }
-                }
+                handler: form_handler
             }]
         });
 
