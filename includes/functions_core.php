@@ -251,6 +251,22 @@ function getModuleConfig($module)
 }
 
 
+// Get extjs class paths:
+function getAdminPaths()
+{
+    foreach(getFilesFromDir(ROOT.'modules') as $module)
+    {
+        if(!is_dir($module['path'])) continue;
+
+        $config = getModuleConfig($module['name']);
+        
+        $paths.= ", '".basename($module['path'])."': '../modules/".basename($module['path'])."/admin'";
+    }
+
+    return $paths;
+}
+
+
 // Get admin tree footer buttons (admin config):
 function getAdminTreeButtons()
 {

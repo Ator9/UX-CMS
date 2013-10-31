@@ -2,10 +2,7 @@
 require(dirname(__FILE__).'/1nit.php');
 
 $tree = getAdminTree(); // Get module list to build tree panel
-foreach($tree as $values) { 
-    $modules[] = $values['panel'];
-    $paths.= ", '".$values['panel']."': '../modules/".$values['panel']."/admin'";
-}
+foreach($tree as $values) $modules[] = $values['panel'];
 
 require(dirname(__FILE__).'/common/header.extjs.php');
 ?>
@@ -17,7 +14,7 @@ Ext.Loader.setConfig({
 Ext.application({
     name: 'Admin',
     appFolder: 'admin', // The path to the directory which contains application's classes. Defaults to: 'app'
-    paths: { 'Ext.ux': 'resources/ux' <? echo $paths; ?> },
+    paths: { 'Ext.ux': 'resources/ux' <? echo getAdminPaths(); ?> },
     
     launch: function() {
         Admin = this;
