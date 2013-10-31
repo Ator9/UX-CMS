@@ -179,6 +179,15 @@ class Conn extends mysqli
     {
         $this->{$this->_index} = $id;
     }
+    
+    
+    // Returns array
+    public function getData()
+    {
+        foreach($this->_fields as $field) $arr[$field] = $this->$field;
+        
+        return $arr;
+    }
 
 
     public function getCount()

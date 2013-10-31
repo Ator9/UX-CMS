@@ -31,7 +31,7 @@ class Admins extends ConnExt
 		    $this->set($rs->fetch_assoc());
 
 		    $aSession->set('adminID',   $this->getID());
-            $aSession->set('superuser', $this->superuser);
+            $aSession->set('adminData', $this->getData());
 
             // Log:
             $aLog->log('login');

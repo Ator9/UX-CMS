@@ -14,6 +14,9 @@ if(!$aSession->exists('adminID') && basename($_SERVER['PHP_SELF']) != 'login.php
     exit;
 }
 
+// Stores all admin data:
+$GLOBALS['admin']['data'] = $aSession->get('adminData');
+
 // ------------------------------------------------------------------------------
 
 // Admin Log:
