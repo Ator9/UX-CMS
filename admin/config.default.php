@@ -4,6 +4,9 @@
 // Admin title:
 $GLOBALS['admin']['title'] = 'UX CMS';
 
+// Admin login class:
+$GLOBALS['admin']['class'] = 'Admins';
+
 // DOCTYPE
 // http://www.sencha.com/forum/showthread.php?137309-Summary-of-lt-!DOCTYPE-gt-Recommendations
 // IE6/7 support: <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">

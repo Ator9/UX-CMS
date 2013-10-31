@@ -10,7 +10,7 @@ elseif(!$aSession->exists('locale')) $aSession->set('locale', key($GLOBALS['admi
 
 if(isset($_POST['login']))
 {
-    $db = new Admins();
+    $db = new $GLOBALS['admin']['class']();
     if($db->login($_POST['name'], $_POST['pass']))
     {
         header('Location: '.ADMIN);
