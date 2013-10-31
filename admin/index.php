@@ -13,7 +13,6 @@ Ext.Loader.setConfig({
 
 Ext.application({
     name: 'Admin',
-    appFolder: 'admin', // The path to the directory which contains application's classes. Defaults to: 'app'
     paths: { 'Ext.ux': 'resources/ux' <? echo getAdminPaths(); ?> },
     
     launch: function() {
