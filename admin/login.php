@@ -27,7 +27,7 @@ if(isset($_GET['logout']))
     exit;
 }
 
-// Check admin session - Ext.Ajax.on('requestexception'):
+// Check admin session with ExtJs Ajax (index.php):
 header('HTTP/1.1 401 Unauthorized');
 
 require(dirname(__FILE__).'/common/header.bootstrap.php');

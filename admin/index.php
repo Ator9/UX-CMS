@@ -76,7 +76,7 @@ Ext.application({
     }
 });
 
-// Check admin session & redirect if necessary:
+// Check admin session (redirects if necessary):
 Ext.Ajax.on('requestexception', function(conn, response, options, eOpts) {
     if(response.status === 401) window.location = 'login.php';
 });
