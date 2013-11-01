@@ -4,6 +4,7 @@ if(file_exists(dirname(__FILE__).'/config.php')) require(dirname(__FILE__).'/con
 else require(dirname(__FILE__).'/config.default.php');
 
 // Functions:
+require(dirname(__FILE__).'/functions_admin.php');
 require(dirname(__FILE__).'/functions_core.php');
 if(file_exists(dirname(__FILE__).'/functions.php')) require(dirname(__FILE__).'/functions.php'); 
 
