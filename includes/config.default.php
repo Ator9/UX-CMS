@@ -1,5 +1,5 @@
 <?php
-/* Create "config.php" & change */
+// TODO Create a "config.php" & change
 
 // Define local/online:
 if(in_array($_SERVER['HTTP_HOST'], array('localhost'))) define('LOCAL', true);

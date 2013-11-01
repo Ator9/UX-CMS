@@ -30,11 +30,10 @@ class Admins extends ConnExt
 		{
 		    $this->set($rs->fetch_assoc());
 
-		    $aSession->set('adminID',   $this->getID());
             $aSession->set('adminData', $this->getData());
 
             // Log:
-            $aLog->log('login');
+            $aLog->log(array('task' => 'login', 'adminID' => $this->getID()));
 
 		    // Last Login:
 		    $this->last_login = date('Y-m-d H:i:s');
@@ -45,3 +44,5 @@ class Admins extends ConnExt
 		return false;
 	}
 }
+
+

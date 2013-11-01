@@ -99,8 +99,7 @@ class Conn extends mysqli
 		if(in_array('date_created', $this->_fields)) $arr['date_created'] = 'NOW()';
 		if(in_array('adminID_created', $this->_fields))
 		{
-			global $aSession;
-			if(is_object($aSession)) $arr['adminID_created'] = '"'.$aSession->get('adminID').'"';
+			$arr['adminID_created'] = '"'.$GLOBALS['admin']['data']['adminID'].'"';
 		}
 
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
@@ -118,13 +117,12 @@ class Conn extends mysqli
 		foreach($this->_fields as $field)
 		{
 			$arr[$field] = $field.' = "'.$this->escape($this->$field).'"';
-		}
+	    }
+		
         unset($arr['date_updated']);
-
 		if(in_array('adminID_updated', $this->_fields))
 		{
-			global $aSession;
-			if(is_object($aSession)) $arr['adminID_updated'] = 'adminID_updated = "'.$aSession->get('adminID').'"';
+		    $arr['adminID_updated'] = 'adminID_updated = "'.$GLOBALS['admin']['data']['adminID'].'"';
 		}
 
 		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';
@@ -181,7 +179,7 @@ class Conn extends mysqli
     }
     
     
-    // Returns array
+    // Returns array:
     public function getData()
     {
         foreach($this->_fields as $field) $arr[$field] = $this->$field;
@@ -247,4 +245,5 @@ class Conn extends mysqli
 		return false;
 	}
 }
+
 

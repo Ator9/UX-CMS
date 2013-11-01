@@ -8,13 +8,13 @@ else require(dirname(__FILE__).'/../config.default.php');
 $aSession = new Session('admin');
 
 // Login check:
-if(!$aSession->exists('adminID') && basename($_SERVER['PHP_SELF']) != 'login.php')
+if(!$aSession->exists('adminData') && basename($_SERVER['PHP_SELF']) != 'login.php')
 {
     header('Location: '.ADMIN.'login.php');
     exit;
 }
 
-// Stores all admin data:
+// Stores all admin data glabally:
 $GLOBALS['admin']['data'] = $aSession->get('adminData');
 
 // ------------------------------------------------------------------------------

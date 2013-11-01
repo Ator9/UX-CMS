@@ -2,7 +2,7 @@
 
 /**
  *
- * Ejemplo:
+ * Example:
  *
  * http://qbnz.com/highlighter/geshi-doc.html
  *

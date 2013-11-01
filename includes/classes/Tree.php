@@ -312,3 +312,25 @@ class Tree extends Conn
  *
  */
 
+/*
+
+CREATE TABLE `categories` (
+	`categoryID` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(100) NOT NULL DEFAULT '',
+	`seo` VARCHAR(100) NOT NULL DEFAULT '',
+	`lft` SMALLINT(6) NOT NULL DEFAULT '0' COMMENT 'Necesito valores negativos para la operacion de mover nodos',
+	`rgt` SMALLINT(6) NOT NULL DEFAULT '0' COMMENT 'Necesito valores negativos para la operacion de mover nodos',
+	`parentID` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
+	`level` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`status` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+	`adminID_created` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
+	`adminID_updated` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
+	`date_created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+	`date_updated` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+	PRIMARY KEY (`categoryID`),
+	UNIQUE INDEX `seo` (`seo`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+*/

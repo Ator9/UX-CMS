@@ -1,4 +1,5 @@
 <?php
+// You can create a custom "includes/functions.php" (it will be loaded automatically)
 
 // Traigo los modulos para armar el arbol del admin:
 function getAdminTree()

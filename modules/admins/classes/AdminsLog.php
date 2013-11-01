@@ -4,6 +4,7 @@ class AdminsLog extends ConnExt
 	public $_table	= 'admins_logs';
 	public $_index	= 'logID';
 	public $_fields	= array('adminID',
+	                        //TODO'module',
 	                        'task',
 							'comment',
 							'ip',
@@ -27,15 +28,13 @@ class AdminsLog extends ConnExt
     
 
     // Log:
-    public function log($task, $comment='')
+    public function log($data=array())
     {
-        global $aSession;
-        if(is_object($aSession)) $this->adminID = $aSession->get('adminID');
-        
-        $this->task    = $task;
-        $this->comment = $comment;
+        $this->adminID = ($data['adminID']) ? $data['adminID'] : $GLOBALS['admin']['data']['adminID'];
+        $this->task    = $data['task'];
+        $this->comment = $data['comment'];
         $this->ip      = $_SERVER['REMOTE_ADDR'];
 
-        return parent::insert($data);
+        return parent::insert();
     }
 }

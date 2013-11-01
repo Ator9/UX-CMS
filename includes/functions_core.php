@@ -1,5 +1,5 @@
 <?php
-// You can create an empty "functions.php" & change it
+// You can create a custom "includes/functions.php" (it will be loaded automatically)
 
 // Class autoload:
 // Example 1: class task{} = modules/task/task.php
