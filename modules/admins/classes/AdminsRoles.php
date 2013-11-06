@@ -1,5 +1,5 @@
 <?php
-class AdminsRoles extends ConnExt
+class AdminsRoles extends ConnExtjs
 {
 	public $_table	= 'admins_roles';
 	public $_index	= 'roleID';

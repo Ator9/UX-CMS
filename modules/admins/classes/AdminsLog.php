@@ -1,5 +1,5 @@
 <?php
-class AdminsLog extends ConnExt
+class AdminsLog extends ConnExtjs
 {
 	public $_table	= 'admins_logs';
 	public $_index	= 'logID';

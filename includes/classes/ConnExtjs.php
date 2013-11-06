@@ -1,5 +1,5 @@
 <?php
-class ConnExt extends Conn
+class ConnExtjs extends Conn
 {
 	public $_table	= '';
 	public $_index	= '';
