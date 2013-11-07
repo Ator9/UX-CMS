@@ -7,8 +7,9 @@ foreach($tree as $values) $modules[] = $values['panel'];
 require(dirname(__FILE__).'/common/header.extjs.php');
 ?>
 <script>
+var LOCAL = <? echo var_export(LOCAL); ?>;
 Ext.Loader.setConfig({
-    disableCaching: <? echo (LOCAL) ? 'true' : 'false'; ?>
+    disableCaching: LOCAL
 }); 
 
 Ext.application({
@@ -51,7 +52,7 @@ Ext.application({
         // Global renderers/functions:
         Admin.getStatusIcon = function(value) { return '<span class="status-'+value+'"></span>'; }; // status-Y/N icons
         Admin.getModulesUrl = function(module) {
-            var current_module = (module) ? module['$className'].split('.')[0]+'/admin' : '';
+            var current_module = (module) ? '/'+module['$className'].split('.')[0]+'/admin' : '';
             return '<? echo MODULES; ?>'+current_module;
         };
         Admin.Msg = function(text, type) {

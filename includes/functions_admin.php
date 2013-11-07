@@ -4,18 +4,17 @@
 // Traigo los modulos para armar el arbol del admin:
 function getAdminTree()
 {
-    foreach(getFilesFromDir(ROOT.'modules') as $module)
+    foreach(getFilesFromDir(ROOT.'/modules') as $module)
     {
         if(!is_dir($module['path'])) continue;
 
         $config = getModuleConfig($module['name']);
         if($config['enabled'] !== true) continue;
-        
+
         $tree[$config['name']] = array('text'=>$config['name'], 'panel'=>basename($module['path']), 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
     }
     
     ksort($tree); // Orden alfabético
-
     return $tree;
 }
 
@@ -23,8 +22,8 @@ function getAdminTree()
 // Get module config:
 function getModuleConfig($module)
 {
-    if(file_exists(ROOT.'modules/'.$module.'/config.php')) require(ROOT.'modules/'.$module.'/config.php');
-    elseif(file_exists(ROOT.'modules/'.$module.'/config.default.php')) require(ROOT.'modules/'.$module.'/config.default.php');
+    if(file_exists(ROOT.'/modules/'.$module.'/config.php')) require(ROOT.'/modules/'.$module.'/config.php');
+    elseif(file_exists(ROOT.'/modules/'.$module.'/config.default.php')) require(ROOT.'/modules/'.$module.'/config.default.php');
 
     return $config;
 }
@@ -33,7 +32,7 @@ function getModuleConfig($module)
 // Get extjs class paths:
 function getAdminPaths()
 {
-    foreach(getFilesFromDir(ROOT.'modules') as $module)
+    foreach(getFilesFromDir(ROOT.'/modules') as $module)
     {
         if(!is_dir($module['path'])) continue;
 

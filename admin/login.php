@@ -23,7 +23,7 @@ if(isset($_GET['logout']))
 {
     $aSession->destroy();
 
-    header('Location: '.ADMIN.'login.php');
+    header('Location: '.ADMIN.'/login.php');
     exit;
 }
 

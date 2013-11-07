@@ -12,6 +12,11 @@ Ext.define('admins.app', {
             Ext.create('admins.view.Logs', { title: 'Logs' }),
             Ext.create('admins.view.Php', { title: 'PHP Info' })
         ];
+
+        if(LOCAL) {
+            this.items.push(Ext.create('admins.view.Documentation', { title: 'Documentation' }));
+        }
+        
         this.callParent(arguments);
     }
 });

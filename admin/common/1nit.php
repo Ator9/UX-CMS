@@ -10,7 +10,7 @@ $aSession = new Session('admin');
 // Login check:
 if(!$aSession->exists('adminData') && basename($_SERVER['PHP_SELF']) != 'login.php')
 {
-    header('Location: '.ADMIN.'login.php');
+    header('Location: '.ADMIN.'/login.php');
     exit;
 }
 

@@ -7,10 +7,10 @@
 // Example 3: class task_calendarNew{} = modules/task_calendar/task_calendarNew.php
 function __autoload($class)
 {
-	if(file_exists(ROOT.'includes/classes/'.$class.'.php')) require(ROOT.'includes/classes/'.$class.'.php');
+	if(file_exists(ROOT.'/includes/classes/'.$class.'.php')) require(ROOT.'/includes/classes/'.$class.'.php');
 	else {
 	    $dir = strtolower(current(preg_split('/(?<=[a-z]) (?=[A-Z])/x', $class)));
-        require(ROOT.'modules/'.$dir.'/classes/'.$class.'.php');
+        require(ROOT.'/modules/'.$dir.'/classes/'.$class.'.php');
     }
 }
 
@@ -71,9 +71,9 @@ function staticLoader($file='', $disallow=false)
 {
     if(LOCAL) $file = str_replace('-min', '', $file);
 
-    if($disallow) return HOST.$file;
+    if($disallow) return HOST.'/'.$file;
 
-    return HOST.preg_replace('{\\.([^./]+)$}', '.'.filemtime(ROOT.$file).'.$1', $file);
+    return HOST.'/'.preg_replace('{\\.([^./]+)$}', '.'.filemtime(ROOT.'/'.$file).'.$1', $file);
 }
 
 
