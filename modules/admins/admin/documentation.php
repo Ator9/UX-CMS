@@ -1,11 +1,8 @@
 <?php
 require(dirname(__FILE__).'/1nit.php');
+
+require(ROOT.'/admin/common/header.bootstrap.php');
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8" />
-<title>UX CMS - Documentation</title>
 <link rel="stylesheet" type="text/css" href="<? echo MODULES; ?>/admins/admin/resources/documentation.css" />
 </head>
 <body id="top">

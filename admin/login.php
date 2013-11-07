@@ -30,7 +30,7 @@ if(isset($_GET['logout']))
 // Check admin session with ExtJs Ajax (index.php):
 header('HTTP/1.1 401 Unauthorized');
 
-require(dirname(__FILE__).'/common/header.bootstrap.php');
+require(ROOT.'/admin/common/header.bootstrap.php');
 ?>
 <style type="text/css">
 body{padding:40px 0;background-color:#eee}

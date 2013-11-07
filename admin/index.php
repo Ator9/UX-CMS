@@ -4,7 +4,7 @@ require(dirname(__FILE__).'/common/1nit.php');
 $tree = getAdminTree(); // Get module list to build tree panel
 foreach($tree as $values) $modules[] = $values['panel'];
 
-require(dirname(__FILE__).'/common/header.extjs.php');
+require(ROOT.'/admin/common/header.extjs.php');
 ?>
 <script>
 var LOCAL = <? echo var_export(LOCAL); ?>;
