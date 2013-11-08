@@ -5,8 +5,8 @@
  * @version 15/05/2013 15:13:07
  *
  * Usage: 
- * Ext.create('Admin.extjs.GridRowDelete', { grid: this.grid })
- * Ext.create('Admin.extjs.GridRowDelete', { grid: this.grid, form: this.form })
+ * Ext.create('Ext.ux.GridRowDelete', { grid: this.grid })
+ * Ext.create('Ext.ux.GridRowDelete', { grid: this.grid, form: this.form })
  *
  */
  

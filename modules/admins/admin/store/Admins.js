@@ -2,7 +2,7 @@ Ext.define('admins.store.Admins', {
     extend: 'Ext.data.Store',
     
     fields: [ // Model
-        'adminID', 'roleID', 'username', 'email', 'firstname', 'lastname','superuser', 'active',
+        'adminID', 'roleID', 'username', 'email', 'firstname', 'lastname', 'superuser', 'active',
         { name: 'last_login', type: 'date', dateFormat: 'c' } // dateFormat fix explorer bug
     ],
     pageSize: 50, // Defaults to 25
