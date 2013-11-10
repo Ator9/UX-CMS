@@ -8,15 +8,17 @@ Ext.define('admins.view.Accounts', {
         this.tbar   = [
             Ext.create('Ext.ux.GridRowInsert', { grid: this.grid }), '-',
             Ext.create('Ext.ux.GridRowDelete', { grid: this.grid }), '-',
-            Ext.create('Ext.ux.Search', { store: this.store, columns: [ 'accountID', 'name' ] }) 
+            Ext.create('Ext.ux.Search', { store: this.accountStore, columns: [ 'accountID', 'name' ] }) 
         ];
         this.callParent(arguments);
     },
     
     createGrid: function() {
-        this.store = Ext.create('admins.store.Accounts').load(); // Store + Load
+        this.accountStore = Ext.create('admins.store.Accounts').load(); // Store + Load
+        
         this.grid  = Ext.create('Ext.grid.Panel', {
-            store: this.store,
+            store: this.accountStore,
+            plugins: [ Ext.create('Ext.grid.plugin.RowEditing') ],
             region: 'center',
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
@@ -26,7 +28,7 @@ Ext.define('admins.view.Accounts', {
                 { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon },
                 { header: 'Date Created', dataIndex: 'date_created', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
-            bbar: Ext.create('Ext.toolbar.Paging', { store: this.store, displayInfo: true }),
+            bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountStore, displayInfo: true }),
             listeners: {
                 itemclick: {
                     scope: this,
@@ -49,7 +51,10 @@ Ext.define('admins.view.Accounts', {
                         });*/
 
                     }
-                }               
+                },
+                edit: function(editor, context, eOpts) { 
+                    context.store.sync();
+                }           
             }
         });
         

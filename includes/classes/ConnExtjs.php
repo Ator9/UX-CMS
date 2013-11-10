@@ -27,6 +27,22 @@ class ConnExtjs extends Conn
     }
 
 
+    // Create:
+    public function extCreate()
+    {
+        $data = (array) json_decode(stripslashes($_POST['data']));
+
+        $this->get($data[$this->_index]);
+
+        $this->set($data);
+        
+        if($this->save()) $response['success'] = true;
+        else $response['success'] = false;
+
+        echo json_encode($response);
+    }
+
+
     // Delete:
     public function extDelete()
     {
