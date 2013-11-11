@@ -1,6 +1,6 @@
 Ext.define('admins.view.Accounts', {
     extend: 'Ext.panel.Panel',
-    requires: ['Ext.ux.DualCheckbox'],
+    //requires: ['Ext.ux.DualCheckbox'],
     
     initComponent: function() {
         this.layout = 'border'; // Any Container using the Border layout must have a child item with region: 'center'
@@ -18,7 +18,7 @@ Ext.define('admins.view.Accounts', {
         
         this.grid  = Ext.create('Ext.grid.Panel', {
             store: this.accountStore,
-            plugins: [ Ext.create('Ext.grid.plugin.RowEditing') ],
+            plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
             region: 'center',
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
@@ -40,20 +40,10 @@ Ext.define('admins.view.Accounts', {
                         this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
                         */
 
-                        /*var rec = [{
-                            Name: 'New Plant 1'
-                        }];*/
-                        
-                       /* this.store.insert(0);
-                        this.cellEditing.startEditByPosition({
-                            row: 0, 
-                            column: 0
-                        });*/
-
                     }
                 },
                 edit: function(editor, context, eOpts) { 
-                    context.store.sync();
+                    context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
                 }           
             }
         });

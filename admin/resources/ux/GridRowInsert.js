@@ -2,11 +2,13 @@
  * Grid Row Insert (button) plugin
  *
  * @author Sebastián Gasparri
- * @version 15/05/2013 15:13:07
+ * @version 10/11/2013 22:33:38 
  *
  * Usage: 
- * Ext.create('Ext.ux.GridRowInsert', { grid: this.grid }) // without form = grid editor
- * Ext.create('Ext.ux.GridRowInsert', { grid: this.grid, form: this.form })
+ * Ext.create('Ext.ux.GridRowInsert', { grid: this.grid }) // Using Ext.grid.plugin.RowEditing
+ * plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ]
+ * 
+ * Ext.create('Ext.ux.GridRowInsert', { grid: this.grid, form: this.form }) Using form
  *
  */
  
@@ -15,6 +17,7 @@ Ext.define('Ext.ux.GridRowInsert', {
 
     text: 'Add',
     icon: 'resources/icons/plus.png',
+    rowEditingColumn: 1,
 
     handler: function() {
         if(this.form) {
@@ -27,6 +30,7 @@ Ext.define('Ext.ux.GridRowInsert', {
 
         // Focus first input
         if(this.form) this.form.getComponent(0).getComponent(0).focus(); // Examines this container's items property and gets a direct child component of this container.
+        else if(this.grid.getPlugin('rowediting')) this.grid.getPlugin('rowediting').startEdit(0, this.rowEditingColumn); // Starts editing the specified record & column
     },
     
     initComponent: function() {
