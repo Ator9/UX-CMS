@@ -25,7 +25,7 @@ Ext.define('admins.view.Accounts', {
             columns: [
                 { header: 'ID', dataIndex: 'accountID', width: 50 },
                 { header: 'Name', dataIndex: 'name', width: 150, editor: { allowBlank: false } },
-                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon },
+                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon, editor: { xtype: 'combo', store: [ 'Y', 'N' ], allowBlank: false } },
                 { header: 'Date Created', dataIndex: 'date_created', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
             bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountStore, displayInfo: true }),
