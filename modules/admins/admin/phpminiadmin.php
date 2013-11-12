@@ -11,7 +11,7 @@ require(dirname(__FILE__).'/init.php');
  Dual licensed: GPL v2 and MIT, see texts at http://opensource.org/licenses/
 */
 
- $ACCESS_PWD=DB_PASS; #!!!IMPORTANT!!! this is script access password, SET IT if you want to protect you DB from public access
+ $ACCESS_PWD = (LOCAL) ? '' : DB_PASS; #!!!IMPORTANT!!! this is script access password, SET IT if you want to protect you DB from public access
 
  #DEFAULT db connection settings
  # --- WARNING! --- if you set defaults - it's recommended to set $ACCESS_PWD to protect your db!
