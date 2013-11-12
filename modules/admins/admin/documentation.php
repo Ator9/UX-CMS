@@ -1,5 +1,5 @@
 <?php
-require(dirname(__FILE__).'/1nit.php');
+require(dirname(__FILE__).'/init.php');
 
 require(ROOT.'/admin/common/header.bootstrap.php');
 ?>
