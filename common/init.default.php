@@ -1,7 +1,7 @@
 <?php
-// TODO Create a "common/1nit.php" & change
+// TODO Create a "common/init.php" & change
 
-require(dirname(__FILE__).'/../../includes/1nit.php');
+require(dirname(__FILE__).'/../../includes/init.php');
 
 // $session = new Session('web'); // Need session?
 

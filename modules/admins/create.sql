@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   UNIQUE KEY `username` (`username`),
   KEY `roleID` (`roleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `admins` VALUES (0, 'admin', 'test', '', '', '', 'Y', 'Y', '0000-00-00 00:00:00', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 
 CREATE TABLE IF NOT EXISTS `admins_logs` (

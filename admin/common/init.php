@@ -1,5 +1,5 @@
 <?php
-require(dirname(__FILE__).'/../../includes/1nit.php');
+require(dirname(__FILE__).'/../../includes/init.php');
 
 if(file_exists(dirname(__FILE__).'/../config.php')) require(dirname(__FILE__).'/../config.php');
 else require(dirname(__FILE__).'/../config.default.php');
