@@ -10,7 +10,8 @@ Ext.define('admins.app', {
             Ext.create('admins.view.Roles', { title: 'Roles', store: roleStore }),
             Ext.create('admins.view.Accounts', { title: 'Accounts' }),
             Ext.create('admins.view.Logs', { title: 'Logs' }),
-            Ext.create('admins.view.Php', { title: 'PHP Info' })
+            Ext.create('admins.view.Php', { title: 'PHP Info' }),
+            Ext.create('admins.view.PhpAdmin', { title: 'phpMiniAdmin' })
         ];
 
         if(LOCAL) {
