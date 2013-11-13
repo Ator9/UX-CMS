@@ -12,7 +12,7 @@ Ext.define('admins.store.Logs', {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)
         api: {
-            read: 'index.php?_class=AdminsLog&_method=extGrid' // reader
+            read: 'index.php?_class=adminsLog&_method=extGrid' // reader
         },
         reader: {
             type: 'json',

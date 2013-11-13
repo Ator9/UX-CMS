@@ -9,8 +9,8 @@ Ext.define('admins.store.Roles', {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)
         api: {
-            read: 'index.php?_class=AdminsRoles&_method=extGrid', // reader
-            destroy: 'index.php?_class=AdminsRoles&_method=extDelete' // writer
+            read: 'index.php?_class=adminsRoles&_method=extGrid', // reader
+            destroy: 'index.php?_class=adminsRoles&_method=extDelete' // writer
         },
         reader: {
             type: 'json',

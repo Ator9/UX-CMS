@@ -12,10 +12,10 @@ Ext.define('admins.store.Accounts', {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)
         api: {
-            read: 'index.php?_class=AdminsAccounts&_method=extGrid', // reader
-            create: 'index.php?_class=AdminsAccounts&_method=extCreate', // writer (grid RowEditing)
-            update: 'index.php?_class=AdminsAccounts&_method=extCreate', // writer (grid RowEditing)
-            destroy: 'index.php?_class=AdminsAccounts&_method=extDelete' // writer
+            read: 'index.php?_class=adminsAccounts&_method=extGrid', // reader
+            create: 'index.php?_class=adminsAccounts&_method=extCreate', // writer (grid RowEditing)
+            update: 'index.php?_class=adminsAccounts&_method=extCreate', // writer (grid RowEditing)
+            destroy: 'index.php?_class=adminsAccounts&_method=extDelete' // writer
         },
         reader: {
             type: 'json',

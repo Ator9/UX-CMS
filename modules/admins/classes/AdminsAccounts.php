@@ -1,5 +1,5 @@
 <?php
-class AdminsAccounts extends ConnExtjs
+class adminsAccounts extends ConnExtjs
 {
 	public $_table	= 'admins_accounts';
 	public $_index	= 'accountID';
