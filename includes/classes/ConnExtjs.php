@@ -77,8 +77,8 @@ class ConnExtjs extends Conn
         if(strpos($sql, 'ORDER BY')===false && $_GET['sort']) $sql.= ' ORDER BY '.$this->escape($_REQUEST['sort']).' '.$this->escape($_REQUEST['dir']);
         if(strpos($sql, 'LIMIT')===false) $sql.= ' LIMIT '.(int) $_REQUEST['start'].', '.(int) $_REQUEST['limit'];
         
-        // SELECT extra param:
-        $sql = str_replace('SELECT ', 'SELECT SQL_CALC_FOUND_ROWS ', $sql);
+        // Add SQL_CALC_FOUND_ROWS:
+        $sql = preg_replace('/SELECT /', 'SELECT SQL_CALC_FOUND_ROWS ', $sql, 1); // 1 = only first match
 
         // Query:   
         $rs = $this->query($sql);
