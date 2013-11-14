@@ -5,7 +5,7 @@
 $GLOBALS['admin']['title'] = 'UX CMS';
 
 // Admin login class:
-$GLOBALS['admin']['class'] = 'AdminsAdmin';
+$GLOBALS['admin']['class'] = 'adminsAdmin';
 
 // DOCTYPE
 // http://www.sencha.com/forum/showthread.php?137309-Summary-of-lt-!DOCTYPE-gt-Recommendations
