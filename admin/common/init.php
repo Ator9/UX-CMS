@@ -20,7 +20,7 @@ $GLOBALS['admin']['data'] = $aSession->get('adminData');
 // ------------------------------------------------------------------------------
 
 // Admin Log:
-$aLog = new AdminsLog;
+$aLog = new adminsLog;
 
 // Ajax class loader:
 if(isset($_GET['_class']))
