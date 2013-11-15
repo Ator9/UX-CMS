@@ -57,7 +57,7 @@ class CSVExport
     {
         if($filename!='') $this->filename = $filename;
 
-        $this->path = DIR_FILE_UPLOAD.'/'.$this->filename.'.csv';
+        $this->path = ROOT.'/upload/'.$this->filename.'.csv';
         $this->fp   = fopen($this->path, 'w');
     }
 
@@ -65,13 +65,13 @@ class CSVExport
     public function putResultset($resultset, $firstLineIsHeader=true)
     {
         if($firstLineIsHeader) $this->firstLine($resultset);
-        while($row = mysql_fetch_assoc($resultset)) $this->put($row);
+        while($row = $resultset->fetch_assoc()) $this->put($row);
     }
 
     // First Line:
     public function firstLine($resultset)
     {
-        while($row = mysql_fetch_field($resultset)) $rows[] = $row->name;
+        while($row = $resultset->fetch_field()) $rows[] = $row->name;
         $this->put($rows);
     }
 
@@ -99,7 +99,7 @@ class CSVExport
         $contents = str_replace('#@ @#', '', $contents);
         file_put_contents($this->path, $contents);
 
-        ob_clean(); // WTF!!! Esto soluciona una línea en blanco que aparece en seleccionesMX y arruina todo.
+        ob_clean(); // WTF!!! Esto soluciona una línea en blanco que arruina todo.
         
         if($zip)
         {
@@ -131,4 +131,5 @@ class CSVExport
 
 set_time_limit(0);
 ini_set('memory_limit', '1024M'); // Comprimir consume bastante...
+
 

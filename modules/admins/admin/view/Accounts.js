@@ -8,7 +8,7 @@ Ext.define('admins.view.Accounts', {
         this.tbar   = [
             Ext.create('Ext.ux.GridRowInsert', { grid: this.grid }), '-',
             Ext.create('Ext.ux.GridRowDelete', { grid: this.grid }), '-',
-            Ext.create('Ext.ux.Search', { store: this.accountStore, columns: [ 'accountID', 'name' ] }) 
+            Ext.create('Ext.ux.GridSearch', { store: this.accountStore, columns: [ 'accountID', 'name' ] }) 
         ];
         this.callParent(arguments);
     },

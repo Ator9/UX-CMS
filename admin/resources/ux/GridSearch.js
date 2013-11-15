@@ -1,16 +1,16 @@
 /**
- * Search plugin
+ * Grid Search plugin
  *
  * @author Sebastián Gasparri
- * @version 09/05/2013 20:45:21
+ * @version 14/11/2013 19:45:35 
  *
  * Usage: 
- * this.tbar = [ Ext.create('Admin.extjs.Search', { store: this.store }) ];
- * this.tbar = [ Ext.create('Admin.extjs.Search', { store: this.store, columns: [ 'adminID', 'username' ] }) ];
+ * Ext.create('Ext.ux.GridSearch', { store: this.store })
+ * Ext.create('Ext.ux.GridSearch', { store: this.store, columns: [ 'adminID', 'username' ] })
  *
  */
  
-Ext.define('Ext.ux.Search', {
+Ext.define('Ext.ux.GridSearch', {
     extend: 'Ext.toolbar.Toolbar',
 
     border: false,
