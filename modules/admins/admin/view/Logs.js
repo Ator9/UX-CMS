@@ -3,7 +3,6 @@ Ext.define('admins.view.Logs', {
     
     initComponent: function() {
         this.store = Ext.create('admins.store.Logs').load(); // Store + Load
-        
         this.tbar = [
             Ext.create('Ext.ux.GridSearch', { store: this.store, columns: [ 'logID', 'task', 'comment' ] }), '-',
             Ext.create('Ext.ux.GridExport', { store: this.store }) 
