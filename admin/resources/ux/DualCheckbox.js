@@ -6,7 +6,7 @@
  *
  * Usage: 
  * 1: Ext.create('Admin.extjs.DualCheckbox', { name: 'superuser', fieldLabel: 'Superuser' });
- * 2: { name: 'superuser', fieldLabel: 'Superuser', xtype: 'dualcheckbox', inputValue: '1',  inputValueOff: '0' }
+ * 2: { xtype: 'dualcheckbox', name: 'superuser', fieldLabel: 'Superuser', inputValue: '1',  inputValueOff: '0' }
  * 
  */
  
