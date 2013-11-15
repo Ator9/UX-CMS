@@ -17,5 +17,12 @@ Ext.define('admins.view.Logs', {
         ];
         this.bbar = Ext.create('Ext.toolbar.Paging', { store: this.store, displayInfo: true });
         this.callParent(arguments);
+    },
+    listeners: {
+        afterrender: function(view, model) { // actualizo la lista cada 1 minuto
+            setInterval(function(){
+                view.store.load();
+            }, 60000);
+        }
     }
 });
