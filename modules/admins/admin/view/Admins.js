@@ -14,8 +14,7 @@ Ext.define('admins.view.Admins', {
         this.tbar   = [
             Ext.create('Ext.ux.GridRowInsert', { grid: this.grid, form: this.form }), '-',
             Ext.create('Ext.ux.GridRowDelete', { grid: this.grid, form: this.form }), '-',
-            Ext.create('Ext.ux.GridSearch', { store: this.store, columns: [ 'adminID', 'username' ] }), '-',
-            Ext.create('Ext.ux.GridExport', { store: this.store, columns: [ 'adminID', 'username' ] }) 
+            Ext.create('Ext.ux.GridSearch', { store: this.store, columns: [ 'adminID', 'username' ] })
         ];
         this.callParent(arguments);
     },

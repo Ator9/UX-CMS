@@ -6,7 +6,6 @@
  *
  * Usage: 
  * Ext.create('Ext.ux.GridExport', { store: this.store })
- * Ext.create('Ext.ux.GridExport', { store: this.store, columns: [ 'adminID', 'username' ] })
  *
  */
  
