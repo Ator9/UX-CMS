@@ -19,10 +19,8 @@ Ext.define('admins.view.Logs', {
         this.callParent(arguments);
     },
     listeners: {
-        afterrender: function(view, model) { // actualizo la lista cada 1 minuto
-            setInterval(function(){
-                view.store.load();
-            }, 60000);
+        afterrender: function(view, model) {
+            setInterval(function() { view.store.load(); }, 60000); // actualizo la lista cada 1 minuto
         }
     }
 });
