@@ -14,12 +14,12 @@ Ext.Loader.setConfig({
 
 Ext.application({
     name: 'Admin',
-    paths: { 'Ext.ux': 'resources/ux' <? echo getAdminPaths(); ?> },
+    paths: { 'Ext.ux': 'resources/ux'<? echo getAdminPaths(); ?> },
     
     launch: function() {
         Admin = this;
         Admin.modules = <? echo json_encode($modules); ?>;
-        Admin.firstModule = (location.hash!='') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : <? echo (int) $GLOBALS['admin']['default_module']; ?>;
+        Admin.firstModule = (location.hash != '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : <? echo (int) $GLOBALS['admin']['default_module']; ?>;
         Admin.loadedModules = []; // Fills with loaded modules
         
         Admin.cards = Ext.create('Ext.panel.Panel', { region: 'center', layout: 'card', margin: '5 0 5 0', border: false } );
@@ -52,7 +52,7 @@ Ext.application({
         // Global renderers/functions:
         Admin.getStatusIcon = function(value) { return '<span class="status-'+value+'"></span>'; }; // status-Y/N icons
         Admin.getModulesUrl = function(module) {
-            var current_module = (module) ? '/'+module['$className'].split('.')[0]+'/admin' : '';
+            var current_module = (module) ? '/'+module.$className.split('.')[0]+'/admin' : '';
             return '<? echo MODULES; ?>'+current_module;
         };
         Admin.Msg = function(text, type) {
