@@ -19,7 +19,7 @@ Ext.define('admins.view.Accounts', {
         this.grid  = Ext.create('Ext.grid.Panel', {
             store: this.accountStore,
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
-            region: 'center',
+            region: 'center', // There must be a component with region: "center" in every border layout
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [

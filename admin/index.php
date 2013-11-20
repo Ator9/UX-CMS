@@ -19,7 +19,7 @@ Ext.application({
     launch: function() {
         Admin = this;
         Admin.modules = <? echo json_encode($modules); ?>;
-        Admin.firstModule = (location.hash != '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : <? echo (int) $GLOBALS['admin']['default_module']; ?>;
+        Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : <? echo (int) $GLOBALS['admin']['default_module']; ?>;
         Admin.loadedModules = []; // Fills with loaded modules
         
         Admin.cards = Ext.create('Ext.panel.Panel', { region: 'center', layout: 'card', margin: '5 0 5 0', border: false } );
@@ -35,7 +35,7 @@ Ext.application({
             fbar: [ <? echo getAdminTreeButtons(); ?> ], // Footer Bar
             listeners: {
                 itemclick: function(view, record, item, index, e) {
-                    if(Ext.Array.indexOf(Admin.loadedModules, index) == -1) {
+                    if(Ext.Array.indexOf(Admin.loadedModules, index) === -1) {
                         Admin.loadedModules[Admin.loadedModules.length] = index;
                         Admin.cards.add( Ext.create(record.raw.panel+'.app', { title: record.raw.text }) );
                     }
@@ -55,10 +55,10 @@ Ext.application({
             var current_module = (module) ? '/'+module.$className.split('.')[0]+'/admin' : '';
             return '<? echo MODULES; ?>'+current_module;
         };
-        Admin.Msg = function(text, type) {
+        Admin.Msg = function(msg, type) {
             var title = (type) ? 'OK :)' : 'Error :(';
             var icon  = (type) ? Ext.Msg.INFO : Ext.Msg.ERROR;
-            Ext.Msg.show({ title: title, msg: text, buttons: Ext.Msg.OK, icon: icon });
+            Ext.Msg.show({ title: title, msg: msg, buttons: Ext.Msg.OK, icon: icon });
         }
     
         Ext.create('Ext.container.Viewport', {

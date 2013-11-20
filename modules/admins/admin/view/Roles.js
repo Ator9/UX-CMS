@@ -14,7 +14,7 @@ Ext.define('admins.view.Roles', {
     createGrid: function() {
         this.grid  = Ext.create('Ext.grid.Panel', {
             store: this.store,
-            region: 'center',
+            region: 'center', // There must be a component with region: "center" in every border layout
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
