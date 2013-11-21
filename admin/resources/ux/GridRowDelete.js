@@ -2,10 +2,11 @@
  * Grid Row Delete plugin
  *
  * @author Sebastián Gasparri
- * @version 15/05/2013 15:13:07
+ * @version 21/11/2013 20:19:30
  * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
+ * Ext.create('Ext.ux.GridRowDelete') // Automatic grid (parent)
  * Ext.create('Ext.ux.GridRowDelete', { grid: this.grid });
  * Ext.create('Ext.ux.GridRowDelete', { grid: this.grid, form: this.form });
  *
@@ -20,6 +21,9 @@ Ext.define('Ext.ux.GridRowDelete', {
     disabled: true,
 
     handler: function() {
+
+        if(!this.grid) this.grid = this.up('grid'); // Uses parent grid if not set
+    
         if(this.grid.getSelectionModel().getSelection().length) {
             Ext.MessageBox.confirm({
                 title: 'Confirm',

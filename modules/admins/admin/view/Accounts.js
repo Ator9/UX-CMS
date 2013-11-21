@@ -1,15 +1,9 @@
 Ext.define('admins.view.Accounts', {
     extend: 'Ext.panel.Panel',
-    //requires: ['Ext.ux.DualCheckbox'],
     
     initComponent: function() {
         this.layout = 'border'; // Any Container using the Border layout must have a child item with region: 'center'
         this.items  = [ this.createGrid(), this.createForm() ];
-        this.tbar   = [
-            Ext.create('Ext.ux.GridRowInsert', { grid: this.grid }), '-',
-            Ext.create('Ext.ux.GridRowDelete', { grid: this.grid }), '-',
-            Ext.create('Ext.ux.GridSearch', { store: this.accountStore, columns: [ 'accountID', 'name' ] }) 
-        ];
         this.callParent(arguments);
     },
     
@@ -19,6 +13,11 @@ Ext.define('admins.view.Accounts', {
         this.grid  = Ext.create('Ext.grid.Panel', {
             store: this.accountStore,
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
+            tbar: [
+                Ext.create('Ext.ux.GridRowInsert'), '-',
+                Ext.create('Ext.ux.GridRowDelete'), '-',
+                Ext.create('Ext.ux.GridSearch', { store: this.accountStore, columns: [ 'accountID', 'name' ] }) 
+            ],
             region: 'center', // There must be a component with region: "center" in every border layout
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
