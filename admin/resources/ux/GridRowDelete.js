@@ -3,6 +3,7 @@
  *
  * @author Sebastián Gasparri
  * @version 15/05/2013 15:13:07
+ * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
  * Ext.create('Ext.ux.GridRowDelete', { grid: this.grid });

@@ -4,7 +4,7 @@ Ext.define('admins.store.Roles', {
     fields: [ 'roleID', 'name', 'permission' ], // Model
     pageSize: 999, // We need "infinite" to show all options in combobox (Defaults to 25)
     remoteSort: true, // Default false (javascript sort)
-    sorters: [{ property: 'roleID', direction: 'DESC' }],
+    sorters: [{ property: 'name', direction: 'ASC' }],
     proxy: {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)

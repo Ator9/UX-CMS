@@ -2,7 +2,8 @@
  * Grid Export plugin
  *
  * @author Sebastián Gasparri
- * @version 14/11/2013 19:45:14 
+ * @version 14/11/2013 19:45:14
+ * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
  * Ext.create('Ext.ux.GridExport', { store: this.store })

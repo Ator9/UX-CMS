@@ -3,6 +3,7 @@
  *
  * @author Sebastián Gasparri
  * @version 10/11/2013 22:33:38 
+ * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
  * plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ]

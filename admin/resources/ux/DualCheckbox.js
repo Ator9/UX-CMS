@@ -3,6 +3,7 @@
  *
  * @author Sebastián Gasparri
  * @version 20/10/2013 20:30:48
+ * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
  * 1: Ext.create('Admin.extjs.DualCheckbox', { name: 'superuser', fieldLabel: 'Superuser' });

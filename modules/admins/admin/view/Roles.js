@@ -14,13 +14,13 @@ Ext.define('admins.view.Roles', {
     createGrid: function() {
         this.grid  = Ext.create('Ext.grid.Panel', {
             store: this.store,
-            region: 'center', // There must be a component with region: "center" in every border layout
+            region: 'west',
             border: false,
+            width: 300,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
                 { header: 'ID', dataIndex: 'roleID', width: 50 },
-                { header: 'Name', dataIndex: 'name', width: 200 },
-                { header: 'Permission', dataIndex: 'permission', flex: 1 }
+                { header: 'Name', dataIndex: 'name', flex: 1 }
             ],
             listeners: {
                 itemclick: {
@@ -52,10 +52,9 @@ Ext.define('admins.view.Roles', {
     
         this.form = Ext.create('Ext.form.Panel', {
             url: 'index.php?_class=adminsRoles&_method=extSave',
-            region: 'east',
+            region: 'center', // There must be a component with region: "center" in every border layout
             autoScroll: true, // true to show scroll bars automatically when necessary
             border: false,
-            width: 400,
             disabled: true,
             bodyStyle: 'padding:5px', // Custom CSS styles to be applied to the panel's body element
             items: [{
