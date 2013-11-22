@@ -1,5 +1,5 @@
 <?php
-// TODO Create a "config.php" & change
+// TODO create a "config.php" & change
 
 // Admin title:
 $GLOBALS['admin']['title'] = 'UX CMS';
