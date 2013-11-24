@@ -8,15 +8,15 @@ Ext.define('admins.view.Accounts', {
     },
     
     createGrid: function() {
-        this.accountStore = Ext.create('admins.store.Accounts').load(); // Store + Load
+        var accountStore = Ext.create('admins.store.Accounts').load(); // Store + Load
         
-        this.grid  = Ext.create('Ext.grid.Panel', {
-            store: this.accountStore,
+        this.grid = Ext.create('Ext.grid.Panel', {
+            store: accountStore,
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
             tbar: [
                 Ext.create('Ext.ux.GridRowInsert'), '-',
                 Ext.create('Ext.ux.GridRowDelete'), '-',
-                Ext.create('Ext.ux.GridSearch', { store: this.accountStore, columns: [ 'accountID', 'name' ] }) 
+                Ext.create('Ext.ux.GridSearch', { columns: [ 'accountID', 'name' ] }) 
             ],
             region: 'center', // There must be a component with region: "center" in every border layout
             border: false,
@@ -27,7 +27,7 @@ Ext.define('admins.view.Accounts', {
                 { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon, editor: { xtype: 'combo', store: [ 'Y', 'N' ], allowBlank: false } },
                 { header: 'Date Created', dataIndex: 'date_created', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
-            bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountStore, displayInfo: true }),
+            bbar: Ext.create('Ext.toolbar.Paging', { store: accountStore, displayInfo: true }),
             listeners: {
                 itemclick: {
                     scope: this,

@@ -2,10 +2,11 @@
  * Grid Search plugin
  *
  * @author Sebastián Gasparri
- * @version 14/11/2013 19:45:35
+ * @version 24/11/2013 18:25:05
  * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
+ * Ext.create('Ext.ux.GridSearch') // Automatic store set
  * Ext.create('Ext.ux.GridSearch', { store: this.store })
  * Ext.create('Ext.ux.GridSearch', { store: this.store, columns: [ 'adminID', 'username' ] })
  *
@@ -54,6 +55,8 @@ Ext.define('Ext.ux.GridSearch', {
     },
 
     onRender: function(){
+        if(!this.store) this.store = this.up('grid').getStore(); // Uses grid store if not set
+    
         // Install key map ENTER:
         new Ext.util.KeyMap({
             target: this.field.id,

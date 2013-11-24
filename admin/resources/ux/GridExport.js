@@ -2,10 +2,11 @@
  * Grid Export plugin
  *
  * @author Sebastián Gasparri
- * @version 14/11/2013 19:45:14
+ * @version 24/11/2013 18:25:05
  * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
+ * Ext.create('Ext.ux.GridExport') // Automatic store set
  * Ext.create('Ext.ux.GridExport', { store: this.store })
  *
  */
@@ -20,6 +21,8 @@ Ext.define('Ext.ux.GridExport', {
     csvZip: false,
 
     handler: function() {
+        if(!this.store) this.store = this.up('grid').getStore(); // Uses grid store if not set
+        
         var store       = this.store;
         var sorters     = '&sort='+store.getSorters()[0].property+'&dir='+store.getSorters()[0].direction;
         var extraParams = '&'+Ext.urlEncode(store.getProxy().extraParams);

@@ -2,14 +2,14 @@
  * Grid Row Insert plugin
  *
  * @author Sebastián Gasparri
- * @version 21/11/2013 20:19:30
+ * @version 24/11/2013 18:25:05
  * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
  * plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ]
  * Ext.create('Ext.ux.GridRowInsert', { grid: this.grid }) // Using Ext.grid.plugin.RowEditing
  * 
- * Ext.create('Ext.ux.GridRowInsert') // Automatic grid (parent)
+ * Ext.create('Ext.ux.GridRowInsert') // Automatic grid set
  * Ext.create('Ext.ux.GridRowInsert', { grid: this.grid, form: this.form }) Using form
  *
  */

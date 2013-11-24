@@ -4,8 +4,8 @@ Ext.define('admins.view.Logs', {
     initComponent: function() {
         this.store = Ext.create('admins.store.Logs').load(); // Store + Load
         this.tbar = [
-            Ext.create('Ext.ux.GridSearch', { store: this.store, columns: [ 'logID', 'task', 'comment' ] }), '-',
-            Ext.create('Ext.ux.GridExport', { store: this.store, csvZip: true }) 
+            Ext.create('Ext.ux.GridSearch', { columns: [ 'logID', 'task', 'comment' ] }), '-',
+            Ext.create('Ext.ux.GridExport', { csvZip: true }) 
         ];
         this.columns = [
             { header: 'ID', dataIndex: 'logID', width: 80 },
