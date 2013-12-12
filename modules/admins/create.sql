@@ -58,3 +58,15 @@ CREATE TABLE IF NOT EXISTS `admins_accounts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE IF NOT EXISTS `admins_accounts_configs` (
+  `accountID` int(10) unsigned NOT NULL DEFAULT '0',
+  `key` varchar(255) NOT NULL DEFAULT '',
+  `value` text NOT NULL,
+  `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `accountID_key` (`accountID`,`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+

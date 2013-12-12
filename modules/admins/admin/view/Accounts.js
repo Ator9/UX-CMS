@@ -53,44 +53,28 @@ Ext.define('admins.view.Accounts', {
     
     createTabPanel: function() {
 
-        var config = Ext.create('Ext.grid.Panel', {
-            //store: accountStore,
+        var accountsConfig = Ext.create('admins.store.AccountsConfig'); // Store
+        accountsConfig.getProxy().extraParams = { types: true }; // Add extra param (works with grid reload)
+
+        var config = Ext.create('Ext.grid.property.Grid', {
+            store: accountsConfig.load(), // Load
             title: 'Configs',
-            plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
             region: 'west', // There must be a component with region: "center" in every border layout
             border: false,
-            height: 24,
-            columns: [
-                { header: 'ID', dataIndex: 'accountID', width: 50 },
-                { header: 'Name', dataIndex: 'name', flex:1, editor: { allowBlank: false } },
-                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon, editor: { xtype: 'combo', store: [ 'Y', 'N' ], allowBlank: false } }
-            ],
             listeners: {
-                itemclick: {
-                    scope: this,
-                    fn: function(view, record, item, index, e) {
-                        this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
-                        /*
-                        this.form.enable(); // enable form
-                        this.form.loadRecord(record); // load record from grid data
-                        this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
-                        */
-
-                    }
-                },
                 edit: function(editor, context, eOpts) { 
                     context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
                 }           
             }
         });
 
+/*
         var users = Ext.create('Ext.grid.Panel', {
             //store: accountStore,
             title: 'Users',
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
             region: 'west', // There must be a component with region: "center" in every border layout
             border: false,
-            height: 24,
             columns: [
                 { header: 'ID', dataIndex: 'accountID', width: 50 },
                 { header: 'Name', dataIndex: 'name', flex: 1, editor: { allowBlank: false } },
@@ -101,24 +85,18 @@ Ext.define('admins.view.Accounts', {
                     scope: this,
                     fn: function(view, record, item, index, e) {
                         this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
-                        /*
-                        this.form.enable(); // enable form
-                        this.form.loadRecord(record); // load record from grid data
-                        this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
-                        */
-
                     }
                 },
                 edit: function(editor, context, eOpts) { 
                     context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
                 }           
             }
-        });
+        });*/
     
         var tabs = Ext.create('Ext.tab.Panel', {
             region: 'center', // There must be a component with region: "center" in every border layout
             border: false,
-            items: [ config, users ]
+            items: [ config ]
         });
         
         return tabs;
