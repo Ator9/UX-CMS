@@ -54,19 +54,32 @@ Ext.define('admins.view.Accounts', {
     createTabPanel: function() {
 
         var accountsConfig = Ext.create('admins.store.AccountsConfig'); // Store
-        accountsConfig.getProxy().extraParams = { types: true }; // Add extra param (works with grid reload)
 
         var config = Ext.create('Ext.grid.property.Grid', {
-            store: accountsConfig.load(), // Load
+            store: accountsConfig,
             title: 'Configs',
             region: 'west', // There must be a component with region: "center" in every border layout
             border: false,
             listeners: {
-                edit: function(editor, context, eOpts) { 
+                edit: function(editor, context, eOpts) {
+                    console.log(editor);
+                    console.log(context);
+                    console.log(accountsConfig);
+                    console.log(context.store.sync());
                     context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
+                    console.log(3);
                 }           
             }
         });
+
+        // Load configs types:
+        Ext.Ajax.request({
+            url: 'index.php?_class=adminsAccountsConfig&_method=extGetConfigTypes',
+            success: function(response) {
+                config.sourceConfig = Ext.JSON.decode(response.responseText);
+            }
+        });
+
 
 /*
         var users = Ext.create('Ext.grid.Panel', {

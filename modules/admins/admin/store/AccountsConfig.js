@@ -2,11 +2,11 @@ Ext.define('admins.store.AccountsConfig', {
     extend: 'Ext.data.Store',
     
     fields: [ // Model
-        'key', 'value'
+        'name', 'value'
     ],
     pageSize: 999, // Defaults to 25
     remoteSort: true, // Default false (javascript sort)
-    //sorters: [{ property: 'key', direction: 'ASC' }],
+    sorters: [{ property: 'name', direction: 'ASC' }],
     proxy: {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)
