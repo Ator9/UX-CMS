@@ -18,7 +18,9 @@ class adminsAccountsConfig extends ConnExtjs
     // Get config types from config (Ext.grid.property.Grid):
     public function extGetConfigTypes()
     {
-        $config = getModuleConfig($GLOBALS['admin']['class']);
+        $dir = strtolower(current(preg_split('/(?<=[a-z]) (?=[A-Z])/x', $GLOBALS['admin']['class'])));
+    
+        $config = getModuleConfig($dir);
         foreach($config['accounts_config'] as $key => $type)
         {
             $source[$key]['type'] = $type;
