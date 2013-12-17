@@ -60,21 +60,26 @@ Ext.define('admins.view.Accounts', {
             title: 'Configs',
             region: 'west', // There must be a component with region: "center" in every border layout
             border: false,
+            bbar: Ext.create('Ext.toolbar.Paging', { store: accountsConfig, displayInfo: true }),
             listeners: {
                 edit: function(editor, context, eOpts) {
-                    console.log(editor);
-                    console.log(context);
-                    console.log(accountsConfig);
-                    console.log(context.store.sync());
-                    context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
-                    console.log(3);
-                }           
+                    // Submit changes. context.store.sync() not working. Manual update:
+                    Ext.Ajax.request({
+                        url: 'index.php?_class=adminsAccountsConfig&_method=extCreate',
+                        params: context.record.getData(),
+                        success: function(response) {
+                            if(Ext.JSON.decode(response.responseText).success) Admin.Msg('Record saved succesfully.', true);
+                            else Admin.Msg('An error ocurred while trying to save.', false);
+                        },
+                        failure: function(form, action) { Admin.Msg('An error ocurred.', false); }
+                    });
+                }
             }
         });
 
         // Load configs types:
         Ext.Ajax.request({
-            url: 'index.php?_class=adminsAccountsConfig&_method=extGetConfigTypes',
+            url: 'index.php?_class=adminsAccountsConfig&_method=extAccountsConfigTypes',
             success: function(response) {
                 config.sourceConfig = Ext.JSON.decode(response.responseText);
             }

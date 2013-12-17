@@ -29,6 +29,13 @@ function getModuleConfig($module)
 }
 
 
+// Get directory from classname:
+function getModuleDir($classname='')
+{
+    return strtolower(current(preg_split('/(?<=[a-z]) (?=[A-Z])/x', $classname)));
+}
+
+
 // Get extjs class paths:
 function getAdminPaths()
 {

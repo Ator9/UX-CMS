@@ -8,10 +8,7 @@
 function __autoload($class)
 {
 	if(file_exists(ROOT.'/includes/classes/'.$class.'.php')) require(ROOT.'/includes/classes/'.$class.'.php');
-	else {
-	    $dir = strtolower(current(preg_split('/(?<=[a-z]) (?=[A-Z])/x', $class)));
-        require(ROOT.'/modules/'.$dir.'/classes/'.$class.'.php');
-    }
+	else require(ROOT.'/modules/'.getModuleDir($class).'/classes/'.$class.'.php');
 }
 
 
@@ -22,26 +19,6 @@ function getCurrentUrl($strip_query=false)
     if($strip_query) $url = current(explode('?',$url));
 
     return $url;
-}
-
-
-function cleanUserInput($data)
-{
-	$data = array_map_recursive('strip_tags',$data);
-	$data = array_map_recursive('trim', $data);
-
-	return $data;
-}
-
-
-function array_map_recursive($func, $arr)
-{
-   $newArr = array();
-   foreach($arr as $key => $value)
-   {
-       $newArr[$key] = (is_array($value)) ? array_map_recursive($func, $value) : $func($value);
-   }
-   return $newArr;
 }
 
 
@@ -63,6 +40,26 @@ function isEmail($email)
 function getSubdomain()
 {
     return array_shift(explode('.', $_SERVER['HTTP_HOST']));
+}
+
+
+function cleanUserInput($data)
+{
+	$data = array_map_recursive('strip_tags', $data);
+	$data = array_map_recursive('trim', $data);
+
+	return $data;
+}
+
+
+function array_map_recursive($func, $arr)
+{
+   $newArr = array();
+   foreach($arr as $key => $value)
+   {
+       $newArr[$key] = (is_array($value)) ? array_map_recursive($func, $value) : $func($value);
+   }
+   return $newArr;
 }
 
 

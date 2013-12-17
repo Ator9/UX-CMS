@@ -56,7 +56,7 @@ class ConnExtjs extends Conn
 
 
     // Grid List:
-    public function extGrid($sql='', $filter=true)
+    public function extGrid($sql='', $filter=true, $return=false)
     {
         // Default select:
         if($sql=='') $sql = 'SELECT * FROM '.$this->_table.' WHERE 1';
@@ -89,13 +89,13 @@ class ConnExtjs extends Conn
             exit;
         }
         
-        if($rs->num_rows>0)
+        if($rs->num_rows > 0)
+        while($row = $rs->fetch_assoc())
         {
-            while($row = $rs->fetch_assoc())
-            {
-                $response['data'][] = $row;
-            }
+            $response['data'][] = $row;
         }
+
+        if($return) return $response['data'];
 
         $rs = $this->query('SELECT FOUND_ROWS()');
         list($response['totalCount']) = $rs->fetch_row();

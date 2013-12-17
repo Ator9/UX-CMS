@@ -1,9 +1,7 @@
 Ext.define('admins.store.AccountsConfig', {
     extend: 'Ext.data.Store',
     
-    fields: [ // Model
-        'name', 'value'
-    ],
+    fields: [ 'name', 'value' ], // Model
     pageSize: 999, // Defaults to 25
     remoteSort: true, // Default false (javascript sort)
     sorters: [{ property: 'name', direction: 'ASC' }],
@@ -11,18 +9,12 @@ Ext.define('admins.store.AccountsConfig', {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)
         api: {
-            read: 'index.php?_class=adminsAccountsConfig&_method=extGrid', // reader
-            update: 'index.php?_class=adminsAccountsConfig&_method=extCreate', // writer (grid RowEditing)
+            read: 'index.php?_class=adminsAccountsConfig&_method=extGridConfigs' // reader
         },
         reader: {
             type: 'json',
             root: 'data', // php response name
             totalProperty: 'totalCount' // PagingToolbar (php response name)
-        },
-        writer: {
-            type: 'json',
-            root: 'data', // php submit name (destroy|update)
-            encode: true // True to send record data as a JSON encoded HTTP parameter named by the root configuration.
         }
     }
 });
