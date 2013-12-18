@@ -95,7 +95,7 @@ class ConnExtjs extends Conn
             $response['data'][] = $row;
         }
 
-        if($return) return $response['data'];
+        if($return) return (array) $response['data'];
 
         $rs = $this->query('SELECT FOUND_ROWS()');
         list($response['totalCount']) = $rs->fetch_row();

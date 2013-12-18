@@ -32,14 +32,23 @@ class adminsAccountsConfig extends ConnExtjs
     // Grid List | Filters with config:
     public function extGridConfigs()
     {
+        // All results:
+        $sql = 'SELECT * FROM '.$this->_table.' WHERE accountID = 0';
+        foreach(parent::extGrid($sql, true, true) as $row)
+        {
+            $results[$row['name']] = $row['value'];
+        }
+
+        // Filter needed results:
         $config = getModuleConfig(getModuleDir($GLOBALS['admin']['class']));
-        $data   = array_keys($config['accounts_config']);
-
-        //foreach($data as $value) $union.= 'UNION SELECT "'.$value.'", "" ';
-
-        $sql = 'SELECT name, value FROM '.$this->_table.' WHERE name IN ("'.implode('","', $data).'")';
-
-        return parent::extGrid($sql);
+        ksort($config['accounts_config']);
+        foreach($config['accounts_config'] as $name => $type)
+        {
+            $response['data'][] = array('name' => $name, 'value' => $results[$name]);
+        }
+        
+        $response['totalCount'] = count($config['accounts_config']);
+    	echo json_encode($response);
     }
 
 
