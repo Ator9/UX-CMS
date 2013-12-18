@@ -16,7 +16,7 @@ Ext.define('admins.store.Logs', {
         },
         reader: {
             type: 'json',
-            root: 'data', // php response name
+            root: 'data', // php response name (api: read)
             totalProperty: 'totalCount' // PagingToolbar (php response)
         }
     }

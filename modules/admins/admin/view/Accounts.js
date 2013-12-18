@@ -11,8 +11,8 @@ Ext.define('admins.view.Accounts', {
         var accountStore = Ext.create('admins.store.Accounts').load(); // Store + Load
         
         var grid = Ext.create('Ext.grid.Panel', {
-            store: accountStore,
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
+            store: accountStore,
             tbar: [
                 Ext.create('Ext.ux.GridRowInsert'), '-',
                 Ext.create('Ext.ux.GridRowDelete'), '-',
@@ -31,7 +31,6 @@ Ext.define('admins.view.Accounts', {
             bbar: Ext.create('Ext.toolbar.Paging', { store: accountStore, displayInfo: true }),
             listeners: {
                 itemclick: {
-                    scope: this,
                     fn: function(view, record, item, index, e) {
                         this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
                         /*
@@ -53,35 +52,23 @@ Ext.define('admins.view.Accounts', {
     
     createTabPanel: function() {
 
-        var accountsConfig = Ext.create('admins.store.AccountsConfig'); // Store
+        var accountsConfig = Ext.create('admins.store.AccountsConfig').load(); // Store
 
-        var config = Ext.create('Ext.grid.property.Grid', {
+        var config = Ext.create('Ext.grid.Panel', {
+            plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
             store: accountsConfig,
             title: 'Configs',
-            region: 'west', // There must be a component with region: "center" in every border layout
             border: false,
+            columns: [
+                { header: 'Name', dataIndex: 'name', width: 200 },
+                { header: 'Value', dataIndex: 'value', width: 300, editor: { } },
+                { header: 'Description', dataIndex: 'description', flex: 1 }
+            ],
             bbar: Ext.create('Ext.toolbar.Paging', { store: accountsConfig, displayInfo: true }),
             listeners: {
                 edit: function(editor, context, eOpts) {
-                    // Submit changes. context.store.sync() not working. Manual update:
-                    Ext.Ajax.request({
-                        url: 'index.php?_class=adminsAccountsConfig&_method=extCreate',
-                        params: context.record.getData(),
-                        success: function(response) {
-                            if(Ext.JSON.decode(response.responseText).success) Admin.Msg('Record saved succesfully.', true);
-                            else Admin.Msg('An error ocurred while trying to save.', false);
-                        },
-                        failure: function(form, action) { Admin.Msg('An error ocurred.', false); }
-                    });
+                    context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
                 }
-            }
-        });
-
-        // Load configs types:
-        Ext.Ajax.request({
-            url: 'index.php?_class=adminsAccountsConfig&_method=extAccountsConfigTypes',
-            success: function(response) {
-                config.sourceConfig = Ext.JSON.decode(response.responseText);
             }
         });
 

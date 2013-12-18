@@ -18,9 +18,11 @@ class adminsAccountsConfig extends ConnExtjs
     // Create:
     public function extCreate()
     {
+        $data = (array) json_decode(stripslashes($_POST['data']));
+    
         $sql = 'INSERT INTO '.$this->_table.' (accountID, name, value) 
-                VALUES (0 , "'.$this->escape($_POST['name']).'", "'.$this->escape($_POST['value']).'")
-                ON DUPLICATE KEY UPDATE value = "'.$this->escape($_POST['value']).'"';
+                VALUES (0 , "'.$this->escape($data['name']).'", "'.$this->escape($data['value']).'")
+                ON DUPLICATE KEY UPDATE value = "'.$this->escape($data['value']).'"';
         
         if($this->query($sql)) $response['success'] = true;
         else $response['success'] = false;
@@ -30,7 +32,7 @@ class adminsAccountsConfig extends ConnExtjs
 
 
     // Grid List | Filters with config:
-    public function extGridConfigs()
+    public function extGrid()
     {
         // All results:
         $sql = 'SELECT * FROM '.$this->_table.' WHERE accountID = 0';
@@ -42,28 +44,14 @@ class adminsAccountsConfig extends ConnExtjs
         // Filter needed results:
         $config = getModuleConfig(getModuleDir($GLOBALS['admin']['class']));
         ksort($config['accounts_config']);
-        foreach($config['accounts_config'] as $name => $type)
+        foreach($config['accounts_config'] as $name => $desc)
         {
-            $response['data'][] = array('name' => $name, 'value' => $results[$name]);
+            $response['data'][] = array('name' => $name, 'value' => $results[$name], 'description' => $desc);
         }
         
         $response['totalCount'] = count($config['accounts_config']);
     	echo json_encode($response);
     }
-
-
-    // Get config types from config (Ext.grid.property.Grid):
-    public function extAccountsConfigTypes()
-    {
-        $config = getModuleConfig(getModuleDir($GLOBALS['admin']['class']));
-        foreach($config['accounts_config'] as $key => $type)
-        {
-            $source[$key]['type'] = $type;
-        }
-        
-        echo json_encode($source);
-    }
-
 
 }
 

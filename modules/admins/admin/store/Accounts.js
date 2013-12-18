@@ -19,12 +19,12 @@ Ext.define('admins.store.Accounts', {
         },
         reader: {
             type: 'json',
-            root: 'data', // php response name
+            root: 'data', // php response name (api: read)
             totalProperty: 'totalCount' // PagingToolbar (php response name)
         },
         writer: {
             type: 'json',
-            root: 'data', // php submit name (destroy)
+            root: 'data', // php submit name (api: destroy, update, create)
             encode: true // True to send record data as a JSON encoded HTTP parameter named by the root configuration.
         }
     }
