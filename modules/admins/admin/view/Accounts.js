@@ -19,7 +19,7 @@ Ext.define('admins.view.Accounts', {
                 Ext.create('Ext.ux.GridSearch', { columns: [ 'accountID', 'name' ] }) 
             ],
             region: 'west', // There must be a component with region: "center" in every border layout
-            width: 380,
+            width: 400,
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
