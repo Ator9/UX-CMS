@@ -54,11 +54,12 @@ Ext.define('admins.view.Accounts', {
 
         var accountsConfig = Ext.create('admins.store.AccountsConfig').load(); // Store
 
-        var config = Ext.create('Ext.grid.Panel', {
+        var config =  Ext.create('Ext.grid.Panel', {
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
             store: accountsConfig,
-            title: 'Configs',
+            title: 'Config',
             border: false,
+            region: 'center', // There must be a component with region: "center" in every border layout
             columns: [
                 { header: 'Name', dataIndex: 'name', width: 200 },
                 { header: 'Value', dataIndex: 'value', width: 300, editor: { } },
@@ -72,38 +73,6 @@ Ext.define('admins.view.Accounts', {
             }
         });
 
-
-/*
-        var users = Ext.create('Ext.grid.Panel', {
-            //store: accountStore,
-            title: 'Users',
-            plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
-            region: 'west', // There must be a component with region: "center" in every border layout
-            border: false,
-            columns: [
-                { header: 'ID', dataIndex: 'accountID', width: 50 },
-                { header: 'Name', dataIndex: 'name', flex: 1, editor: { allowBlank: false } },
-                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon, editor: { xtype: 'combo', store: [ 'Y', 'N' ], allowBlank: false } }
-            ],
-            listeners: {
-                itemclick: {
-                    scope: this,
-                    fn: function(view, record, item, index, e) {
-                        this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
-                    }
-                },
-                edit: function(editor, context, eOpts) { 
-                    context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
-                }           
-            }
-        });*/
-    
-        var tabs = Ext.create('Ext.tab.Panel', {
-            region: 'center', // There must be a component with region: "center" in every border layout
-            border: false,
-            items: [ config ]
-        });
-        
-        return tabs;
+        return config;
     }
 });
