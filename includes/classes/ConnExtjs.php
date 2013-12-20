@@ -36,7 +36,11 @@ class ConnExtjs extends Conn
 
         $this->set($data);
         
-        if($this->save()) $response['success'] = true;
+        if($this->save())
+        {
+            $response['success'] = true;
+            $response['data'][] = array($this->_index => $this->getID());
+        }
         else $response['success'] = false;
 
         echo json_encode($response);

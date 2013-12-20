@@ -18,10 +18,12 @@ class adminsAccountsConfig extends ConnExtjs
     // Create:
     public function extCreate()
     {
+        if(!is_numeric($_REQUEST['accountID'])) exit;
+    
         $data = (array) json_decode(stripslashes($_POST['data']));
     
         $sql = 'INSERT INTO '.$this->_table.' (accountID, name, value) 
-                VALUES (0 , "'.$this->escape($data['name']).'", "'.$this->escape($data['value']).'")
+                VALUES ('.$_REQUEST['accountID'].' , "'.$this->escape($data['name']).'", "'.$this->escape($data['value']).'")
                 ON DUPLICATE KEY UPDATE value = "'.$this->escape($data['value']).'"';
         
         if($this->query($sql)) $response['success'] = true;
@@ -34,8 +36,10 @@ class adminsAccountsConfig extends ConnExtjs
     // Grid List | Filters with config:
     public function extGrid()
     {
+        if(!is_numeric($_REQUEST['accountID'])) exit;
+    
         // All results:
-        $sql = 'SELECT * FROM '.$this->_table.' WHERE accountID = 0';
+        $sql = 'SELECT * FROM '.$this->_table.' WHERE accountID = '.$_REQUEST['accountID'];
         foreach(parent::extGrid($sql, true, true) as $row)
         {
             $results[$row['name']] = $row['value'];

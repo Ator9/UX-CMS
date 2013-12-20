@@ -135,11 +135,9 @@ class Conn extends mysqli
 		foreach($this->_dependantClasses as $className)
 		{
 			$db = new $className();
-			$rs = $db->getList(array('WHERE' => $this->_index.' = "'.$this->getID().'"'));
-			while($row = $rs->fetch_assoc())
-			{
-			    if($db->get($row[$db->_index])) $db->delete();
-			}
+	
+            $sql = 'DELETE FROM '.$db->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"';
+            $this->query($sql);
 		}
 
 		$sql = 'DELETE FROM '.$this->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"';
