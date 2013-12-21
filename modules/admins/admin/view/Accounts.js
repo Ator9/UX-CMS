@@ -15,7 +15,7 @@ Ext.define('admins.view.Accounts', {
             store: accountStore,
             tbar: [
                 Ext.create('Ext.ux.GridRowInsert'), '-',
-                Ext.create('Ext.ux.GridRowDelete', { form: this.form }), '-',
+                Ext.create('Ext.ux.GridRowDelete', { form: this.config.up() }), '-',
                 Ext.create('Ext.ux.GridSearch', { columns: [ 'accountID', 'name' ] }) 
             ],
             region: 'west', // There must be a component with region: "center" in every border layout
@@ -31,10 +31,10 @@ Ext.define('admins.view.Accounts', {
             bbar: Ext.create('Ext.toolbar.Paging', { store: accountStore, displayInfo: true }),
             listeners: {
                 itemclick: {
-                    scope:this,
+                    scope: this,
                     fn: function(view, record, item, index, e) {
-                        this.form.enable(); // enable form
-                        this.form.setTitle('Config - ' + record.get('name'));
+                        this.down('tabpanel').enable(); // enable form
+                        //this.config.setTitle('Config - ' + record.get('name'));
                         
                         this.accountsConfigStore.getProxy().extraParams = { accountID: record.get('accountID') }; // set accountID
                         this.accountsConfigStore.load(); // get results from accountID
@@ -43,7 +43,10 @@ Ext.define('admins.view.Accounts', {
                 },
                 edit: function(editor, context, eOpts) { 
                     context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
-                }           
+                },
+                update: function(store, records){
+		            console.log('datachanged/count: '+store.count())
+	            }       
             }
         });
         
@@ -52,14 +55,13 @@ Ext.define('admins.view.Accounts', {
     
     createTabPanel: function() {
         this.accountsConfigStore = Ext.create('admins.store.AccountsConfig');
+        this.accountsUserStore = Ext.create('admins.store.AccountsConfig');
 
-        this.form =  Ext.create('Ext.grid.Panel', {
+        this.config =  Ext.create('Ext.grid.Panel', {
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
             store: this.accountsConfigStore,
             title: 'Config',
             border: false,
-            disabled: true,
-            region: 'center', // There must be a component with region: "center" in every border layout
             columns: [
                 { header: 'Name', dataIndex: 'name', width: 200 },
                 { header: 'Value', dataIndex: 'value', width: 300, editor: {} },
@@ -73,6 +75,31 @@ Ext.define('admins.view.Accounts', {
             }
         });
 
-        return this.form;
+        this.users =  Ext.create('Ext.grid.Panel', {
+            plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
+            store: this.accountsUserStore,
+            title: 'Users',
+            border: false,
+            columns: [
+                { header: 'Name', dataIndex: 'name', width: 200 },
+                { header: 'Value', dataIndex: 'value', width: 300, editor: {} },
+                { header: 'Description', dataIndex: 'description', flex: 1 }
+            ],
+            bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountsUserStore, displayInfo: true }),
+            listeners: {
+                edit: function(editor, context, eOpts) {
+                    context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
+                }
+            }
+        });
+
+        var tabs = Ext.create('Ext.tab.Panel', {
+            region: 'center', // There must be a component with region: "center" in every border layout
+            border: false,
+            disabled: true,
+            items: [ this.config, this.users ]
+        });
+
+        return tabs;
     }
 });
