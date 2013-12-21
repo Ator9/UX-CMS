@@ -58,10 +58,11 @@ Ext.define('admins.view.Accounts', {
             store: this.accountsConfigStore,
             title: 'Config',
             border: false,
+            disabled: true,
             region: 'center', // There must be a component with region: "center" in every border layout
             columns: [
                 { header: 'Name', dataIndex: 'name', width: 200 },
-                { header: 'Value', dataIndex: 'value', width: 300, editor: { } },
+                { header: 'Value', dataIndex: 'value', width: 300, editor: {} },
                 { header: 'Description', dataIndex: 'description', flex: 1 }
             ],
             bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountsConfigStore, displayInfo: true }),
