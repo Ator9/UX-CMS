@@ -63,20 +63,9 @@ class Conn extends mysqli
 	}
 	
 
-    public function getList($sql='', $limit=0, $links=0)
+    public function getList($sql='')
 	{
 		if($sql=='') $sql = 'SELECT t1.* FROM '.$this->_table.' AS t1';
-		if($limit > 0)
-		{
-			$rs  		= $this->query(queryModificator($sql, array('SELECT' => 'COUNT(*)')));
-    		list($cant) = $rs->fetch_row();
-    		$paginator  = new Paginator($limit, $links, $cant);
-
-    		$data = $this->query($sql.$paginator->sql);
-    		$data->paginator = $paginator;
-
-    		return $data;
-		}
 
 		return $this->query($sql);
 	}
@@ -135,9 +124,19 @@ class Conn extends mysqli
 		foreach($this->_dependantClasses as $className)
 		{
 			$db = new $className();
-	
-            $sql = 'DELETE FROM '.$db->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"';
-            $this->query($sql);
+			if($db->_index != '') // with primary index (checks more _dependantClasses)
+			{
+                $rs = $db->getList('SELECT * FROM '.$db->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"');
+                while($row = $rs->fetch_assoc())
+                {
+                    if($db->get($row[$db->_index])) $db->delete();
+                }
+			}
+			else // no primary index (no _dependantClasses)
+            {
+                $sql = 'DELETE FROM '.$db->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"';
+                $this->query($sql);
+            }
 		}
 
 		$sql = 'DELETE FROM '.$this->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"';
