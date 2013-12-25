@@ -78,7 +78,7 @@ class ConnExtjs extends Conn
             $sql = str_replace('WHERE 1', 'WHERE 1 AND ('.implode(' OR ', $where).') ', $sql);
         }
 
-        if(strpos($sql, 'ORDER BY')===false && $_GET['sort']) $sql.= ' ORDER BY '.$this->escape($_REQUEST['sort']).' '.$this->escape($_REQUEST['dir']);
+        if(strpos($sql, 'ORDER BY')===false && in_array($_GET['sort'], $this->_fields)) $sql.= ' ORDER BY '.$this->escape($_REQUEST['sort']).' '.$this->escape($_REQUEST['dir']);
         if($_REQUEST['csvExport']!='Y' && strpos($sql, 'LIMIT')===false) $sql.= ' LIMIT '.(int) $_REQUEST['start'].', '.(int) $_REQUEST['limit'];
         
         // Query SQL_CALC_FOUND_ROWS:

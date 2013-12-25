@@ -33,11 +33,16 @@ Ext.define('admins.view.Accounts', {
                 itemclick: {
                     scope: this,
                     fn: function(view, record, item, index, e) {
-                        this.down('tabpanel').enable(); // enable form
-                        //this.config.setTitle('Config - ' + record.get('name'));
+                        this.down('panel').enable(); // enable form
+                        this.config.setTitle('Config - ' + record.get('name'));
+                        this.admins.setTitle('Admins - ' + record.get('name'));
                         
                         this.accountsConfigStore.getProxy().extraParams = { accountID: record.get('accountID') }; // set accountID
                         this.accountsConfigStore.load(); // get results from accountID
+
+                        this.accountsAdminsStore.getProxy().extraParams = { accountID: record.get('accountID') }; // set accountID
+                        this.accountsAdminsStore.load(); // get results from accountID
+                        
                         this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
                     }
                 },
@@ -55,19 +60,20 @@ Ext.define('admins.view.Accounts', {
     
     createTabPanel: function() {
         this.accountsConfigStore = Ext.create('admins.store.AccountsConfig');
-        this.accountsUserStore = Ext.create('admins.store.AccountsConfig');
+        this.accountsAdminsStore = Ext.create('admins.store.AccountsAdmins');
 
         this.config =  Ext.create('Ext.grid.Panel', {
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
             store: this.accountsConfigStore,
             title: 'Config',
+            region: 'north',
+            height: 200,
             border: false,
             columns: [
                 { header: 'Name', dataIndex: 'name', width: 200 },
                 { header: 'Value', dataIndex: 'value', width: 300, editor: {} },
                 { header: 'Description', dataIndex: 'description', flex: 1 }
             ],
-            bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountsConfigStore, displayInfo: true }),
             listeners: {
                 edit: function(editor, context, eOpts) {
                     context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
@@ -75,29 +81,39 @@ Ext.define('admins.view.Accounts', {
             }
         });
 
-        this.users =  Ext.create('Ext.grid.Panel', {
-            plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
-            store: this.accountsUserStore,
-            title: 'Users',
-            border: false,
-            columns: [
-                { header: 'Name', dataIndex: 'name', width: 200 },
-                { header: 'Value', dataIndex: 'value', width: 300, editor: {} },
-                { header: 'Description', dataIndex: 'description', flex: 1 }
+        this.admins =  Ext.create('Ext.grid.Panel', {
+            store: this.accountsAdminsStore,
+            region: 'center',
+            tbar: [
+                Ext.create('Ext.ux.GridRowInsert'), '-',
+                Ext.create('Ext.ux.GridRowDelete', { itemId: 'gridDeleteButton2', form: this.config.up() }), '-',
+                Ext.create('Ext.ux.GridSearch', { columns: [ 'adminID', 'username', 'email' ] }) 
             ],
-            bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountsUserStore, displayInfo: true }),
+            title: 'Admins',
+            border: false,
+            style: { borderTop: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
+            columns: [
+                { header: 'ID', dataIndex: 'adminID', width: 50 },
+                { header: 'Username', dataIndex: 'username', width: 150 },
+                { header: 'E-mail', dataIndex: 'email', flex: 1 }
+            ],
+            bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountsAdminsStore, displayInfo: true }),
             listeners: {
-                edit: function(editor, context, eOpts) {
-                    context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
-                }
+                itemclick: {
+                    scope: this,
+                    fn: function(view, record, item, index, e) {
+                        this.down('#gridDeleteButton2').setDisabled(false); // Enable delete button
+                    }
+                }    
             }
         });
 
-        var tabs = Ext.create('Ext.tab.Panel', {
+        var tabs = Ext.create('Ext.panel.Panel', {
+            layout: 'border',
             region: 'center', // There must be a component with region: "center" in every border layout
             border: false,
             disabled: true,
-            items: [ this.config, this.users ]
+            items: [ this.config, this.admins ]
         });
 
         return tabs;

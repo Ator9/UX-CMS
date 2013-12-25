@@ -10,7 +10,7 @@ class adminsAccounts extends ConnExtjs
 							'date_created',
 							'date_updated');
     
-	protected $_dependantClasses = array('adminsAccountsConfig'); // delete childrens
+	protected $_dependantClasses = array('adminsAccountsAdmins', 'adminsAccountsConfig'); // delete childrens
 
 	// ------------------------------------------------------------------------------- //
 
