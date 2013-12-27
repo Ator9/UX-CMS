@@ -52,6 +52,40 @@ function getAdminPaths()
 }
 
 
+// Get admin accounts select (admin config):
+function getAdminAccounts()
+{
+    /*$tbar = array();
+
+    if(is_array($GLOBALS['admin']['fbar_buttons']))
+    foreach($GLOBALS['admin']['fbar_buttons'] as $val) {
+        $fbar[] = "{text:'".$val['text']."', type:'button', width:'".(100 / count($GLOBALS['admin']['fbar_buttons']))."%', scale:'small', url:'".$val['url']."'}";
+    }
+    echo implode(',', $fbar);
+*/
+
+    echo ",tbar: [{ 
+            xtype: 'combobox',
+            name: 'accountID',
+            displayField: 'name',
+            valueField: 'accountID',
+            width: '100%',
+            emptyText: 'Select Account',
+            fields: [ 'name', 'accountID' ],
+            store: Ext.create('Ext.data.Store', {
+                fields: [ 'accountID', 'name' ],
+                data: [{ 'accountID': 1, 'name': 'Readers' }, { 'accountID': 2, 'name': 'Universal' }]
+            }),
+
+            listeners: {
+                'select': function(combo, records, eOpts) {
+                    //Admin.accountID = records[0].get('accountID');
+                }
+            }
+          }]";
+}
+
+
 // Get admin tree footer buttons (admin config):
 function getAdminTreeButtons()
 {

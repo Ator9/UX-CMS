@@ -87,7 +87,7 @@ Ext.define('admins.view.Accounts', {
             tbar: [
                 Ext.create('Ext.ux.GridRowInsert'), '-',
                 Ext.create('Ext.ux.GridRowDelete', { itemId: 'gridDeleteButton2', form: this.config.up() }), '-',
-                Ext.create('Ext.ux.GridSearch', { columns: [ 'adminID', 'username', 'email' ] }) 
+                Ext.create('Ext.ux.GridSearch', { columns: [ 'adm.adminID', 'username', 'email' ] }) 
             ],
             title: 'Admins',
             border: false,

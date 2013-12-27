@@ -47,6 +47,7 @@ Ext.application({
                     this.fireEvent('itemclick', this, this.getSelectionModel().getLastSelected(), '', Admin.firstModule); // activate firstModule
                 }
             }
+            <? if($GLOBALS['admin']['accounts_enabled']===true) getAdminAccounts(); ?>
         });
 
         // Global renderers/functions:

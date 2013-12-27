@@ -10,7 +10,7 @@ Ext.define('admins.store.AccountsAdmins', {
         simpleSortMode: true, // Default false (enable multiple sorts)
         api: {
             read: 'index.php?_class=adminsAccountsAdmins&_method=extGrid', // reader
-            update: 'index.php?_class=adminsAccountsAdmins&_method=extCreate' // writer (grid RowEditing)
+            destroy: 'index.php?_class=adminsAccountsAdmins&_method=extDelete' // writer
         },
         reader: {
             type: 'json',

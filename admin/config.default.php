@@ -1,11 +1,14 @@
 <?php
-// TODO create a "config.php" & change
+// Create "config.php" & change
 
 // Admin title:
 $GLOBALS['admin']['title'] = 'UX CMS';
 
 // Admin login class:
 $GLOBALS['admin']['class'] = 'adminsAdmin';
+
+// Admin accounts needed:
+$GLOBALS['admin']['accounts_enabled'] = true;
 
 // DOCTYPE
 // http://www.sencha.com/forum/showthread.php?137309-Summary-of-lt-!DOCTYPE-gt-Recommendations
@@ -23,4 +26,5 @@ $GLOBALS['admin']['fbar_buttons'][] = array('url' => HOST, 'text' => 'Home Page'
 
 // IP restriction:
 $GLOBALS['admin']['allowed_ips'] = array(); // Example: array('192.168.1.1', '200.55.*.*', '200.100.*.50');
+
 

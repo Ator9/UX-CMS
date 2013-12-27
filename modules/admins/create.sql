@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`adminID`),
   UNIQUE KEY `username` (`username`),
-  KEY `roleID` (`roleID`)
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `admins` VALUES (0, 'admin', 'test', '', '', '', 'Y', 'Y', '0000-00-00 00:00:00', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
