@@ -1,5 +1,5 @@
 <?php
-// TODO Create a "common/init.php" & change
+// Create "common/init.php" & change
 
 require(dirname(__FILE__).'/../../includes/init.php');
 
