@@ -76,7 +76,6 @@ function getAdminAccounts()
                 fields: [ 'accountID', 'name' ],
                 data: [{ 'accountID': 1, 'name': 'Readers' }, { 'accountID': 2, 'name': 'Universal' }]
             }),
-
             listeners: {
                 'select': function(combo, records, eOpts) {
                     //Admin.accountID = records[0].get('accountID');
