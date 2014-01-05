@@ -4,7 +4,7 @@
 // Admin title:
 $GLOBALS['admin']['title'] = 'UX CMS';
 
-// Admin login class:
+// Admin login class (Default "adminsAdmin"):
 $GLOBALS['admin']['class'] = 'adminsAdmin';
 
 // Admin accounts needed:
@@ -15,7 +15,7 @@ $GLOBALS['admin']['accounts_enabled'] = true;
 // IE6/7 support: <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 $GLOBALS['admin']['doctype'] = '<!DOCTYPE html>';
 
-// languages (Default first position):
+// Languages (Default first position):
 $GLOBALS['admin']['locale'] = array('es'=>'Español', 'en'=>'English');
 
 // Default module: 
