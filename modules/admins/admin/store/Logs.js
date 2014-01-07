@@ -3,7 +3,7 @@ Ext.define('admins.store.Logs', {
     
     fields: [ // Model
         'logID', 'logID', 'task', 'comment', 'username', 'ip',
-        { name: 'date_created', type: 'date', dateFormat: 'c' } // dateFormat fix explorer bug
+        { name: 'date_created', type: 'date', dateFormat: 'c' } // It is strongly recommended that you always specify an explicit date format
     ],
     pageSize: 50, // Defaults to 25
     remoteSort: true, // Default: false (javascript sort)

@@ -52,40 +52,36 @@ function getAdminPaths()
 }
 
 
-// Get admin accounts select (admin config):
+// Get admin accounts select (admin config.php):
 function getAdminAccounts()
 {
-    /*$tbar = array();
-
-    if(is_array($GLOBALS['admin']['fbar_buttons']))
-    foreach($GLOBALS['admin']['fbar_buttons'] as $val) {
-        $fbar[] = "{text:'".$val['text']."', type:'button', width:'".(100 / count($GLOBALS['admin']['fbar_buttons']))."%', scale:'small', url:'".$val['url']."'}";
+    foreach($GLOBALS['admin']['data']['accounts'] as $value)
+    {
+        $accounts[] = "{ 'accountID': ".$value['accountID'].", 'name': '".$value['name']."' }";
     }
-    echo implode(',', $fbar);
-*/
-
-    echo ",tbar: [{ 
-            xtype: 'combobox',
-            name: 'accountID',
-            displayField: 'name',
-            valueField: 'accountID',
-            width: '100%',
-            emptyText: 'Select Account',
-            fields: [ 'name', 'accountID' ],
-            store: Ext.create('Ext.data.Store', {
-                fields: [ 'accountID', 'name' ],
-                data: [{ 'accountID': 1, 'name': 'Readers' }, { 'accountID': 2, 'name': 'Universal' }]
-            }),
-            listeners: {
-                'select': function(combo, records, eOpts) {
-                    //Admin.accountID = records[0].get('accountID');
+    
+    echo ", tbar: [{ 
+                xtype: 'combobox',
+                name: 'accountID',
+                displayField: 'name',
+                valueField: 'accountID',
+                width: '100%',
+                emptyText: 'Select Account',
+                fields: [ 'name', 'accountID' ],
+                store: Ext.create('Ext.data.Store', {
+                    fields: [ 'accountID', 'name' ],
+                    data: [".implode(',', (array) $accounts)."]
+                }),
+                listeners: {
+                    'select': function(combo, records, eOpts) {
+                        //Admin.accountID = records[0].get('accountID');
+                    }
                 }
-            }
-          }]";
+            }]";
 }
 
 
-// Get admin tree footer buttons (admin config):
+// Get admin tree footer buttons (admin config.php):
 function getAdminTreeButtons()
 {
     $fbar = array();
@@ -98,7 +94,7 @@ function getAdminTreeButtons()
 }
 
 
-// IP restriction (admin config):
+// IP restriction (admin config.php):
 function checkAdminIpAccess()
 {
     if(!empty($GLOBALS['admin']['allowed_ips']))

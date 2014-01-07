@@ -3,7 +3,7 @@ Ext.define('admins.store.Admins', {
     
     fields: [ // Model
         'adminID', 'roleID', 'username', 'email', 'firstname', 'lastname', 'superuser', 'active',
-        { name: 'last_login', type: 'date', dateFormat: 'c' } // dateFormat fix explorer bug
+        { name: 'last_login', type: 'date', dateFormat: 'c' } // It is strongly recommended that you always specify an explicit date format
     ],
     pageSize: 50, // Defaults to 25
     remoteSort: true, // Default false (javascript sort)

@@ -14,13 +14,12 @@ class adminsAccountsAdmins extends ConnExtjs
 	// ------------------------------------------------------------------------------- //
 
 
-    // Grid List | Filters with config:
+    // Grid List:
     public function extGrid()
     {
         if(!is_numeric($_REQUEST['accountID'])) exit;
     
-        // All results:
-        $sql = 'SELECT adm.adminID, adm.email, adm.username 
+        $sql = 'SELECT adm.adminID, adm.username, adm.last_login
                 FROM '.$this->_table.' as acc
                 INNER JOIN admins as adm ON (acc.adminID = adm.adminID AND accountID = '.$_REQUEST['accountID'].')
                 WHERE 1';
@@ -42,6 +41,31 @@ class adminsAccountsAdmins extends ConnExtjs
         else $response['success'] = false;
 
         echo json_encode($response);
+    }
+
+
+    /**
+     * Get associated accounts.
+     *
+     * @return array
+     */
+    public function getAccountsByAdmin()
+    {
+        $sql = 'SELECT acc.accountID, acc.name
+                FROM '.$this->_table.' as aa
+                INNER JOIN admins_accounts as acc USING (accountID)
+                WHERE adminID = '.$GLOBALS['admin']['data']['adminID'].'
+                ORDER BY name';
+                
+        if(($rs = $this->query($sql)) && $rs->num_rows > 0)
+        {
+            while($row = $rs->fetch_assoc())
+            {
+                $array[$row['accountID']] = $row;
+            }
+        }
+
+        return (array) $array;
     }
 
 }

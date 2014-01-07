@@ -95,7 +95,7 @@ Ext.define('admins.view.Accounts', {
             columns: [
                 { header: 'ID', dataIndex: 'adminID', width: 50 },
                 { header: 'Username', dataIndex: 'username', width: 150 },
-                { header: 'E-mail', dataIndex: 'email', flex: 1 }
+                { header: 'Last login', dataIndex: 'last_login', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
             bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountsAdminsStore, displayInfo: true }),
             listeners: {

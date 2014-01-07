@@ -1,7 +1,10 @@
 Ext.define('admins.store.AccountsAdmins', {
     extend: 'Ext.data.Store',
     
-    fields: [ 'adminID', 'username', 'email' ], // Model
+    fields: [ // Model
+        'adminID', 'username',
+        { name: 'last_login', type: 'date', dateFormat: 'c' } // It is strongly recommended that you always specify an explicit date format
+    ],
     pageSize: 25, // Defaults to 25
     remoteSort: true, // Default false (javascript sort)
     sorters: [{ property: 'username', direction: 'ASC' }],

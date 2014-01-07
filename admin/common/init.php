@@ -8,27 +8,33 @@ else require(dirname(__FILE__).'/../config.default.php');
 $aSession = new Session('admin');
 
 // Login check:
-if(!$aSession->exists('adminData') && basename($_SERVER['PHP_SELF']) != 'login.php')
+if($aSession->exists('adminData'))
+{
+    // Stores all admin data glabally:
+    $GLOBALS['admin']['data'] = $aSession->get('adminData');
+
+    // Stores accounts data glabally:
+    $accountsDB = new adminsAccountsAdmins;
+    $GLOBALS['admin']['data']['accounts'] = $accountsDB->getAccountsByAdmin();
+}
+elseif(basename($_SERVER['PHP_SELF']) != 'login.php')
 {
     header('Location: '.ADMIN.'/login.php');
     exit;
 }
 
-// Stores all admin data glabally:
-$GLOBALS['admin']['data'] = $aSession->get('adminData');
-
-// ------------------------------------------------------------------------------
-
 // Admin Log:
 $aLog = new adminsLog;
 
 // Ajax class loader:
-if(isset($_GET['_class']))
+if(isset($_GET['_class']) && basename($_SERVER['PHP_SELF']) != 'login.php')
 {
-	$db = new $_GET['_class'];
-	if(isset($_GET['_method'])) $db->$_GET['_method']();
-	exit;
+    $db = new $_GET['_class'];
+    if(isset($_GET['_method'])) $db->$_GET['_method']();
+    exit;
 }
 
 // http://code.google.com/speed/page-speed/docs/rendering.html#SpecifyCharsetEarly
 header('Content-type: text/html; charset=UTF-8');
+
+
