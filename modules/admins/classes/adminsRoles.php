@@ -7,8 +7,8 @@ class adminsRoles extends ConnExtjs
 							'permission',
 							'adminID_created',
 							'adminID_updated',
-							'date_created',
-							'date_updated');
+							'date_created',    // (Reserved) Automatic usage on insert (Conn.php)
+							'date_updated');   // (Reserved) Automatic usage on update (Conn.php)
 
 
 	// ------------------------------------------------------------------------------- //

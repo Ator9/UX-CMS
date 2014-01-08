@@ -6,10 +6,10 @@ class adminsAccountsConfig extends ConnExtjs
 	public $_fields	= array('accountID',
 							'name',
 							'value',
-							'adminID_created',
-							'adminID_updated',
-							'date_created',
-							'date_updated');
+							'adminID_created', // (Reserved) Automatic usage on insert (Conn.php)
+							'adminID_updated', // (Reserved) Automatic usage on update (Conn.php)
+							'date_created',    // (Reserved) Automatic usage on insert (Conn.php)
+							'date_updated');   // (Reserved) Automatic usage on update (Conn.php)
 
 
 	// ------------------------------------------------------------------------------- //
