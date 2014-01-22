@@ -10,6 +10,7 @@ function getAdminTree()
 
         $config = getModuleConfig($module['name']);
         if($config['enabled'] !== true) continue;
+        if(!empty($config['admins']) && !in_array($GLOBALS['admin']['data']['adminID'], $config['admins'])) continue; // Allowed admins (array)
 
         $tree[$config['name']] = array('text'=>$config['name'], 'panel'=>basename($module['path']), 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
     }
