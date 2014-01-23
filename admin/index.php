@@ -61,7 +61,7 @@ Ext.application({
             var icon  = (type) ? Ext.Msg.INFO : Ext.Msg.ERROR;
             Ext.Msg.show({ title: title, msg: msg, buttons: Ext.Msg.OK, icon: icon });
         }
-        <? echo $GLOBALS['admin']['custom_js']; ?>
+        <? echo $GLOBALS['admin']['custom_js']; /* Add custom js from config.php */ ?>
     
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
