@@ -61,6 +61,7 @@ Ext.application({
             var icon  = (type) ? Ext.Msg.INFO : Ext.Msg.ERROR;
             Ext.Msg.show({ title: title, msg: msg, buttons: Ext.Msg.OK, icon: icon });
         }
+        <? echo $GLOBALS['admin']['js_functions']; ?>
     
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
