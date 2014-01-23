@@ -14,7 +14,7 @@ Ext.Loader.setConfig({
 
 Ext.application({
     name: 'Admin',
-    paths: { 'Ext.ux': 'resources/ux' <? echo getAdminPaths(); ?> },
+    paths: { 'Ext.ux': 'resources/ux', 'Extensible': 'resources/ux/extensible/src' <? echo getAdminPaths(); ?> },
     
     launch: function() {
         Admin = this;
