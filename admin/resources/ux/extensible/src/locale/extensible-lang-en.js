@@ -1,5 +1,5 @@
 /*!
- * Extensible 1.5.2
+ * Extensible 1.6.0-rc.1
  * Copyright(c) 2010-2013 Extensible, LLC
  * licensing@ext.ensible.com
  * http://ext.ensible.com
@@ -7,8 +7,10 @@
 /*
  * Default English (US) locale
  * By Extensible, LLC
- */
-/*
+ *
+ * Contributors:
+ * - Gabriel Sidler, http://teamup.com
+ *
  * A general note regarding pluralization... Some locales require conditional logic
  * to properly pluralize certain terms. When this might be required there is an additional
  * "get*" method in addition to the standard config. By default these simply return the
@@ -37,7 +39,7 @@ Ext.onReady(function() {
     if (exists('Extensible.calendar.view.Month')) {
         Ext.apply(Extensible.calendar.view.Month.prototype, {
             moreText: '+{0} more...', // deprecated
-            getMoreText: function(numEvents){
+            getMoreText: function(numEvents) {
                 return '+{0} more...';
             },
             detailsTitleDateFormat: 'F j'
@@ -54,10 +56,10 @@ Ext.onReady(function() {
             goText: 'Go',
             multiDayText: '{0} Days', // deprecated
             multiWeekText: '{0} Weeks', // deprecated
-            getMultiDayText: function(numDays){
+            getMultiDayText: function(numDays) {
                 return '{0} Days';
             },
-            getMultiWeekText: function(numWeeks){
+            getMultiWeekText: function(numWeeks) {
                 return '{0} Weeks';
             }
         });
@@ -145,16 +147,16 @@ Ext.onReady(function() {
             fieldLabel: 'Reminder',
             noneText: 'None',
             atStartTimeText: 'At start time',
-            getMinutesText: function(numMinutes){
+            getMinutesText: function(numMinutes) {
                 return numMinutes === 1 ? 'minute' : 'minutes';
             },
-            getHoursText: function(numHours){
+            getHoursText: function(numHours) {
                 return numHours === 1 ? 'hour' : 'hours';
             },
-            getDaysText: function(numDays){
+            getDaysText: function(numDays) {
                 return numDays === 1 ? 'day' : 'days';
             },
-            getWeeksText: function(numWeeks){
+            getWeeksText: function(numWeeks) {
                 return numWeeks === 1 ? 'week' : 'weeks';
             },
             reminderValueFormat: '{0} {1} before start' // e.g. "2 hours before start"
@@ -205,4 +207,168 @@ Ext.onReady(function() {
             dayHeaderTitleFormat: 'l, F j, Y'
         });
     }
+
+    /*
+     * Recurrence strings added in v.1.6.0
+     */
+    if (exists('Extensible.form.recurrence.Rule')) {
+        Ext.apply(Extensible.form.recurrence.Rule.prototype, {
+            strings: {
+                dayNamesShort: {
+                    SU: 'Sun',
+                    MO: 'Mon',
+                    TU: 'Tue',
+                    WE: 'Wed',
+                    TH: 'Thu',
+                    FR: 'Fri',
+                    SA: 'Sat'
+                },
+
+                dayNamesShortByIndex: [
+                    'Sun',
+                    'Mon',
+                    'Tue',
+                    'Wed',
+                    'Thu',
+                    'Fri',
+                    'Sat'
+                ],
+
+                dayNamesLong: {
+                    SU: 'Sunday',
+                    MO: 'Monday',
+                    TU: 'Tuesday',
+                    WE: 'Wednesday',
+                    TH: 'Thursday',
+                    FR: 'Friday',
+                    SA: 'Saturday'
+                },
+
+                ordinals: {
+                    1: 'first',
+                    2: 'second',
+                    3: 'third',
+                    4: 'fourth',
+                    5: 'fifth',
+                    6: 'sixth'
+                },
+
+                frequency: {
+                    none: 'Does not repeat',
+                    daily: 'Daily',
+                    weekly: 'Weekly',
+                    weekdays: 'Every weekday (Mon-Fri)',
+                    monthly: 'Monthly',
+                    yearly: 'Yearly'
+                },
+
+                every: 'Every',       // e.g. Every 2 days
+                days: 'days',
+                weeks: 'weeks',
+                weekdays: 'weekdays',
+                months: 'months',
+                years: 'years',
+                time: 'time',        // e.g. Daily, 1 time
+                times: 'times',      // e.g. Daily, 5 times
+                until: 'until',      // e.g. Daily, until Dec, 31 2012
+                untilFormat: 'M j, Y', // e.g. Dec 10, 2012
+                and: 'and',          // e.g. Weekly on Tuesday and Friday
+                on: 'on',            // e.g. Weekly on Thursday
+                onDay: 'on day',     // e.g. Monthly on day 23
+                onDayPostfix: '',    // In some languages a postfix is need for the onDay term,
+                // for example in German: 'Monatlich am 23.'
+                // Here the postfix would be '.'
+                onThe: 'on the',     // e.g. Monthly on the first Thursday
+                onTheLast: 'on the last', // e.g. Monthly on the last Friday
+                onTheLastDay: 'on the last day', // e.g. Monthly on the last day
+                of: 'of',            // e.g. Annually on the last day of November
+                monthFormat: 'F',    // e.g. November
+                monthDayFormat: 'F j' // e.g. November 10
+            }
+        });
+    }
+
+    if (exists('Extensible.form.recurrence.FrequencyCombo')) {
+        Ext.apply(Extensible.form.recurrence.FrequencyCombo.prototype, {
+            fieldLabel: 'Repeats'
+        });
+    }
+
+    if (exists('Extensible.form.recurrence.RangeEditWindow')) {
+        Ext.apply(Extensible.form.recurrence.RangeEditWindow.prototype, {
+            title: 'Recurring Event Options',
+            saveButtonText: 'Save',
+            cancelButtonText: 'Cancel'
+        });
+    }
+
+    if (exists('Extensible.form.recurrence.RangeEditPanel')) {
+        Ext.apply(Extensible.form.recurrence.RangeEditPanel.prototype, {
+            headerText: 'There are multiple events in this series. How would you like your changes applied?',
+            optionSingleButtonText: 'Single',
+            optionSingleDescription: 'Apply to this event only. No other events in the series will be affected.',
+            optionFutureButtonText: 'Future',
+            optionFutureDescription: 'Apply to this and all following events only. Past events will be unaffected.',
+            optionAllButtonText: 'All Events',
+            optionAllDescription: 'Apply to every event in this series.'
+        });
+    }
+
+    if (exists('Extensible.form.recurrence.option.Interval')) {
+        Ext.apply(Extensible.form.recurrence.option.Interval.prototype, {
+            dateLabelFormat: 'l, F j',
+            strings: {
+                repeatEvery: 'Repeat every',
+                beginning: 'beginning',
+                day: 'day',
+                days: 'days',
+                week: 'week',
+                weeks: 'weeks',
+                month: 'month',
+                months: 'months',
+                year: 'year',
+                years: 'years'
+            }
+        });
+    }
+
+    if (exists('Extensible.form.recurrence.option.Duration')) {
+        Ext.apply(Extensible.form.recurrence.option.Duration.prototype, {
+            strings: {
+                andContinuing: 'and continuing',
+                occurrences: 'occurrences',
+                forever: 'forever',
+                forText: 'for',
+                until: 'until'
+            }
+        });
+    }
+
+    if (exists('Extensible.form.recurrence.option.Weekly')) {
+        Ext.apply(Extensible.form.recurrence.option.Weekly.prototype, {
+            strings: {
+                on: 'on'
+            }
+        });
+    }
+
+    if (exists('Extensible.form.recurrence.option.Monthly')) {
+        Ext.apply(Extensible.form.recurrence.option.Monthly.prototype, {
+            strings: {
+                // E.g. "on the 15th day of each month/year"
+                onThe: 'on the',
+                ofEach: 'of each',
+                inText: 'in',
+                day: 'day',
+                month: 'month',
+                year: 'year',
+                last: 'last',
+                lastDay: 'last day',
+                monthDayDateFormat: 'jS',
+                nthWeekdayDateFormat: 'S' // displays the ordinal postfix, e.g. th for 5th.
+
+            }
+        });
+    }
+
 });

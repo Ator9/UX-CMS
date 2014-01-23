@@ -1,5 +1,5 @@
 /*!
- * Extensible 1.5.2
+ * Extensible 1.6.0-rc.1
  * Copyright(c) 2010-2013 Extensible, LLC
  * licensing@ext.ensible.com
  * http://ext.ensible.com
@@ -7,10 +7,10 @@
 /**
  * @class Extensible.calendar.view.DayHeader
  * @extends Extensible.calendar.view.Month
- * <p>This is the header area container within the day and week views where all-day events are displayed.
+ * This is the header area container within the day and week views where all-day events are displayed.
  * Normally you should not need to use this class directly -- instead you should use {@link Extensible.calendar.view.Day DayView}
  * which aggregates this class and the {@link Extensible.calendar.view.DayBody DayBodyView} into the single unified view
- * presented by {@link Extensible.calendar.CalendarPanel CalendarPanel}.</p>
+ * presented by {@link Extensible.calendar.CalendarPanel CalendarPanel}
  * @constructor
  * @param {Object} config The config object
  */
@@ -32,19 +32,19 @@ Ext.define('Extensible.calendar.view.DayHeader', {
     // The event is declared in MonthView but we're just overriding the docs:
     /**
      * @event dayclick
-     * Fires after the user clicks within the view container and not on an event element. This is a cancelable event, so 
-     * returning false from a handler will cancel the click without displaying the event editor view. This could be useful 
+     * Fires after the user clicks within the view container and not on an event element. This is a cancelable event, so
+     * returning false from a handler will cancel the click without displaying the event editor view. This could be useful
      * for validating that a user can only create events on certain days.
      * @param {Extensible.calendar.view.DayHeader} this
      * @param {Date} dt The date/time that was clicked on
-     * @param {Boolean} allday True if the day clicked on represents an all-day box, else false. Clicks within the 
+     * @param {Boolean} allday True if the day clicked on represents an all-day box, else false. Clicks within the
      * DayHeaderView always return true for this param.
      * @param {Ext.Element} el The Element that was clicked on
      */
     
     // private
-    afterRender : function(){
-        if(!this.tpl){
+    afterRender: function() {
+        if(!this.tpl) {
             this.tpl = Ext.create('Extensible.calendar.template.DayHeader', {
                 id: this.id,
                 showTodayText: this.showTodayText,
@@ -62,14 +62,14 @@ Ext.define('Extensible.calendar.view.DayHeader', {
     forceSize: Ext.emptyFn,
     
     // private
-    refresh : function(reloadData){
+    refresh: function(reloadData) {
         Extensible.log('refresh (DayHeaderView)');
         this.callParent(arguments);
         this.recalcHeaderBox();
     },
     
     // private
-    recalcHeaderBox : function(){
+    recalcHeaderBox: function() {
         var tbl = this.el.down('.ext-cal-evt-tbl'),
             h = tbl.getHeight();
         
@@ -82,19 +82,21 @@ Ext.define('Extensible.calendar.view.DayHeader', {
     },
     
     // private
-    moveNext : function(){
-        return this.moveDays(this.dayCount);
+    moveNext: function() {
+        return this.moveDays(this.dayCount, false);
     },
 
     // private
-    movePrev : function(){
-        return this.moveDays(-this.dayCount);
+    movePrev: function() {
+        return this.moveDays(-this.dayCount, false);
     },
     
     // private
-    onClick : function(e, t){
-        if(el = e.getTarget('td', 3)){
-            if(el.id && el.id.indexOf(this.dayElIdDelimiter) > -1){
+    onClick: function(e, t) {
+        var el = e.getTarget('td', 3);
+        
+        if (el) {
+            if (el.id && el.id.indexOf(this.dayElIdDelimiter) > -1) {
                 var parts = el.id.split(this.dayElIdDelimiter),
                     dt = parts[parts.length-1];
                     
@@ -103,5 +105,11 @@ Ext.define('Extensible.calendar.view.DayHeader', {
             }
         }
         this.callParent(arguments);
+    },
+    
+    // inherited docs
+    isActiveView: function() {
+        var calendarPanel = this.ownerCalendarPanel;
+        return (calendarPanel && calendarPanel.getActiveView().isDayView);
     }
 });

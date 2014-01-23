@@ -1,5 +1,5 @@
 /*!
- * Extensible 1.5.2
+ * Extensible 1.6.0-rc.1
  * Copyright(c) 2010-2013 Extensible, LLC
  * licensing@ext.ensible.com
  * http://ext.ensible.com
@@ -28,7 +28,7 @@ Ext.onReady(function() {
     if (exists('Extensible.calendar.view.Month')) {
         Ext.apply(Extensible.calendar.view.Month.prototype, {
             moreText: '+{0}更多……',
-            getMoreText: function(numEvents){
+            getMoreText: function(numEvents) {
                 return '+{0}更多……';
             },
             detailsTitleDateFormat: 'F j'
@@ -45,10 +45,10 @@ Ext.onReady(function() {
             goText: '到 ',
             multiDayText: '{0}天',
             multiWeekText: '{0}星期',
-            getMultiDayText: function(numDays){
+            getMultiDayText: function(numDays) {
                 return '{0}天';
             },
-            getMultiWeekText: function(numWeeks){
+            getMultiWeekText: function(numWeeks) {
                 return '{0}星期';
             }
         });
@@ -136,16 +136,16 @@ Ext.onReady(function() {
             fieldLabel: '提醒器',
             noneText: '没有',
             atStartTimeText: '于启动时间',
-            getMinutesText: function(numMinutes){
+            getMinutesText: function(numMinutes) {
                 return '分钟';
             },
-            getHoursText: function(numHours){
+            getHoursText: function(numHours) {
                 return '小时';
             },
-            getDaysText: function(numDays){
+            getDaysText: function(numDays) {
                 return '天';
             },
-            getWeeksText: function(numWeeks){
+            getWeeksText: function(numWeeks) {
                 return '星期';
             },
             reminderValueFormat: '离开始还有{0} {1}' // e.g. "2 hours before start"

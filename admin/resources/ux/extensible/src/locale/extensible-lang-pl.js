@@ -1,5 +1,5 @@
 /*!
- * Extensible 1.5.2
+ * Extensible 1.6.0-rc.1
  * Copyright(c) 2010-2013 Extensible, LLC
  * licensing@ext.ensible.com
  * http://ext.ensible.com
@@ -28,7 +28,7 @@ Ext.onReady(function() {
     if (exists('Extensible.calendar.view.Month')) {
         Ext.apply(Extensible.calendar.view.Month.prototype, {
             moreText: '+{0} więcej...',
-            getMoreText: function(numEvents){
+            getMoreText: function(numEvents) {
                 return '+{0} więcej...';
             },
             detailsTitleDateFormat: 'F j'
@@ -45,10 +45,10 @@ Ext.onReady(function() {
             goText: 'Przejdź',
             multiDayText: '{0} Dni',
             multiWeekText: '{0} Tygodnie',
-            getMultiDayText: function(numDays){
+            getMultiDayText: function(numDays) {
                 return '{0} Dni';
             },
-            getMultiWeekText: function(numWeeks){
+            getMultiWeekText: function(numWeeks) {
                 return '{0} Tygodnie';
             }
         });
@@ -136,16 +136,16 @@ Ext.onReady(function() {
             fieldLabel: 'Reminder',
             noneText: 'Brak',
             atStartTimeText: 'W momencie startu',
-            getMinutesText: function(numMinutes){
+            getMinutesText: function(numMinutes) {
                 return 'minut';
             },
-            getHoursText: function(numHours){
+            getHoursText: function(numHours) {
                 return numHours === 1 ? 'godzina' : 'godziny';
             },
-            getDaysText: function(numDays){
+            getDaysText: function(numDays) {
                 return numDays === 1 ? 'dzień' : 'dni';
             },
-            getWeeksText: function(numWeeks){
+            getWeeksText: function(numWeeks) {
                 return numWeeks === 1 ? 'tydzień' : 'tygodni';
             },
             reminderValueFormat: '{0} {1} przed startem' // e.g. "2 hours before start"

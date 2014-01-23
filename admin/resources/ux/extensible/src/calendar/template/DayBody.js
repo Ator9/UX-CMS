@@ -1,5 +1,5 @@
 /*!
- * Extensible 1.5.2
+ * Extensible 1.6.0-rc.1
  * Copyright(c) 2010-2013 Extensible, LLC
  * licensing@ext.ensible.com
  * http://ext.ensible.com
@@ -7,11 +7,14 @@
 /**
  * @class Extensible.calendar.template.DayBody
  * @extends Ext.XTemplate
- * <p>This is the template used to render the scrolling body container used in {@link Extensible.calendar.view.Day DayView} and 
- * {@link Extensible.calendar.view.Week WeekView}. This template is automatically bound to the underlying event store by the 
- * calendar components and expects records of type {@link Extensible.calendar.data.EventModel}.</p>
- * <p>Note that this template would not normally be used directly. Instead you would use the {@link Extensible.calendar.view.DayTemplate}
- * that internally creates an instance of this template along with a {@link Extensible.calendar.DayHeaderTemplate}.</p>
+ * This is the template used to render the scrolling body container used in
+ * {@link Extensible.calendar.view.Day DayView} and {@link Extensible.calendar.view.Week WeekView}. This template
+ * is automatically bound to the underlying event store by the calendar components and expects records of type
+ * {@link Extensible.calendar.data.EventModel}.
+ * 
+ * Note that this template would not normally be used directly. Instead you would use the
+ * {@link Extensible.calendar.view.DayTemplate} that internally creates an instance of this template along
+ * with a {@link Extensible.calendar.DayHeaderTemplate}.
  * @constructor
  * @param {Object} config The config object
  */
@@ -19,7 +22,7 @@ Ext.define('Extensible.calendar.template.DayBody', {
     extend: 'Ext.XTemplate',
     
     // private
-    constructor: function(config){
+    constructor: function(config) {
         
         Ext.apply(this, config);
     
@@ -62,14 +65,14 @@ Ext.define('Extensible.calendar.template.DayBody', {
     },
 
     // private
-    applyTemplate : function(o){
+    applyTemplate: function(o) {
         this.today = Extensible.Date.today();
         this.dayCount = this.dayCount || 1;
         
         var i = 0, days = [],
             dt = Ext.Date.clone(o.viewStart);
             
-        for(; i<this.dayCount; i++){
+        for (; i<this.dayCount; i++) {
             days[i] = Extensible.Date.add(dt, {days: i});
         }
 
@@ -84,7 +87,7 @@ Ext.define('Extensible.calendar.template.DayBody', {
         // use a fixed DST-safe date so times don't get skipped on DST boundaries
         dt = Extensible.Date.add(new Date('5/26/1972'), {hours: start});
         
-        for(i=start; i<end; i++){
+        for (i=start; i<end; i++) {
             times.push(Ext.Date.format(dt, fmt));
             dt = Extensible.Date.add(dt, {minutes: mins});
         }
@@ -99,14 +102,14 @@ Ext.define('Extensible.calendar.template.DayBody', {
             hourSeparatorHeight: (this.hourHeight / 2)
         };
          
-        if (Ext.getVersion().isLessThan('4.1')) {
+        if (Ext.getVersion('extjs').isLessThan('4.1')) {
             return Extensible.calendar.template.DayBody.superclass.applyTemplate.call(this, templateConfig);
         }
         else {
             return this.applyOut(templateConfig, []).join('');
         }
     }
-}, 
+},
 function() {
     this.createAlias('apply', 'applyTemplate');
 });

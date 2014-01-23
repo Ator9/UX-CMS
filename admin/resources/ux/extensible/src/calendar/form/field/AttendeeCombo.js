@@ -1,10 +1,9 @@
 /*!
- * Extensible 1.5.2
+ * Extensible 1.6.0-rc.1
  * Copyright(c) 2010-2013 Extensible, LLC
  * licensing@ext.ensible.com
  * http://ext.ensible.com
  */
-
 /*
  * Not currently in use, may or may not be implemented...
  */

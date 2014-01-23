@@ -1,5 +1,5 @@
 /*!
- * Extensible 1.5.2
+ * Extensible 1.6.0-rc.1
  * Copyright(c) 2010-2013 Extensible, LLC
  * licensing@ext.ensible.com
  * http://ext.ensible.com
@@ -28,7 +28,7 @@ Ext.onReady(function() {
     if (exists('Extensible.calendar.view.Month')) {
         Ext.apply(Extensible.calendar.view.Month.prototype, {
             moreText: '+{0} flere...',
-            getMoreText: function(numEvents){
+            getMoreText: function(numEvents) {
                 return '+{0} flere...';
             },
             detailsTitleDateFormat: 'd F'
@@ -45,10 +45,10 @@ Ext.onReady(function() {
             goText: 'Gå',
             multiDayText: '{0} dage',
             multiWeekText: '{0} uger',
-            getMultiDayText: function(numDays){
+            getMultiDayText: function(numDays) {
                 return '{0} dage';
             },
-            getMultiWeekText: function(numWeeks){
+            getMultiWeekText: function(numWeeks) {
                 return '{0} uger';
             }
         });
@@ -136,16 +136,16 @@ Ext.onReady(function() {
             fieldLabel: 'Påmindelse',
             noneText: 'Ingen',
             atStartTimeText: 'Ved start tidspunkt',
-            getMinutesText: function(numMinutes){
+            getMinutesText: function(numMinutes) {
                 return numMinutes === 1 ? 'minute' : 'minutter';
             },
-            getHoursText: function(numHours){
+            getHoursText: function(numHours) {
                 return numHours === 1 ? 'time' : 'timer';
             },
-            getDaysText: function(numDays){
+            getDaysText: function(numDays) {
                 return numDays === 1 ? 'dag' : 'dage';
             },
-            getWeeksText: function(numWeeks){
+            getWeeksText: function(numWeeks) {
                 return numWeeks === 1 ? 'uge' : 'uger';
             },
             reminderValueFormat: '{0} {1} før start' // f.eks. "2 timer før start"

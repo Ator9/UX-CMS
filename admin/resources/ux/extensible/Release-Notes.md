@@ -1,21 +1,104 @@
-# Extensible 1.5.x Release Notes
+# Extensible Release Notes
 
 These notes apply to the Ext 4.x branch of Extensible.
+
+## 1.6.0-rc.1
+
+_August 26, 2013_
+
+Recurrence support was introduced in the 1.6 beta, and this release candidate is mostly about finalizing it. Some of the behavior has changed slightly as noted below, but with this release the recurrence API should be considered frozen unless any unexpected major issues show up in this RC.
+
+The final major outstanding issue is lacking documentation for the recurrence features. Complete documentation and a usage guide will be added for the final release.
+
+**New Features**
+
+* The recurrence demo's PHP code was completely rewritten. The version in the 1.6 beta was originally written as an in-memory implementation for simplicity, but ended up making recurrence editing and exception handling more complex and less useful as an example. The code now uses MySQL (includes a `setup.sql` file) and a very simple DB wrapper, as well as heavily refactored app logic.  As a result, the code is more robust and more useful as a real-world reference.
+* Added new `RSeriesStartDate` data mapping to track the start date of a recurring event series (necessary primarily to supprt the "edit all" use case properly)
+* Added support for recurrence "friendly" descriptions via the new `Extensible.form.recurrence.Rule` class
+* New locale files: British English (en_GB) and Dutch (nl)
+* Updated `Extensible_config.js` to enable custom locales in examples
+* Added `fieldAnchor` config to the `EventDetail` class so that the event form's field widths are configurable rather than hard-coded to 70% (they now default to 100%)
+* Converted documentation to [JSDuck](https://github.com/senchalabs/jsduck) format
+
+**Bugs Fixed**
+
+Generally-speaking, there were many bugs related to recurrence -- too many to list -- that were fixed as a result of rewriting the back end demo code. However, the major bugs and anything that changed the recurrence behavior will be listed below.
+
+* Provisional support for Sencha Cmd v3
+	- Not yet perfect, but with some manual tweaks it can work. For details see [this forum post](http://ext.ensible.com/forum/viewtopic.php?f=2&t=763&p=3129#p3129).
+* Notable recurrence-specific fixes:
+	- Refactored recurrence components for locale string support
+	- Fixed multiple store refreshes / view updates after a recurrence edit
+	- Fixed editing a recurring event to non-recurring (now results in a single, non-recurring event with the event dates in the edit form)
+	- Fixed "edit all" behavior to differentiate date changes from non-date changes (previously edit all would always update the dates to match the edit form incorrectly)
+	- Added `useNull: true` to all recurrence data mappings to preserve null values when recurrence is not used
+	- Fixed `EventModel.isRecurring()` check when the recurring data attribute is null
+	- Removed dependencies on recurrence-only mappings so that removing their declarations will not cause runtime errors
+* Fixed various minor bugs like leaked global variables and various other Lint failures
+* Fixed "undefined" added as a CSS class when hovering over calendar days
+* Fixed "+ more events" link failing to recalculate on view change
+* Fixed bad accented chars in the Italian locale file
+* Fixed `Duration` data mapping by adding `defaultValue: -1` since the Ext default of 0 is a valid duration value (and causes wrong layouts)
+* Fixed `Extensible` class constructor null error when including Extensible asynchronously
+* Fixed null error when clicking on the currently-selected color in the calendar color picker
+* Fixed `Extensible.Date.diffDays()` for daylight savings boundary days (which fixed layout rendering bugs around DST in some timezones)
+* Fixed bug where the date for empty cells was not getting initialized properly, causing subtle layout and click handling bugs
 
 ## 1.5.2
 
 _May 4, 2013_
 
-**NOTE:** This maintenance release is only for Ext 4.2+ compatibility in the Extensible 1.5.x branch. All new development and other bug fixes since 1.5.1 was originally released are in the Extensible 1.6+ branch.
+A.k.a. the Ext 4.2 support release. Unfortunately Sencha made some changes in 4.2 that broke existing functionality in the calendar. This release is exclusively to fix those issues.
 
 **Bugs Fixed**
 
-* Something in 4.2 broke all dependencies that relied on classname aliases, so updated all class dependencies to use the fully-qualified names
-* Sencha changed the implementation of Model.getId() in 4.2 and it no longer works correctly for records that use a mapping for the id. Switched back to the 4.1 implementation.
-* Sencha added a new "notifyOccluded" drag drop property, and unfortunately defaulted it break compatibility, which broke drag and drop behavior in the calendar. Added explicitly handling of this flag to fix it.
-* Sencha removed the default reset CSS styles in 4.2, which broke the layout of the CalendarListPanel component. Re-added CSS to fix that.
-* Fixed typo bug that broke the ability to toggle calendar visibility via the CalendarListPanel in the App example
-* Sencha revised the internal markup and CSS of the ColorPicker component, which broke the ColorPicker subclass used by the CalendarListPanel. Revised the component to fix this.
+* CSS fixes for various minor padding and layout issues introduced with the modified "reset" styles included in 4.2 (most seriously, the calendar color selector menu was completely broken)
+* Drag and drop of events completely broke due to a backwards-incompatible change in 4.2 related to how drag event bubbling is handled. Sencha added a new property to enable the old behavior (`DDMInstance.notifyOccluded = true`) but unfortunately they chose to default to the new breaking behavior.
+* Updated various class names and namespaces. Apparently something about `alternateClassName` support changed in 4.2 and various Extensible classes stopped working as expected with the Ext.Loader
+* The Model class `getId` method broke under 4.2 for custom-mapped id names and is now overridden with the pre-4.2 version to continue supporting Extensible's data mapping behavior
+
+## 1.6.0-beta
+
+_August 9, 2012_
+
+**New Features**
+
+* Recurrence! This is the main feature of this release, and it includes lots of specific things:
+    - Rewrote the previous experimental recurrence selection component from scratch (now `FrequencyCombo`)
+    - 10 classes under the new `Extensible.form.recurrence` namespace
+    - RangeEditPanel/Window components for editing recurring events
+    - New server-side recurrence example with a default PHP implementation
+* Copy events:
+    - Added new option to copy (clone) events in the event context menu
+    - Also supports holding Ctrl/Alt/Cmd while dragging an event to copy it
+    - New `copyToText` config and `eventcopy` event
+* Exception handling improvements:
+    - New `eventexception` event raised by views and CalendarPanel when proxies return an exception
+    - New `AnbstractCalendar.notifyOnException()` template method that defaults to showing an Ext MessageBox with exception messages
+    - New view configs: `notifyOnExceptionTitle`, `notifyOnExceptionText` and `notifyOnExceptionDefaultMessage`
+* New `Extensible.data.Model` abstract class to encapsulate some generic logic for Extensible models
+* Other new config options:
+    - `allowDefaultAdd` config in `EventDetails` and `EventEditWindow` forms to control the behavior of clicking the "Save" button on an unmodified form
+    - `morePanelMinWidth` config to control the width of the "More events" popup in Month view
+    - `minBodyHeight` config in Day view to control event overflow and scrolling when many events are displayed in the header area
+
+**Bugs Fixed**
+
+* Fixed bad empty day cell ids causing "date is undefined" error
+* Fixed dirty checking logic in event edit forms
+* Updated a few leftover Ext 3.x class references
+* The "More events" popup will now scroll vertically when the number of events causes overflow
+* Override for `Ext.form.CheckboxGroup.resetOriginalValue()` to fix issues with the Ext 4.0.x implementation
+* Fixed null error when changing calendar views in certain situations
+* Fix for an Ext 4.1 bug where the `Panel.frameSize` property is not always set as expected and can cause null errors
+* Fixed bug that caused record add operations after an initial validation failure to not be saved properly
+* Updated exception code to listen to the proxy rather than the store for exceptions (an Ext 4.x change)
+* Fixed: In weeks that *only* contained partial events spanning from previous weeks, the empty placeholder cells were not calculated correctly, leaving "dead" spots in the calendar that were not clickable.
+* Fixed "long clicks" on events that get interpreted as drag starts that were not properly initialized and caused errors
+* Changed the event and calendar mapping assignments to use `Ext.apply` to make them easier to partially override
+* Fixed a bug in the `CalendarListPanel` that could cause the calendar visibility toggling behavior to break
+* Fixed hard-coded event selector logic that could break with deeply-nested custom event body markup
+* Fixed invalid references to `Ext.Element.fly` that caused the invalid drop repair action to fail during drag drop
 
 ## 1.5.1
 

@@ -1,13 +1,15 @@
 /*!
- * Extensible 1.5.2
+ * Extensible 1.6.0-rc.1
  * Copyright(c) 2010-2013 Extensible, LLC
  * licensing@ext.ensible.com
  * http://ext.ensible.com
  */
-/* @private
+/**
  * This is an internal helper class for the calendar views and should not be overridden.
- * It is responsible for the base event rendering logic underlying all views based on a 
+ * It is responsible for the base event rendering logic underlying all views based on a
  * box-oriented layout that supports day spanning (MonthView, MultiWeekView, DayHeaderView).
+ * 
+ * @private
  */
 Ext.define('Extensible.calendar.util.WeekEventRenderer', {
     
@@ -47,7 +49,8 @@ Ext.define('Extensible.calendar.util.WeekEventRenderer', {
                 startOfWeek = Ext.Date.clone(currentDate),
                 endOfWeek = Extensible.Date.add(startOfWeek, {days: dayCount - dayIndex, millis: -1}),
                 eventRow = this.getEventRow(renderConfig.viewId, weekIndex, eventIndex),
-                daysToEventEnd = Extensible.Date.diffDays(currentDate, eventData[eventMappings.EndDate.name]) + 1,
+                eventEndDate = (event.event || event).getEndDate(),
+                daysToEventEnd = Extensible.Date.diffDays(currentDate, eventEndDate) + 1,
                 // Restrict the max span to the current week only since this is for the cuurent week's markup
                 colspan = Math.min(daysToEventEnd, dayCount - dayIndex);
             
@@ -56,7 +59,7 @@ Ext.define('Extensible.calendar.util.WeekEventRenderer', {
             eventData._weekIndex = weekIndex;
             eventData._renderAsAllDay = eventData[eventMappings.IsAllDay.name] || event.isSpanStart;
             eventData.spanLeft = eventData[eventMappings.StartDate.name].getTime() < startOfWeek.getTime();
-            eventData.spanRight = eventData[eventMappings.EndDate.name].getTime() > endOfWeek.getTime();
+            eventData.spanRight = eventEndDate.getTime() > endOfWeek.getTime();
             eventData.spanCls = (eventData.spanLeft ? (eventData.spanRight ?
                 'ext-cal-ev-spanboth' : 'ext-cal-ev-spanleft') : (eventData.spanRight ? 'ext-cal-ev-spanright' : ''));
             
@@ -76,7 +79,7 @@ Ext.define('Extensible.calendar.util.WeekEventRenderer', {
         /**
          * Events are collected into a big multi-dimensional array in the view, then passed here
          * for rendering. The event grid consists of an array of weeks (1-n), each of which contains an
-         * array of days (1-7), each of which contains an array of events and span placeholders (0-n). 
+         * array of days (1-7), each of which contains an array of events and span placeholders (0-n).
          * @param {Object} o An object containing all of the supported config options (see
          * Extensible.calendar.view.Month.renderItems() to see what gets passed).
          * @private
@@ -90,9 +93,9 @@ Ext.define('Extensible.calendar.util.WeekEventRenderer', {
                 currentDate = Ext.Date.clone(config.viewStart),
                 currentDateString = '',
                 eventTpl = config.tpl,
-                maxEventsPerDay = config.maxEventsPerDay != undefined ? config.maxEventsPerDay : 999,
+                maxEventsPerDay = config.maxEventsPerDay !== undefined ? config.maxEventsPerDay : 999,
                 weekCount = config.weekCount < 1 ? 6 : config.weekCount,
-                dayCount = config.weekCount == 1 ? config.dayCount : 7,
+                dayCount = config.weekCount === 1 ? config.dayCount : 7,
                 eventRow,
                 dayIndex,
                 weekGrid,
@@ -123,7 +126,7 @@ Ext.define('Extensible.calendar.util.WeekEventRenderer', {
                         // Loop through each event in the current day grid. Note that this grid can
                         // also contain placeholders representing segments of spanning events, though
                         // for simplicity's sake these will all be referred to as "events" in comments.
-                        for(; eventIndex < eventCount; eventIndex++){
+                        for (; eventIndex < eventCount; eventIndex++) {
                             if (!dayGrid[eventIndex]) {
                                 // There is no event at the current index
                                 if (eventIndex >= maxEventsPerDay) {
