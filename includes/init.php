@@ -13,11 +13,13 @@ $local_dir = (LOCAL) ? '/'.next(explode('/', $_SERVER['PHP_SELF'])) : '';
 $protocol  = ($_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
 
 define('HOST'     , $protocol.'://'.$_SERVER['HTTP_HOST'].$local_dir);
-define('ROOT'     , str_replace(DIRECTORY_SEPARATOR.'includes', '', dirname(__FILE__)));
 define('ADMIN'    , HOST.'/admin');
-define('COMMON'   , HOST.'/common');
 define('MODULES'  , HOST.'/modules');
 define('RESOURCES', HOST.'/resources');
 define('UPLOAD'   , HOST.'/upload');
+
+define('ROOT'     , str_replace(DIRECTORY_SEPARATOR.'includes', '', dirname(__FILE__)));
+define('COMMON'   , ROOT.'/common');
+define('INCLUDES' , ROOT.'/includes');
 
 
