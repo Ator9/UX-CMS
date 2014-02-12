@@ -1,7 +1,7 @@
 <?php
 // Create "common/init.php" & change
 
-require(dirname(__FILE__).'/../../includes/init.php');
+require(dirname(__FILE__).'/../includes/init.php');
 
 // $session = new Session('web'); // Need session?
 
