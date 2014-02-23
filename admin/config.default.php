@@ -18,8 +18,8 @@ $GLOBALS['admin']['doctype'] = '<!DOCTYPE html>';
 // Languages (Default first position):
 $GLOBALS['admin']['locale'] = array('es'=>'Español', 'en'=>'English');
 
-// Default module: 
-$GLOBALS['admin']['default_module'] = 0;
+// Default module (Default "admins"): 
+$GLOBALS['admin']['default_module'] = 'admins';
 
 // Buttons tree footer (2 max): 
 $GLOBALS['admin']['fbar_buttons'][] = array('url' => HOST, 'text' => 'Home Page');

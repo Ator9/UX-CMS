@@ -19,8 +19,11 @@ Ext.application({
     launch: function() {
         Admin = this;
         Admin.modules = <? echo json_encode($modules); ?>;
-        Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : <? echo (int) $GLOBALS['admin']['default_module']; ?>;
         Admin.loadedModules = []; // Fills with loaded modules
+
+        // Load default module (admin/config.php):
+        Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : Ext.Array.indexOf(Admin.modules, '<? echo $GLOBALS['admin']['default_module']; ?>');
+        if(Admin.firstModule === -1) Admin.firstModule = 0;
         
         Admin.cards = Ext.create('Ext.panel.Panel', { region: 'center', layout: 'card', margin: '5 0 5 0', border: false } );
 
