@@ -57,18 +57,26 @@ body{padding:40px 0;background-color:#eee}
 			Password
 			<input type="password" name="pass" class="form-control" required />
 		</label>
-		<label>
-			Language
-			<select name="locale" class="form-control">
-			<?
-            foreach($GLOBALS['admin']['locale'] as $key => $lang)
-            {
-                $sel = ($key==$aSession->get('locale')) ? ' selected' : '';
-                echo '<option value="'.$key.'"'.$sel.'>'.$lang.'</option>';
-            }
-			?>
-			</select>
-		</label>
+		<?
+		// Select languages if needed (admin/config.php):
+        if(count($GLOBALS['admin']['locale']) >= 2)
+        {
+		    ?>
+		    <label>
+			    Language
+			    <select name="locale" class="form-control">
+			    <?
+                foreach($GLOBALS['admin']['locale'] as $key => $lang)
+                {
+                    $sel = ($key==$aSession->get('locale')) ? ' selected' : '';
+                    echo '<option value="'.$key.'"'.$sel.'>'.$lang.'</option>';
+                }
+			    ?>
+			    </select>
+		    </label>
+		    <?
+		}
+		?>
 		<input type="hidden" name="login" value="1" />
 		<button type="submit" class="btn btn-lg btn-primary btn-block">Login</button>
 	</form>
