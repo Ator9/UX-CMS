@@ -103,7 +103,9 @@ Ext.define('admins.view.Accounts', {
                         add_admin.down('form').getForm().setValues({ accountID: this.down('grid[region=west]').getSelectionModel().getSelection()[0].get('accountID') });
                         if(add_admin.down('form').isValid()) {
                             add_admin.down('form').submit({
+                                scope: this,
                                 success: function(form, action) {
+                                    this.accountsAdminsStore.reload();
                                     add_admin.hide();
                                     Admin.Msg('Admin succesfully added.', true);
                                 },
