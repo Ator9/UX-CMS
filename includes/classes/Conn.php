@@ -19,7 +19,7 @@ class Conn extends mysqli
 		if(mysqli_connect_errno()) throw new Exception(mysqli_connect_error());
 		if(!parent::set_charset('utf8')) throw new Exception(mysqli_error($this));
 		
-		array_push($this->_fields, $this->_index); // adds index to fields list
+		if($this->_index != '') array_push($this->_fields, $this->_index); // adds index to fields list
 	}
 
 
@@ -94,7 +94,7 @@ class Conn extends mysqli
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
 		if($this->query($sql))
 		{
-		    $this->setID($this->insert_id);
+		    if($this->_index != '') $this->setID($this->insert_id);
 		    return true;
 		}
 		return false;

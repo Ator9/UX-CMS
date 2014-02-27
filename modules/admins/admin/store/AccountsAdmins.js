@@ -2,7 +2,7 @@ Ext.define('admins.store.AccountsAdmins', {
     extend: 'Ext.data.Store',
     
     fields: [ // Model
-        'adminID', 'username',
+        'adminID', 'username', 'email',
         { name: 'last_login', type: 'date', dateFormat: 'c' } // It is strongly recommended that you always specify an explicit date format
     ],
     pageSize: 25, // Defaults to 25

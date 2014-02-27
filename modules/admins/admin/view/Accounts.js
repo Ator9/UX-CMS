@@ -80,12 +80,47 @@ Ext.define('admins.view.Accounts', {
                 }
             }
         });
+        
+        var add_admin = Ext.create('Ext.Window', {
+            title: 'Add Admin to Account',
+            width: 350,
+            border: false,
+            closeAction: 'hide',
+            items: {
+                xtype: 'form',
+                url: 'index.php?_class=adminsAccountsAdmins&_method=addAdminToAccount',
+                bodyStyle: 'padding:5px', // Custom CSS styles to be applied to the panel's body element
+                defaultType: 'textfield',
+                items: [
+                    { name: 'key', fieldLabel: 'Username / E-mail', labelWidth: 120, allowBlank: false },
+                    { name: 'accountID', xtype: 'hidden' }
+                ],
+                bbar: ['->', {
+                    text: 'Add',
+                    icon: 'resources/icons/plus.png',
+                    scope: this,
+                    handler: function() {
+                        add_admin.down('form').getForm().setValues({ accountID: this.down('grid[region=west]').getSelectionModel().getSelection()[0].get('accountID') });
+                        if(add_admin.down('form').isValid()) {
+                            add_admin.down('form').submit({
+                                success: function(form, action) {
+                                    add_admin.hide();
+                                    Admin.Msg('Admin succesfully added.', true);
+                                },
+                                failure: function(form, action) { Admin.Msg('Admin not found.', false); }
+                            });
+                        }
+                        else Admin.Msg('Please complete required fields', false);
+                    }
+                }]
+            }
+        });
 
         this.admins =  Ext.create('Ext.grid.Panel', {
             store: this.accountsAdminsStore,
             region: 'center',
             tbar: [
-                Ext.create('Ext.ux.GridRowInsert'), '-',
+                { text: 'Add', icon: 'resources/icons/plus.png', handler: function(){ add_admin.show(); }}, '-', 
                 Ext.create('Ext.ux.GridRowDelete', { itemId: 'gridDeleteButton2', form: this.config.up() }), '-',
                 Ext.create('Ext.ux.GridSearch', { columns: [ 'adm.adminID', 'username', 'email' ] }) 
             ],
@@ -95,6 +130,7 @@ Ext.define('admins.view.Accounts', {
             columns: [
                 { header: 'ID', dataIndex: 'adminID', width: 50 },
                 { header: 'Username', dataIndex: 'username', width: 150 },
+                { header: 'E-mail', dataIndex: 'email', width: 150 },
                 { header: 'Last login', dataIndex: 'last_login', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
             bbar: Ext.create('Ext.toolbar.Paging', { store: this.accountsAdminsStore, displayInfo: true }),

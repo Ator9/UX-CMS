@@ -19,7 +19,7 @@ class adminsAccountsAdmins extends ConnExtjs
     {
         if(!is_numeric($_REQUEST['accountID'])) exit;
     
-        $sql = 'SELECT adm.adminID, adm.username, adm.last_login
+        $sql = 'SELECT adm.adminID, adm.username, adm.last_login, adm.email
                 FROM '.$this->_table.' as acc
                 INNER JOIN admins as adm ON (acc.adminID = adm.adminID AND accountID = '.$_REQUEST['accountID'].')
                 WHERE 1';
@@ -66,6 +66,27 @@ class adminsAccountsAdmins extends ConnExtjs
         }
 
         return (array) $array;
+    }
+    
+    
+    // E:
+    public function addAdminToAccount()
+    {
+        $sql = 'SELECT adminID FROM admins
+                WHERE username = "'.$this->escape($_POST['key']).'" OR email = "'.$this->escape($_POST['key']).'" 
+                LIMIT 1';
+        
+        if(($rs = $this->query($sql)) && $rs->num_rows == 1)
+        {
+            list($adminID) = $rs->fetch_row();
+        
+            $this->accountID = $_POST['accountID'];
+            $this->adminID   = $adminID;
+            if($this->insert()) $response['success'] = true;
+        }
+        else $response['success'] = false;
+        
+        echo json_encode($response);
     }
 
 }
