@@ -48,10 +48,7 @@ Ext.define('admins.view.Accounts', {
                 },
                 edit: function(editor, context, eOpts) { 
                     context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
-                },
-                update: function(store, records){
-		            console.log('datachanged/count: '+store.count())
-	            }       
+                }     
             }
         });
         
