@@ -3,6 +3,11 @@ Ext.define('admins.view.Developers', {
     
     initComponent: function() {
 
+        var docs = Ext.create('Ext.ux.IFrame', {
+            title: 'Documentation',
+            src: Admin.getModulesUrl(this)+'/documentation.php'
+        });
+
         var php = Ext.create('Ext.ux.IFrame', {
             title: 'PHP Info',
             src: Admin.getModulesUrl(this)+'/phpinfo.php'
@@ -13,12 +18,12 @@ Ext.define('admins.view.Developers', {
             src: Admin.getModulesUrl(this)+'/phpminiadmin.php'
         });
 
-        var docs = Ext.create('Ext.ux.IFrame', {
-            title: 'Documentation',
-            src: Admin.getModulesUrl(this)+'/documentation.php'
+        var icons = Ext.create('Ext.ux.IFrame', {
+            title: 'Icons',
+            src: 'http://p.yusukekamiyamane.com/'
         });
-    
-        this.items = [ php, db, docs ];
+
+        this.items = [ docs, php, db, icons ];
         this.callParent(arguments);
     }
 });

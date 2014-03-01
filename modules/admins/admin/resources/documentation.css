@@ -89,9 +89,9 @@ sup:after {
 ul.header {
     background: url(docs_menu_bg.png) transparent fixed;
     position: fixed;
-    top: 3em;
+    top: 4em;
     left: auto;
-    width: 9.5em;
+    width: 11em;
     right: 2em;
     text-align: center;
     margin: 1em;

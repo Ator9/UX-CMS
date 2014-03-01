@@ -28,7 +28,8 @@ Ext.define('admins.view.Admins', {
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
                 { header: 'ID', dataIndex: 'adminID', width: 50 },
-                { header: 'Username', dataIndex: 'username', width: 150 },
+                { header: 'Username', dataIndex: 'username', width: 140 },
+                { header: 'E-mail', dataIndex: 'email', width: 160 },
                 { header: 'Role', dataIndex: 'roleID', flex: 1, renderer: this.getRole, scope: this },
                 { header: 'Superuser', dataIndex: 'superuser', width: 64, align: 'center', renderer: Admin.getStatusIcon },
                 { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon },
@@ -95,7 +96,7 @@ Ext.define('admins.view.Admins', {
                 defaultType: 'textfield',
                 items: [
                     { name: 'username', fieldLabel: 'Username', allowBlank: false },
-                    { name: 'email', fieldLabel: 'E-mail', vtype: 'email' }, // vtype applies email validation rules to this field
+                    { name: 'email', fieldLabel: 'E-mail', allowBlank: false, vtype: 'email' }, // vtype applies email validation rules to this field
                     { name: 'firstname', fieldLabel: 'First Name' },
                     { name: 'lastname', fieldLabel: 'Last Name' },
                       roles_combo,

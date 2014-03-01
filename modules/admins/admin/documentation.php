@@ -12,7 +12,6 @@ require(ROOT.'/admin/common/header.bootstrap.php');
     <li><a href="#top">Top</a></li>
     <li><a href="#links">Links</a></li>
     <li><a href="#require">Requirements</a></li>
-    <li><a href="#intro">Introduction</a></li>
     <li><a href="#setup">Installation</a></li>
     <li><a href="#faq"><abbr title="Frequently Asked Questions"> FAQ</abbr></a></li>
     <li><a href="#extjs_components">Ext JS</a></li>
@@ -25,11 +24,6 @@ require(ROOT.'/admin/common/header.bootstrap.php');
         <li><a href="https://github.com/Ator9/UX-CMS/commits/master" target="_blank">Changelog</a></li>
         <li><a href="#">Donate</a></li>
     </ul>
-
-    <h2 id="intro">Introduction</h2>
-    <p>
-        UX CMS can ... a
-    </p>
 
     <h2 id="require">Requirements</h2>
     <ul>
