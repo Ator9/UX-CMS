@@ -28,9 +28,17 @@ class Conn extends mysqli
 	// For other successful queries mysqli_query() will return TRUE.
 	public function query($sql)
 	{
-		if($this->_debug) echo $sql;
+		if($this->_debug) vd($sql);
 		if($result = parent::query($sql)) return $result;
-	    if(mysqli_errno($this))	throw new Exception(mysqli_error($this).' '.$sql);
+	    if(mysqli_errno($this))	
+	    {
+	        $aLog = new adminsLog; // Guardo el error en base de datos
+	        $data['task']    = 'SQL Error';
+	        $data['comment'] = mysqli_error($this).'<br>'.$sql;
+	        $aLog->log($data);
+	        
+	        throw new Exception(mysqli_error($this).' '.$sql);
+	    }
 	}
 
 
