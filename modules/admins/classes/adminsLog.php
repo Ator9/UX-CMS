@@ -4,7 +4,7 @@ class adminsLog extends ConnExtjs
 	public $_table	= 'admins_logs';
 	public $_index	= 'logID';
 	public $_fields	= array('adminID',
-	                        //TODO'module',
+	                        'classname',
 	                        'task',
 							'comment',
 							'ip',
@@ -30,10 +30,11 @@ class adminsLog extends ConnExtjs
     // Log:
     public function log($data=array())
     {
-        $this->adminID = ($data['adminID']) ? $data['adminID'] : $GLOBALS['admin']['data']['adminID'];
-        $this->task    = $data['task'];
-        $this->comment = $data['comment'];
-        $this->ip      = $_SERVER['REMOTE_ADDR'];
+        $this->adminID   = ($data['adminID']) ? $data['adminID'] : $GLOBALS['admin']['data']['adminID'];
+        $this->classname = $data['classname'];
+        $this->task      = $data['task'];
+        $this->comment   = $data['comment'];
+        $this->ip        = $_SERVER['REMOTE_ADDR'];
 
         return parent::insert();
     }

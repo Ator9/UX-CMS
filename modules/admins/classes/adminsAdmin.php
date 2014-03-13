@@ -33,7 +33,7 @@ class adminsAdmin extends ConnExtjs
             $aSession->set('adminData', $this->getData());
 
             // Log:
-            $aLog->log(array('task' => 'login', 'adminID' => $this->getID()));
+            $aLog->log(array('classname' => get_class($aLog), 'task' => 'login', 'adminID' => $this->getID()));
 
 		    // Last Login:
 		    $this->last_login = date('Y-m-d H:i:s');

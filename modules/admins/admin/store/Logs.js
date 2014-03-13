@@ -2,7 +2,7 @@ Ext.define('admins.store.Logs', {
     extend: 'Ext.data.Store',
     
     fields: [ // Model
-        'logID', 'logID', 'task', 'comment', 'username', 'ip',
+        'logID', 'classname', 'task', 'comment', 'username', 'ip',
         { name: 'date_created', type: 'date', dateFormat: 'c' } // It is strongly recommended that you always specify an explicit date format
     ],
     pageSize: 50, // Defaults to 25

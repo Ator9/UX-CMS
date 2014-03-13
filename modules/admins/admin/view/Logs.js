@@ -8,11 +8,12 @@ Ext.define('admins.view.Logs', {
     initComponent: function() {
         this.store = Ext.create('admins.store.Logs').load(); // Store + Load
         this.tbar = [
-            Ext.create('Ext.ux.GridSearch', { columns: [ 'logID', 'task', 'comment' ] }), '-',
+            Ext.create('Ext.ux.GridSearch', { columns: [ 'logID', 'classname', 'task', 'comment' ] }), '-',
             Ext.create('Ext.ux.GridExport', { csvZip: true }) 
         ];
         this.columns = [
             { header: 'ID', dataIndex: 'logID', width: 80 },
+            { header: 'Classname', dataIndex: 'classname' },
             { header: 'Task', dataIndex: 'task' },
             { header: 'Comment', dataIndex: 'comment', flex: 1, renderer: this.textFormat },
             { header: 'Username', dataIndex: 'username' },
