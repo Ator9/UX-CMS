@@ -10,23 +10,17 @@ require(ROOT.'/admin/common/header.bootstrap.php');
 <div id="header"><h1>UX <span class="myadmin">CMS</span></h1></div>
 <ul class="header">
     <li><a href="#top">Top</a></li>
-    <li><a href="#links">Links</a></li>
     <li><a href="#php">Framework Hints</a></li>
     <li><a href="#git">Git Commands</a></li>
-    <li><a href="#faq"><abbr title="Frequently Asked Questions"> FAQ</abbr></a></li>
     <li><a href="#extjs">Ext JS</a></li>
+    <li><a href="#links">Links</a></li>
 </ul>
 
 <div id="body">
-    <h2 id="links">Links</h2>
-    <ul>
-        <li><a href="https://github.com/Ator9/UX-CMS" target="_blank">Git repositories on Github</a></li>
-        <li><a href="https://github.com/Ator9/UX-CMS/commits/master" target="_blank">Changelog</a></li>
-    </ul>
-    
     <h2 id="php">Framework Hints</h2>
     <ul>
         <li><a href="#phpconstants">PHP Constants</a></li>
+        <li><a href="#faqrobots">Default robots.txt</a></li>
     </ul>
     <h3 id="phpconstants">PHP Constants</h3>
     <ul>
@@ -43,6 +37,8 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>DB_HOST<br>DB_USER<br>DB_PASS<br>DB_NAME</pre>
         </li>
     </ul>
+    <h3 id="faqrobots">Default robots.txt</h3>
+    <pre>User-agent: *<br>Allow: /</pre>
 
     <h2 id="git">Git Commands</h2>
     <ul>
@@ -92,18 +88,17 @@ require(ROOT.'/admin/common/header.bootstrap.php');
         be used for this.
     </p>
     */?>
-
-    <h2 id="faq">FAQ - Frequently Asked Questions</h2>
-    <ul>
-        <li><a href="#faqrobots">Default robots.txt</a></li>
-    </ul>
-    <h3 id="faqrobots">Default robots.txt</h3>
-    <pre>User-agent: *<br>Allow: /</pre>
     
     <h2 id="extjs">Ext JS</h2>
     <ul>
         <li><a href="http://docs.sencha.com/extjs/" target="_blank">Documentation</a></li>
         <li><a href="http://extjs.com/deploy/dev/docs/?class=Ext.Component" target="_blank">Component List</a></li>
+    </ul>
+    
+    <h2 id="links">Links</h2>
+    <ul>
+        <li><a href="https://github.com/Ator9/UX-CMS" target="_blank">Git repositories on Github</a></li>
+        <li><a href="https://github.com/Ator9/UX-CMS/commits/master" target="_blank">Changelog</a></li>
     </ul>
 </div>
 <ul id="footer">
