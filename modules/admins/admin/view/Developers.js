@@ -18,12 +18,7 @@ Ext.define('admins.view.Developers', {
             src: Admin.getModulesUrl(this)+'/phpminiadmin.php'
         });
 
-        var icons = Ext.create('Ext.ux.IFrame', {
-            title: 'Icons',
-            src: 'http://p.yusukekamiyamane.com/'
-        });
-
-        this.items = [ docs, php, db, icons ];
+        this.items = [ docs, php, db ];
         this.callParent(arguments);
     }
 });

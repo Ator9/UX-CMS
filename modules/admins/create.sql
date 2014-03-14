@@ -61,8 +61,9 @@ CREATE TABLE IF NOT EXISTS `admins_accounts_configs` (
 CREATE TABLE IF NOT EXISTS `admins_logs` (
   `logID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `adminID` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `classname` varchar(75) NOT NULL DEFAULT '',
   `task` varchar(50) NOT NULL DEFAULT '',
-  `comment` varchar(255) NOT NULL DEFAULT '',
+  `comment` text NOT NULL,
   `ip` varchar(30) NOT NULL DEFAULT '',
   `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
