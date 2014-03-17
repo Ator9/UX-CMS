@@ -7,7 +7,7 @@
  *
  */
 
-class Tree extends Conn
+class Tree extends ConnExtjs
 {
 	// Para iniciar el Arbol. Chequeo que exista el Nodo Primario. Lo creo.
 	public function checkRoot($name='root')

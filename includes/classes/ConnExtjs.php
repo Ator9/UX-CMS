@@ -5,7 +5,7 @@ class ConnExtjs extends Conn
 	public $_index	= '';
 	public $_fields	= array();
 
-	protected $_dependantClasses = array(); // delete()
+	protected $_dependantClasses = array(); // delete childrens
 
 	public $_debug  = false;
 	
