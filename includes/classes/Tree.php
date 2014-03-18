@@ -3,13 +3,12 @@
 /**
  *
  * Nested Tree
- * Estructuramos todo para que el Root Node no se vea
  *
  */
 
 class Tree extends ConnExtjs
 {
-	// Para iniciar el Arbol. Chequeo que exista el Nodo Primario. Lo creo.
+	// Tree startup, need "root":
 	public function checkRoot($name='root')
 	{
 		$rs = parent::getList(array(), 1);
@@ -17,120 +16,124 @@ class Tree extends ConnExtjs
 		{
 			parent::query('TRUNCATE '.$this->_table);
 
-			$data['name'] 	  = $name;
-			$data['lft']	  = 1;
-			$data['rgt']  	  = 2;
-			$data['parentID'] = 0;
-		    $data['level']    = 0;
-			parent::insert($data);
+			$this->name 	= $name;
+			$this->lft	    = 1;
+			$this->rgt  	= 2;
+			$this->parentID = 0;
+		    $this->level    = 0;
+			parent::insert();
 		}
 	}
 
 
-	public function update($data)
-	{
-		if($node = parent::get($data[$this->_index]))
-		{
-			// Si no cambia el nodo, update normal:
-			if($node['parentID'] == $data['parentID']) return parent::update($data, $node[$this->_index]);
+	public function update()
+    {
+        // Need ORIGINAL node info:
+        $orig = new $this;
+        $orig->get($this->getID());
+        
+	    // Same parent, normal update:
+	    if($orig->parentID == $this->parentID) return parent::update();
+
+        // Parent change. Need parent info:
+	    $parent = new $this;
+        if($parent->get($this->parentID))
+        {
+	        // Chequeo que no quiera mover el nodo a uno de sus hijos:
+	        if($parent->lft > $orig->lft && $parent->lft < $orig->rgt) return false;
 
 
-			// Necesito la info del nodo destino:
-			$parent = parent::get($data['parentID']);
+	        // Cambio de nodo - Varios pasos:
+	        $delta = $orig->rgt - $orig->lft + 1;
 
-			// Chequeo que no quiera mover el nodo a uno de sus hijos:
-			if($parent['lft'] > $node['lft'] && $parent['lft'] < $node['rgt']) return false;
+	        // 1- Seteo lft y rgt en negativos (del nodo a mover y todos sus hijos):
+	        $sql = 'UPDATE '.$this->_table.'
+			        SET lft = 0-lft, rgt = 0-rgt
+	         		WHERE lft BETWEEN '.$orig->lft.' AND '.$orig->rgt;
+	        parent::query($sql);
 
-
-			// Cambio de nodo - Varios pasos:
-			$delta = $node['rgt'] - $node['lft'] + 1;
-
-			// 1- Seteo lft y rgt en negativos (del nodo a mover y todos sus hijos):
-			$sql = 'UPDATE '.$this->_table.'
-					SET lft = 0-lft, rgt = 0-rgt
-			 		WHERE lft BETWEEN '.$node['lft'].' AND '.$node['rgt'];
-			parent::query($sql);
-
-			// 2- Subo los nodos que estan a la derecha para que llenen el hueco (igual que en delete()):
-			$sql = 'UPDATE '.$this->_table.'
-					SET lft = CASE WHEN lft > '.$node['rgt'].' THEN lft-'.$delta.' ELSE lft END,
-						rgt = CASE WHEN rgt > '.$node['rgt'].' THEN rgt-'.$delta.' ELSE rgt END
-					WHERE rgt > '.$node['rgt'];
-			parent::query($sql);
-
-
-
-
-			// 3- TAREA=limpiar http://stackoverflow.com/questions/889527/mysql-move-node-in-nested-set/1274175#1274175
-			$sql = 'UPDATE '.$this->_table.'
-					SET lft = lft + '.$delta.'
-					WHERE lft >= IF('.$parent['rgt'].' > '.$node['rgt'].', '.$parent['rgt'].' - '.$delta.', '.$parent['rgt'].')';
-			parent::query($sql);
-
-			$sql = 'UPDATE '.$this->_table.'
-					SET rgt = rgt + '.$delta.'
-					WHERE rgt >= IF('.$parent['rgt'].' > '.$node['rgt'].', '.$parent['rgt'].' - '.$delta.', '.$parent['rgt'].')';
-			parent::query($sql);
-
-
-			//4- TAREA=limpiar
-			$sql = 'UPDATE '.$this->_table.'
-					SET lft = 0-(lft)+IF('.$parent['rgt'].' > '.$node['rgt'].', '.$parent['rgt'].' - '.$node['rgt'].' - 1, '.$parent['rgt'].' - '.$node['rgt'].' - 1 + '.$delta.'),
-				    	rgt = 0-(rgt)+IF('.$parent['rgt'].' > '.$node['rgt'].', '.$parent['rgt'].' - '.$node['rgt'].' - 1, '.$parent['rgt'].' - '.$node['rgt'].' - 1 + '.$delta.')
-					WHERE lft <= 0-'.$node['lft'].' AND rgt >= 0-'.$node['rgt'];
-			parent::query($sql);
+	        // 2- Subo los nodos que estan a la derecha para que llenen el hueco (igual que en delete()):
+	        $sql = 'UPDATE '.$this->_table.'
+			        SET lft = CASE WHEN lft > '.$orig->rgt.' THEN lft-'.$delta.' ELSE lft END,
+				        rgt = CASE WHEN rgt > '.$orig->rgt.' THEN rgt-'.$delta.' ELSE rgt END
+			        WHERE rgt > '.$orig->rgt;
+	        parent::query($sql);
 
 
 
 
-			$this->levelBuilder();
+	        // 3- TODO clean http://stackoverflow.com/questions/889527/mysql-move-node-in-nested-set/1274175#1274175
+	        $sql = 'UPDATE '.$this->_table.'
+			        SET lft = lft + '.$delta.'
+			        WHERE lft >= IF('.$parent->rgt.' > '.$orig->rgt.', '.$parent->rgt.' - '.$delta.', '.$parent->rgt.')';
+	        parent::query($sql);
 
-			return parent::update($data, $node[$this->_index]);
-		}
-		return false;
-	}
+	        $sql = 'UPDATE '.$this->_table.'
+			        SET rgt = rgt + '.$delta.'
+			        WHERE rgt >= IF('.$parent->rgt.' > '.$orig->rgt.', '.$parent->rgt.' - '.$delta.', '.$parent->rgt.')';
+	        parent::query($sql);
+
+
+	        // 4- TODO clean
+	        $sql = 'UPDATE '.$this->_table.'
+			        SET lft = 0-(lft)+IF('.$parent->rgt.' > '.$orig->rgt.', '.$parent->rgt.' - '.$orig->rgt.' - 1, '.$parent->rgt.' - '.$orig->rgt.' - 1 + '.$delta.'),
+		            	rgt = 0-(rgt)+IF('.$parent->rgt.' > '.$orig->rgt.', '.$parent->rgt.' - '.$orig->rgt.' - 1, '.$parent->rgt.' - '.$orig->rgt.' - 1 + '.$delta.')
+			        WHERE lft <= 0-'.$orig->lft.' AND rgt >= 0-'.$orig->rgt;
+	        parent::query($sql);
+
+            // Update "level" column:
+	        $this->levelBuilder();
+            
+            // Final update:
+            unset($this->_fields[array_search('lft', $this->_fields)]);
+            unset($this->_fields[array_search('rgt', $this->_fields)]);
+            unset($this->_fields[array_search('level', $this->_fields)]);
+	        return parent::update();
+	    }
+	    
+	    return false;
+    }
 
 
 	// Acomodo el arbol e inserto:
-	public function insert($data)
+	public function insert()
 	{
-		if($parent = parent::get($data['parentID']))
-		{
-			// Hago lugar (muevo para la derecha 2 lugares e inserto:
-			$sql = 'UPDATE '.$this->_table.'
-					SET lft = CASE WHEN lft > '.$parent['rgt'].' THEN lft+2 ELSE lft END,
-						rgt = CASE WHEN rgt >='.$parent['rgt'].' THEN rgt+2 ELSE rgt END
-					WHERE rgt >= '.$parent['rgt'];
-			parent::query($sql);
+	    // Need parent info:
+	    $parent = new $this;
+        if($parent->get($this->parentID))
+        {
+		    // Hago lugar (muevo para la derecha 2 lugares e inserto:
+		    $sql = 'UPDATE '.$this->_table.'
+				    SET lft = CASE WHEN lft > '.$parent->rgt.' THEN lft+2 ELSE lft END,
+					    rgt = CASE WHEN rgt >='.$parent->rgt.' THEN rgt+2 ELSE rgt END
+				    WHERE rgt >= '.$parent->rgt;
+		    parent::query($sql);
 
-			$ins 		  = $data;
-			$ins['lft']   = $parent['rgt'];
-			$ins['rgt']   = $parent['rgt'] + 1;
-			$ins['level'] = $parent['level'] + 1;
-			return parent::insert($ins);
+		    $this->lft   = $parent->rgt;
+		    $this->rgt   = $parent->rgt + 1;
+		    $this->level = $parent->level + 1;
+		
+		    return parent::insert();
 		}
+		
 		return false;
 	}
 
 
 	// Borro el nodo y los hijos. Luego reacomodo el arbol (muevo a los que estan a la derecha):
-	public function delete($indexID)
+	public function delete()
 	{
-		if($node = parent::get($indexID))
+		$sql = 'DELETE FROM '.$this->_table.' WHERE lft BETWEEN '.$this->lft.' AND '.$this->rgt;
+		if(parent::query($sql))
 		{
-			$sql = 'DELETE FROM '.$this->_table.' WHERE lft BETWEEN '.$node['lft'].' AND '.$node['rgt'];
-			if(parent::query($sql))
-			{
-				$delta = $node['rgt'] - $node['lft'] + 1;
+			$delta = $this->rgt - $this->lft + 1;
 
-				$sql = 'UPDATE '.$this->_table.'
-						SET lft = CASE WHEN lft > '.$node['rgt'].' THEN lft-'.$delta.' ELSE lft END,
-							rgt = CASE WHEN rgt > '.$node['rgt'].' THEN rgt-'.$delta.' ELSE rgt END
-						WHERE rgt > '.$node['rgt'];
-				return parent::query($sql);
-			}
+			$sql = 'UPDATE '.$this->_table.'
+					SET lft = CASE WHEN lft > '.$this->rgt.' THEN lft-'.$delta.' ELSE lft END,
+						rgt = CASE WHEN rgt > '.$this->rgt.' THEN rgt-'.$delta.' ELSE rgt END
+					WHERE rgt > '.$this->rgt;
+			return parent::query($sql);
 		}
-		return false;
 	}
 
 
