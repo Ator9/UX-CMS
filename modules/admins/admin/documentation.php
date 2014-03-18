@@ -20,7 +20,8 @@ require(ROOT.'/admin/common/header.bootstrap.php');
     <h2 id="php">Framework Hints</h2>
     <ul>
         <li><a href="#phpconstants">PHP Constants</a></li>
-        <li><a href="#faqrobots">Default robots.txt</a></li>
+        <li><a href="#phpadminsvar">Admin Vars</a></li>
+        <li><a href="#phprobots">Default robots.txt</a></li>
     </ul>
     <h3 id="phpconstants">PHP Constants</h3>
     <ul>
@@ -37,7 +38,19 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>DB_HOST<br>DB_USER<br>DB_PASS<br>DB_NAME</pre>
         </li>
     </ul>
-    <h3 id="faqrobots">Default robots.txt</h3>
+    <h3 id="phpadminsvar">Admin Vars</h3>
+    <ul>
+        <li>Title
+            <pre>$GLOBALS['admin']['title']</pre>
+        </li>
+        <li>User Data
+            <pre>$GLOBALS['admin']['data']<br>$GLOBALS['admin']['data']['adminID']<br>$GLOBALS['admin']['data']['roleID']<br>$GLOBALS['admin']['data']['superuser']<br>...</pre>
+        </li>
+        <li>User Accounts
+            <pre>$GLOBALS['admin']['data']['accounts']</pre>
+        </li>
+    </ul>
+    <h3 id="phprobots">Default robots.txt</h3>
     <pre>User-agent: *<br>Allow: /</pre>
 
     <h2 id="git">Git Commands</h2>
