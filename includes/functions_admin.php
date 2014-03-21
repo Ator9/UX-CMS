@@ -95,6 +95,42 @@ function getAdminTreeButtons()
 }
 
 
+// Get lang:
+function getLang($modules=array())
+{
+    global $aSession;
+
+    foreach($modules as $module)
+    {
+        $js.= 'Admin.lang.'.$module.'=[];';
+        foreach(getModuleLocale($module, $aSession->get('locale')) as $key => $value)
+        {
+            $js.= 'Admin.lang.'.$module.'["'.$key.'"]="'.$value.'";';
+        }
+    }
+
+    echo 'Admin.lang=[];';
+    echo $js;
+}
+
+
+// Get module lang file:
+function getModuleLocale($module='', $lang='es')
+{
+    $file = (file_exists(ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv')) ? ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv' : ROOT.'/admin/common/locale/'.$lang.'.csv';
+    if(($handle = fopen($file, 'r')) !== FALSE)
+    {
+        while(($data = fgetcsv($handle, 1000, ';', '"')) !== FALSE)
+        {
+            $words[$data[0]] = $data[1];
+        }
+        fclose($handle);
+    }
+    
+    return (array) $words;
+}
+
+
 // IP restriction (admin config.php):
 function checkAdminIpAccess()
 {

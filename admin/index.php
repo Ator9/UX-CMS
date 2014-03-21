@@ -20,6 +20,8 @@ Ext.application({
         Admin = this;
         Admin.modules = <? echo json_encode($modules); ?>;
         Admin.loadedModules = []; // Fills with loaded modules
+        
+        <? echo getLang($modules); /* Language funtionality */ ?>
 
         // Load default module (admin/config.php):
         Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : Ext.Array.indexOf(Admin.modules, '<? echo $GLOBALS['admin']['default_module']; ?>');
