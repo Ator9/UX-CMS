@@ -59,7 +59,7 @@ body{padding:40px 0;background-color:#eee}
 		</label>
 		<?
 		// Select languages if needed (admin/config.php):
-        if(count($GLOBALS['admin']['locale']) >= 2)
+        if(count($GLOBALS['admin']['locale']) > 1)
         {
 		    ?>
 		    <label>
