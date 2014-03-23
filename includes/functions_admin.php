@@ -120,7 +120,7 @@ function getModuleLocale($module='', $lang='es')
     $file = (file_exists(ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv')) ? ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv' : ROOT.'/admin/common/locale/'.$lang.'.csv';
     if(($handle = fopen($file, 'r')) !== FALSE)
     {
-        while(($data = fgetcsv($handle, 1000, ';', '"')) !== FALSE)
+        while(($data = fgetcsv($handle, 1000)) !== FALSE)
         {
             $words[$data[0]] = $data[1];
         }
