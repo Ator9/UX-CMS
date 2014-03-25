@@ -19,34 +19,41 @@ require(ROOT.'/admin/common/header.bootstrap.php');
 <div id="body">
     <h2 id="php">Framework Hints</h2>
     <ul>
-        <li><a href="#phpconstants">PHP Constants</a></li>
-        <li><a href="#phpadminsvar">Admin Vars</a></li>
+        <li><a href="#phpconstants">Site Constants</a></li>
+        <li><a href="#phpadminsglobals">Admin GLOBALS</a></li>
         <li><a href="#phprobots">Default robots.txt</a></li>
     </ul>
-    <h3 id="phpconstants">PHP Constants</h3>
+    <h3 id="phpconstants">Site Constants</h3>
     <ul>
-        <li>Environment - Local / Online
+        <li>
+            <b>Environment - Local / Online</b>
             <pre>LOCAL (true | false)</pre>
         </li>
-        <li>External - http://www.example.com (HOST)
+        <li>
+            <b>External - http://www.example.com (HOST)</b>
             <pre>HOST<br>ADMIN (/admin)<br>MODULES (/modules)<br>RESOURCES (/resources)<br>UPLOAD (/upload)</pre>
         </li>
-        <li>Internal - /var/www/example.com (ROOT)
+        <li>
+            <b>Internal - /var/www/example.com (ROOT)</b>
             <pre>ROOT<br>COMMON (/common)<br>INCLUDES (/includes)</pre>
         </li>
-        <li>Database
+        <li>
+            <b>Database</b>
             <pre>DB_HOST<br>DB_USER<br>DB_PASS<br>DB_NAME</pre>
         </li>
     </ul>
-    <h3 id="phpadminsvar">Admin Vars</h3>
+    <h3 id="phpadminsglobals">Admin GLOBALS</h3>
     <ul>
-        <li>Title
+        <li>
+            <b>Misc</b>
             <pre>$GLOBALS['admin']['title']</pre>
         </li>
-        <li>User Data
+        <li>
+            <b>Logged User Data</b>
             <pre>$GLOBALS['admin']['data']<br>$GLOBALS['admin']['data']['adminID']<br>$GLOBALS['admin']['data']['roleID']<br>$GLOBALS['admin']['data']['superuser']<br>...</pre>
         </li>
-        <li>User Accounts
+        <li>
+            <b>Logged User Accounts</b>
             <pre>$GLOBALS['admin']['data']['accounts']</pre>
         </li>
     </ul>
