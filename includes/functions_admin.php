@@ -117,8 +117,10 @@ function getLang($modules=array())
 // Get module lang file:
 function getModuleLocale($module='', $lang='es')
 {
-    $file = (file_exists(ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv')) ? ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv' : ROOT.'/admin/common/locale/'.$lang.'.csv';
-    if(($handle = fopen($file, 'r')) !== FALSE)
+    if(file_exists(ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv')) $file = ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv';
+    elseif(file_exists(ROOT.'/admin/common/locale/'.$lang.'.csv')) $file = ROOT.'/admin/common/locale/'.$lang.'.csv';
+
+    if($file != '' && ($handle = fopen($file, 'r')) !== FALSE)
     {
         while(($data = fgetcsv($handle, 1000)) !== FALSE)
         {
