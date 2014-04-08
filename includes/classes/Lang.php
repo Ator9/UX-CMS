@@ -24,7 +24,7 @@
 class Lang
 {
 	public $lang = 'es'; // Current lang
-	public $data = array(); // Loaded translations
+	public $words = array(); // Loaded translations
 	
 
 	// ------------------------------------------------------------------------------- //
