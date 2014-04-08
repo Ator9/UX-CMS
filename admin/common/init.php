@@ -24,13 +24,16 @@ elseif(basename($_SERVER['PHP_SELF']) != 'login.php')
 }
 
 // Admin Log:
-$aLog = new adminsLog;
+$log = new adminsLog;
+
+// Admin Lang:
+$lang = new Lang;
 
 // Ajax class loader:
 if(isset($_GET['_class']) && basename($_SERVER['PHP_SELF']) != 'login.php')
 {
-    $db = new $_GET['_class'];
-    if(isset($_GET['_method'])) $db->$_GET['_method']();
+    $obj = new $_GET['_class'];
+    if(isset($_GET['_method'])) $obj->$_GET['_method']();
     exit;
 }
 

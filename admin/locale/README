@@ -1,0 +1,8 @@
+Don't modify "_core.csv" files.
+You can create custom locales and it will be loaded automatically.
+Your files will overwrite "core" files.
+
+Examples:
+- en.csv
+- es.csv
+- pt.csv

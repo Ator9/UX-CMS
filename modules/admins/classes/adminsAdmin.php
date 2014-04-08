@@ -23,7 +23,7 @@ class adminsAdmin extends ConnExtjs
 
 	public function login($user, $pass)
 	{
-        global $aSession, $aLog;
+        global $aSession;
 	
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE username="'.$this->escape($user).'" AND password="'.$this->escape($pass).'" AND active="Y"';
 		if(($rs = $this->query($sql)) && $rs->num_rows == 1)
@@ -33,7 +33,8 @@ class adminsAdmin extends ConnExtjs
             $aSession->set('adminData', $this->getData());
 
             // Log:
-            $aLog->log(array('classname' => get_class($aLog), 'task' => 'login', 'adminID' => $this->getID()));
+            $log = new adminsLog; // Guardo el error en base de datos
+            $log->log(array('classname' => get_class($log), 'task' => 'login', 'adminID' => $this->getID()));
 
 		    // Last Login:
 		    $this->last_login = date('Y-m-d H:i:s');
