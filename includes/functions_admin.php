@@ -1,9 +1,11 @@
 <?php
 // You can create a custom "includes/functions.php" (it will be loaded automatically)
 
-// Traigo los modulos para armar el arbol del admin:
+// Get modules to build extjs tree panel:
 function getAdminTree()
 {
+    global $lang;
+    
     foreach(getFilesFromDir(ROOT.'/modules') as $module)
     {
         if(!is_dir($module['path'])) continue;
@@ -12,10 +14,11 @@ function getAdminTree()
         if($config['enabled'] !== true) continue;
         if(!empty($config['admins']) && !in_array($GLOBALS['admin']['data']['adminID'], $config['admins'])) continue; // Allowed admins (array)
 
-        $tree[$config['name']] = array('text'=>$config['name'], 'panel'=>basename($module['path']), 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
+        $panel = basename($module['path']);
+        $tree[$lang->t($panel.'.'.$config['name'])] = array('text'=>$lang->t($panel.'.'.$config['name']), 'panel'=>$panel, 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
     }
     
-    ksort($tree); // Orden alfabético
+    ksort($tree); // Alphabetical order
     return $tree;
 }
 
@@ -95,21 +98,19 @@ function getAdminTreeButtons()
 }
 
 
-// Get lang:
-function getLang($modules=array())
+// Get Admin Translations:
+function getAdminLocale($modules=array())
 {
     global $aSession;
 
     foreach($modules as $module)
     {
-        $js.= 'Admin.lang.'.$module.'=[];';
         foreach(getModuleLocale($module, $aSession->get('locale')) as $key => $value)
         {
             $js.= 'Admin.lang.'.$module.'["'.$key.'"]="'.$value.'";';
         }
     }
 
-    echo 'Admin.lang=[];';
     echo $js;
 }
 

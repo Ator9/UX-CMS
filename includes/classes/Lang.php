@@ -59,20 +59,19 @@ class Lang
      * Example 1: $lang->t('yes');
      * Example 2: $lang->t('admins.yes');
      *
-     * @return string
+     * @return String
      */ 
     public function t($key)
     {
         if(strpos($key, '.') !== false)
         {
             list($module, $key) = explode('.', $key);
-            $data = $this->load(ROOT.'/modules/'.$module.'/locale/'.$this->lang.'.csv', true);
+            $data = $this->loadModule($module, false);
             
             if(array_key_exists($key, $data)) return $data[$key];
-            return $key;
         }
         
-        if(array_key_exists($key, $this->data)) return $this->data[$key];
+        if(array_key_exists($key, $this->words)) return $this->words[$key];
         return $key;
     }
     
@@ -82,33 +81,32 @@ class Lang
      *
      * Example 1: $lang->loadModule('admins');
      *
-     * @return void
+     * @return Array
      */ 
-	public function loadModule($module='')
+	public function loadModule($module='', $merge_words=true)
 	{
-	    $this->load(ROOT.'/modules/'.$module.'/locale/'.$this->lang.'.csv');
+	    return $this->load(ROOT.'/modules/'.$module.'/locale/'.$this->lang.'.csv', $merge_words);
 	}
 	
 	
 	/**
      * Loads locale csv
      *
-     * @return void
+     * @return Array
      */ 
-	public function load($file='', $return=false)
+	public function load($file='', $merge_words=true)
 	{
 		if(file_exists($file))
 		{
 		    if(($handle = fopen($file, 'r')) !== FALSE)
             {
-                $words = array();
                 while(($data = fgetcsv($handle, 1000)) !== FALSE) $words[$data[0]] = $data[1];
                 fclose($handle);
                 
-                if($return) return $words;
-                $this->data = array_merge($this->data, $words);
+                if($merge_words) $this->words = array_merge($this->words, $words);
             }
 		}
+		return (array) $words;
 	}
 }
 
