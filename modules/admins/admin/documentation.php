@@ -30,11 +30,11 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>LOCAL (true | false)</pre>
         </li>
         <li>
-            <b>External - http://www.example.com (HOST)</b>
+            <b>External URLs - http://www.example.com (HOST)</b>
             <pre>HOST<br>ADMIN (/admin)<br>MODULES (/modules)<br>RESOURCES (/resources)<br>UPLOAD (/upload)</pre>
         </li>
         <li>
-            <b>Internal - /var/www/example.com (ROOT)</b>
+            <b>Internal Paths - /var/www/example.com (ROOT)</b>
             <pre>ROOT<br>COMMON (/common)<br>INCLUDES (/includes)</pre>
         </li>
         <li>
