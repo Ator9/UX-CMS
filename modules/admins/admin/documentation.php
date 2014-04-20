@@ -53,8 +53,8 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>$GLOBALS['admin']['data']<br>$GLOBALS['admin']['data']['adminID']<br>$GLOBALS['admin']['data']['roleID']<br>$GLOBALS['admin']['data']['superuser']<br>...</pre>
         </li>
         <li>
-            <b>Logged User Accounts</b>
-            <pre>$GLOBALS['admin']['data']['accounts']</pre>
+            <b>Logged User Partners</b>
+            <pre>$GLOBALS['admin']['data']['partners']</pre>
         </li>
     </ul>
     <h3 id="phprobots">Default robots.txt</h3>

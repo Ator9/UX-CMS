@@ -1,9 +1,9 @@
 <?php
-class adminsAccountsConfig extends ConnExtjs
+class adminsPartnersConfig extends ConnExtjs
 {
-	public $_table	= 'admins_accounts_configs';
+	public $_table	= 'admins_partners_configs';
 	public $_index	= '';
-	public $_fields	= array('accountID',
+	public $_fields	= array('partnerID',
 							'name',
 							'value',
 							'adminID_created', // (Reserved) Automatic usage on insert (Conn.php)
@@ -18,12 +18,12 @@ class adminsAccountsConfig extends ConnExtjs
     // Create:
     public function extCreate()
     {
-        if(!is_numeric($_REQUEST['accountID'])) exit;
+        if(!is_numeric($_REQUEST['partnerID'])) exit;
     
         $data = (array) json_decode(stripslashes($_POST['data']));
     
-        $sql = 'INSERT INTO '.$this->_table.' (accountID, name, value) 
-                VALUES ('.$_REQUEST['accountID'].' , "'.$this->escape($data['name']).'", "'.$this->escape($data['value']).'")
+        $sql = 'INSERT INTO '.$this->_table.' (partnerID, name, value) 
+                VALUES ('.$_REQUEST['partnerID'].' , "'.$this->escape($data['name']).'", "'.$this->escape($data['value']).'")
                 ON DUPLICATE KEY UPDATE value = "'.$this->escape($data['value']).'"';
         
         if($this->query($sql)) $response['success'] = true;
@@ -36,10 +36,10 @@ class adminsAccountsConfig extends ConnExtjs
     // Grid List | Filters with config:
     public function extGrid()
     {
-        if(!is_numeric($_REQUEST['accountID'])) exit;
+        if(!is_numeric($_REQUEST['partnerID'])) exit;
     
         // All results:
-        $sql = 'SELECT * FROM '.$this->_table.' WHERE accountID = '.$_REQUEST['accountID'];
+        $sql = 'SELECT * FROM '.$this->_table.' WHERE partnerID = '.$_REQUEST['partnerID'];
         foreach(parent::extGrid($sql, true, true) as $row)
         {
             $results[$row['name']] = $row['value'];
@@ -47,13 +47,13 @@ class adminsAccountsConfig extends ConnExtjs
 
         // Filter needed results:
         $config = getModuleConfig(getModuleDir($GLOBALS['admin']['class']));
-        ksort($config['accounts_config']);
-        foreach($config['accounts_config'] as $name => $desc)
+        ksort($config['partners_config']);
+        foreach($config['partners_config'] as $name => $desc)
         {
             $response['data'][] = array('name' => $name, 'value' => $results[$name], 'description' => $desc);
         }
         
-        $response['totalCount'] = count($config['accounts_config']);
+        $response['totalCount'] = count($config['partners_config']);
     	echo json_encode($response);
     }
 

@@ -14,48 +14,11 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`adminID`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `admins` (`adminID`, `roleID`, `username`, `password`, `email`, `firstname`, `lastname`, `superuser`, `active`, `last_login`, `adminID_created`, `adminID_updated`, `date_created`, `date_updated`)
 VALUES (1, 0, 'admin', 'test', '', '', '', 'Y', 'Y', '2014-02-22 20:28:58', 0, 0, '0000-00-00 00:00:00', '2014-02-22 20:30:23');
-
-
-CREATE TABLE IF NOT EXISTS `admins_accounts` (
-  `accountID` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL DEFAULT '',
-  `active` enum('Y','N') NOT NULL DEFAULT 'N',
-  `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`accountID`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE IF NOT EXISTS `admins_accounts_admins` (
-  `accountID` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `adminID` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  UNIQUE KEY `accountID_adminID` (`accountID`,`adminID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-CREATE TABLE IF NOT EXISTS `admins_accounts_configs` (
-  `accountID` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `value` text NOT NULL,
-  `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  UNIQUE KEY `accountID_key` (`accountID`,`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `admins_logs` (
@@ -69,6 +32,40 @@ CREATE TABLE IF NOT EXISTS `admins_logs` (
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`logID`),
   KEY `adminID` (`adminID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `admins_partners` (
+  `partnerID` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `active` enum('Y','N') NOT NULL DEFAULT 'N',
+  `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`partnerID`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `admins_partners_admins` (
+  `partnerID` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `adminID` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `partnerID_adminID` (`partnerID`,`adminID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `admins_partners_configs` (
+  `partnerID` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `value` text NOT NULL,
+  `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `partnerID_name` (`partnerID`,`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

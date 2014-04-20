@@ -1,9 +1,9 @@
 <?php
-class adminsAccountsAdmins extends ConnExtjs
+class adminsPartnersAdmins extends ConnExtjs
 {
-	public $_table	= 'admins_accounts_admins';
+	public $_table	= 'admins_partners_admins';
 	public $_index	= '';
-	public $_fields	= array('accountID',
+	public $_fields	= array('partnerID',
 							'adminID',
 							'adminID_created', // (Reserved) Automatic usage on insert (Conn.php)
 							'adminID_updated', // (Reserved) Automatic usage on update (Conn.php)
@@ -17,11 +17,11 @@ class adminsAccountsAdmins extends ConnExtjs
     // Grid List:
     public function extGrid()
     {
-        if(!is_numeric($_REQUEST['accountID'])) exit;
+        if(!is_numeric($_REQUEST['partnerID'])) exit;
     
         $sql = 'SELECT adm.adminID, adm.username, adm.last_login, adm.email
                 FROM '.$this->_table.' as acc
-                INNER JOIN admins as adm ON (acc.adminID = adm.adminID AND accountID = '.$_REQUEST['accountID'].')
+                INNER JOIN admins as adm ON (acc.adminID = adm.adminID AND partnerID = '.$_REQUEST['partnerID'].')
                 WHERE 1';
                 
         return parent::extGrid($sql);
@@ -35,7 +35,7 @@ class adminsAccountsAdmins extends ConnExtjs
     
         $data = json_decode(stripslashes($_POST['data']));
 
-        $sql = 'DELETE FROM '.$this->_table.' WHERE accountID = '.(int) $_POST['accountID'].' AND adminID = '.(int) $data->adminID;
+        $sql = 'DELETE FROM '.$this->_table.' WHERE partnerID = '.(int) $_POST['partnerID'].' AND adminID = '.(int) $data->adminID;
         
         if($this->query($sql)) $response['success'] = true;
         else $response['success'] = false;
@@ -45,15 +45,15 @@ class adminsAccountsAdmins extends ConnExtjs
 
 
     /**
-     * Get associated accounts.
+     * Get associated partners.
      *
      * @return array
      */
-    public function getAccountsByAdmin()
+    public function getPartnersByAdmin()
     {
-        $sql = 'SELECT acc.accountID, acc.name
+        $sql = 'SELECT acc.partnerID, acc.name
                 FROM '.$this->_table.' as aa
-                INNER JOIN admins_accounts as acc USING (accountID)
+                INNER JOIN admins_partners as acc USING (partnerID)
                 WHERE adminID = '.$GLOBALS['admin']['data']['adminID'].'
                 ORDER BY name';
                 
@@ -61,7 +61,7 @@ class adminsAccountsAdmins extends ConnExtjs
         {
             while($row = $rs->fetch_assoc())
             {
-                $array[$row['accountID']] = $row;
+                $array[$row['partnerID']] = $row;
             }
         }
 
@@ -70,17 +70,15 @@ class adminsAccountsAdmins extends ConnExtjs
     
     
     // E:
-    public function addAdminToAccount()
+    public function addAdminToPartner()
     {
-        $sql = 'SELECT adminID FROM admins
-                WHERE username = "'.$this->escape($_POST['key']).'" OR email = "'.$this->escape($_POST['key']).'" 
-                LIMIT 1';
+        $sql = 'SELECT adminID FROM admins WHERE username = "'.$this->escape($_POST['key']).'"';
         
         if(($rs = $this->query($sql)) && $rs->num_rows == 1)
         {
             list($adminID) = $rs->fetch_row();
         
-            $this->accountID = $_POST['accountID'];
+            $this->partnerID = $_POST['partnerID'];
             $this->adminID   = $adminID;
             if($this->insert()) $response['success'] = true;
         }

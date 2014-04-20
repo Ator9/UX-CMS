@@ -10,12 +10,12 @@ $aSession = new Session('admin');
 // Login check:
 if($aSession->exists('adminData'))
 {
-    // Stores all admin data glabally:
+    // Stores admin data glabally:
     $GLOBALS['admin']['data'] = $aSession->get('adminData');
 
-    // Stores accounts data glabally:
-    $accountsDB = new adminsAccountsAdmins;
-    $GLOBALS['admin']['data']['accounts'] = $accountsDB->getAccountsByAdmin();
+    // Stores partners data glabally:
+    $partnersDB = new adminsPartnersAdmins;
+    $GLOBALS['admin']['data']['partners'] = $partnersDB->getPartnersByAdmin();
 }
 elseif(basename($_SERVER['PHP_SELF']) != 'login.php')
 {

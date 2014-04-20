@@ -1,16 +1,21 @@
-Ext.define('admins.store.AccountsConfig', {
+Ext.define('admins.store.Partners', {
     extend: 'Ext.data.Store',
     
-    fields: [ 'name', 'value', 'description' ], // Model
-    pageSize: 999, // Defaults to 25
+    fields: [ // Model
+        'partnerID', 'name', 'active', 
+        { name: 'date_created', type: 'date', dateFormat: 'c' } // It is strongly recommended that you always specify an explicit date format
+    ],
+    pageSize: 50, // Defaults to 25
     remoteSort: true, // Default false (javascript sort)
     sorters: [{ property: 'name', direction: 'ASC' }],
     proxy: {
         type: 'ajax',
         simpleSortMode: true, // Default false (enable multiple sorts)
         api: {
-            read: 'index.php?_class=adminsAccountsConfig&_method=extGrid', // reader
-            update: 'index.php?_class=adminsAccountsConfig&_method=extCreate' // writer (grid RowEditing)
+            read: 'index.php?_class=adminsPartners&_method=extGrid', // reader
+            create: 'index.php?_class=adminsPartners&_method=extCreate', // writer (grid RowEditing)
+            update: 'index.php?_class=adminsPartners&_method=extCreate', // writer (grid RowEditing)
+            destroy: 'index.php?_class=adminsPartners&_method=extDelete' // writer
         },
         reader: {
             type: 'json',

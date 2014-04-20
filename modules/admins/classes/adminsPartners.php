@@ -1,8 +1,8 @@
 <?php
-class adminsAccounts extends ConnExtjs
+class adminsPartners extends ConnExtjs
 {
-	public $_table	= 'admins_accounts';
-	public $_index	= 'accountID';
+	public $_table	= 'admins_partners';
+	public $_index	= 'partnerID';
 	public $_fields	= array('name',
 							'active',
 							'adminID_created', // (Reserved) Automatic usage on insert (Conn.php)
@@ -10,7 +10,7 @@ class adminsAccounts extends ConnExtjs
 							'date_created',    // (Reserved) Automatic usage on insert (Conn.php)
 							'date_updated');   // (Reserved) Automatic usage on update (Conn.php)
     
-	protected $_dependantClasses = array('adminsAccountsAdmins', 'adminsAccountsConfig'); // delete childrens
+	protected $_dependantClasses = array('adminsPartnersAdmins', 'adminsPartnersConfig'); // delete childrens
 
 	// ------------------------------------------------------------------------------- //
 

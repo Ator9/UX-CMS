@@ -56,29 +56,29 @@ function getAdminPaths()
 }
 
 
-// Get admin accounts select (admin config.php):
-function getAdminAccounts()
+// Get admin partners select (admin config.php):
+function getAdminPartners()
 {
-    foreach($GLOBALS['admin']['data']['accounts'] as $value)
+    foreach($GLOBALS['admin']['data']['partners'] as $value)
     {
-        $accounts[] = "{ 'accountID': ".$value['accountID'].", 'name': '".$value['name']."' }";
+        $partners[] = "{ 'partnerID': ".$value['partnerID'].", 'name': '".$value['name']."' }";
     }
     
     echo ", tbar: [{ 
                 xtype: 'combobox',
-                name: 'accountID',
+                name: 'partnerID',
                 displayField: 'name',
-                valueField: 'accountID',
+                valueField: 'partnerID',
                 width: '100%',
-                emptyText: 'Select Account',
-                fields: [ 'name', 'accountID' ],
+                emptyText: 'Select Partner',
+                fields: [ 'name', 'partnerID' ],
                 store: Ext.create('Ext.data.Store', {
-                    fields: [ 'accountID', 'name' ],
-                    data: [".implode(',', (array) $accounts)."]
+                    fields: [ 'partnerID', 'name' ],
+                    data: [".implode(',', (array) $partners)."]
                 }),
                 listeners: {
                     'select': function(combo, records, eOpts) {
-                        //Admin.accountID = records[0].get('accountID');
+                        //Admin.partnerID = records[0].get('partnerID');
                     }
                 }
             }]";

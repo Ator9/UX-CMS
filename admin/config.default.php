@@ -7,8 +7,8 @@ $GLOBALS['admin']['title'] = 'UX CMS';
 // Admin login class (Default "adminsAdmin"):
 $GLOBALS['admin']['class'] = 'adminsAdmin';
 
-// Admin accounts needed:
-$GLOBALS['admin']['accounts_enabled'] = true;
+// Admin partners needed:
+$GLOBALS['admin']['partners_enabled'] = true;
 
 // DOCTYPE
 // http://www.sencha.com/forum/showthread.php?137309-Summary-of-lt-!DOCTYPE-gt-Recommendations
