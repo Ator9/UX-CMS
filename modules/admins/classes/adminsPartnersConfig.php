@@ -1,7 +1,7 @@
 <?php
 class adminsPartnersConfig extends ConnExtjs
 {
-	public $_table	= 'admins_partners_configs';
+	public $_table	= 'partners_configs';
 	public $_index	= '';
 	public $_fields	= array('partnerID',
 							'name',

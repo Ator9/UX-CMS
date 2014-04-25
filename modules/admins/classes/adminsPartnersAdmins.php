@@ -1,7 +1,7 @@
 <?php
 class adminsPartnersAdmins extends ConnExtjs
 {
-	public $_table	= 'admins_partners_admins';
+	public $_table	= 'partners_admins';
 	public $_index	= '';
 	public $_fields	= array('partnerID',
 							'adminID',
@@ -53,7 +53,7 @@ class adminsPartnersAdmins extends ConnExtjs
     {
         $sql = 'SELECT acc.partnerID, acc.name
                 FROM '.$this->_table.' as aa
-                INNER JOIN admins_partners as acc USING (partnerID)
+                INNER JOIN partners as acc USING (partnerID)
                 WHERE adminID = '.$GLOBALS['admin']['data']['adminID'].'
                 ORDER BY name';
                 
