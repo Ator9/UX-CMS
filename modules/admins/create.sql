@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `admins_logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-CREATE TABLE IF NOT EXISTS `admins_partners` (
+CREATE TABLE IF NOT EXISTS `partners` (
   `partnerID` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '',
   `active` enum('Y','N') NOT NULL DEFAULT 'N',
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `admins_partners` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `admins_partners_admins` (
+CREATE TABLE IF NOT EXISTS `partners_admins` (
   `partnerID` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `adminID` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `admins_partners_admins` (
   UNIQUE KEY `partnerID_adminID` (`partnerID`,`adminID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `admins_partners_configs` (
+CREATE TABLE IF NOT EXISTS `partners_configs` (
   `partnerID` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL DEFAULT '',
   `value` text NOT NULL,
