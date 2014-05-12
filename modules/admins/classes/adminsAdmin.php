@@ -1,6 +1,7 @@
 <?php
 class adminsAdmin extends ConnExtjs
 {
+    public $_debug  = false; // True to save all queries (adminsLog)
 	public $_table	= 'admins';
 	public $_index	= 'adminID';
 	public $_fields	= array('roleID',

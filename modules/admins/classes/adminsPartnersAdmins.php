@@ -1,14 +1,9 @@
 <?php
 class adminsPartnersAdmins extends ConnExtjs
 {
+    public $_debug  = false; // True to save all queries (adminsLog)
 	public $_table	= 'partners_admins';
 	public $_index	= '';
-	public $_fields	= array('partnerID',
-							'adminID',
-							'adminID_created', // (Reserved) Automatic usage on insert (Conn.php)
-							'adminID_updated', // (Reserved) Automatic usage on update (Conn.php)
-							'date_created',    // (Reserved) Automatic usage on insert (Conn.php)
-							'date_updated');   // (Reserved) Automatic usage on update (Conn.php)
 
 
 	// ------------------------------------------------------------------------------- //

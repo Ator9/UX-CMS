@@ -1,15 +1,27 @@
 <?php
+/**
+ * Database Connection Class
+ *
+ * @author Sebastián Gasparri
+ * http://www.linkedin.com/in/sgasparri
+ *
+ * Reserved column names (automatic usage):
+ * - adminID_created // insert()
+ * - adminID_updated // update()
+ * - date_created    // insert()
+ * - date_updated    // update()
+ *
+ */
+ 
 class Conn extends mysqli
 {
+    public $_debug  = false; // True to save all queries (adminsLog)
 	public $_table	= 'table';
 	public $_index	= 'table_primary';
 	public $_fields	= array();
 
 	protected $_dependantClasses = array(); // delete childrens
 	
-	public $_debug  = false;
-
-
 	// ------------------------------------------------------------------------------- //
 
 
@@ -19,7 +31,8 @@ class Conn extends mysqli
 		if(mysqli_connect_errno()) throw new Exception(mysqli_connect_error());
 		if(!parent::set_charset('utf8')) throw new Exception(mysqli_error($this));
 		
-		if($this->_index != '') array_push($this->_fields, $this->_index); // adds index to fields list
+		if(empty($this->_fields)) $this->_fields = $this->getColumns(); // automatic fields
+		elseif($this->_index != '') array_push($this->_fields, $this->_index); // adds index to field list
 	}
 
 
@@ -28,18 +41,12 @@ class Conn extends mysqli
 	// For other successful queries mysqli_query() will return TRUE.
 	public function query($sql)
 	{
-		if($this->_debug) vd($sql);
+		if($this->_debug) $this->logQuery($sql, 'SQL Debug');
 		if($result = parent::query($sql)) return $result;
-	    if(mysqli_errno($this))	
-	    {
-	        $log = new adminsLog; // Guardo el error en base de datos
-	        $data['classname'] = get_class($this);
-	        $data['task']      = 'SQL Error';
-	        $data['comment']   = mysqli_error($this).'<br>'.$sql;
-	        $log->log($data);
-	        
-	        throw new Exception(mysqli_error($this).' '.$sql);
-	    }
+		
+	    $this->logQuery($sql, 'SQL Error');
+	    if(LOCAL) throw new Exception(mysqli_error($this).' '.$sql);
+	    return false;
 	}
 
 
@@ -183,9 +190,31 @@ class Conn extends mysqli
     {
         $this->{$this->_index} = $id;
     }
+
+
+    /**
+     * Get table columns
+     *
+     * @return Array
+     */
+    public function getColumns()
+	{
+		$sql = 'SHOW COLUMNS FROM '.$this->_table;
+		$res = $this->query($sql);
+	    while($row = $res->fetch_assoc())
+	    {               
+            $fields[] = $row['Field'];
+        }
+
+    	return $fields;
+	}
     
     
-    // Returns array:
+    /**
+     * Get table data
+     *
+     * @return Array
+     */
     public function getData()
     {
         foreach($this->_fields as $field) $arr[$field] = $this->$field;
@@ -194,6 +223,11 @@ class Conn extends mysqli
     }
 
 
+    /**
+     * Get row count
+     *
+     * @return Int
+     */
     public function getCount()
 	{
 		$sql = 'SELECT COUNT(*) FROM '.$this->_table;
@@ -205,7 +239,7 @@ class Conn extends mysqli
 	}
 
 
-	// Verifico si el campo está disponible (email / username UNIQUE):
+	// Check available field (email / username UNIQUE):
 	public function isAvailable($field, $value)
 	{
 		if(in_array($field, $this->_fields))
@@ -217,18 +251,6 @@ class Conn extends mysqli
 				if($rs->num_rows == 0) return true;
 			}
 		}
-		return false;
-	}
-
-
-    // get next/prev indexID
-	public function getPrevNext($indexID)
-	{
-		$sql = 'SELECT
-					( SELECT '.$this->_index.' FROM '.$this->_table.' WHERE '.$this->_index.' < "'.$this->escape($indexID).'" ORDER BY '.$this->_index.' DESC LIMIT 1 ) AS prev,
-					( SELECT '.$this->_index.' FROM '.$this->_table.' WHERE '.$this->_index.' > "'.$this->escape($indexID).'" ORDER BY '.$this->_index.' ASC LIMIT 1 ) AS next
-					FROM '.$this->_table.' WHERE '.$this->_index.' = "'.$this->escape($indexID).'" LIMIT 1';
-		if($rs = $this->query($sql)) return $rs->fetch_assoc();
 		return false;
 	}
 
@@ -249,6 +271,17 @@ class Conn extends mysqli
 		$rs = $this->query('SHOW tables LIKE "'.$table.'"');
 		if($rs->num_rows == 1) return true;
 		return false;
+	}
+
+	
+    // Query logger:
+	public function logQuery($sql, $task='SQL')
+	{
+        $log = new adminsLog;
+        $data['classname'] = get_class($this);
+        $data['task']      = $task;
+        $data['comment']   = (mysqli_error($this) ? mysqli_error($this).'<br>' : '').$sql;
+        $log->log($data);
 	}
 }
 

@@ -1,15 +1,9 @@
 <?php
 class adminsLog extends ConnExtjs
 {
+    public $_debug  = false; // True to save all queries (adminsLog)
 	public $_table	= 'admins_logs';
 	public $_index	= 'logID';
-	public $_fields	= array('adminID',
-	                        'classname',
-	                        'task',
-							'comment',
-							'ip',
-							'date_created',    // (Reserved) Automatic usage on insert (Conn.php)
-							'date_updated');   // (Reserved) Automatic usage on update (Conn.php)
 
 
 	// ------------------------------------------------------------------------------- //
