@@ -46,23 +46,39 @@ class adminsPartnersAdmins extends ConnExtjs
      */
     public function getPartnersByAdmin()
     {
+        global $aSession;
+    
         $sql = 'SELECT acc.partnerID, acc.name
                 FROM '.$this->_table.' as aa
                 INNER JOIN partners as acc USING (partnerID)
-                WHERE adminID = '.$GLOBALS['admin']['data']['adminID'].'
+                WHERE adminID = '.$GLOBALS['admin']['data']['adminID'].' AND active = "Y"
                 ORDER BY name';
                 
         if(($rs = $this->query($sql)) && $rs->num_rows > 0)
         {
             while($row = $rs->fetch_assoc())
             {
+                if(!$aSession->exists('partnerID')) $aSession->set('partnerID', $row['partnerID']);
+                
                 $array[$row['partnerID']] = $row;
             }
         }
 
         return (array) $array;
     }
-    
+
+
+    function setPartnerID()
+    {
+        // Check:
+        $partners = $this->getPartnersByAdmin();
+        if(array_key_exists($_POST['partnerID'], $partners))
+        {
+            global $aSession;
+            $aSession->set('partnerID', $_POST['partnerID']);
+        }
+    }
+
     
     // E:
     public function addAdminToPartner()

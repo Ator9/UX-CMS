@@ -58,6 +58,7 @@ Ext.define('admins.view.Admins', {
             valueField: 'roleID',
             displayField: 'name',
             emptyText: 'Select role',
+            editable: false,
             queryMode: 'local', // 'remote' is typically used for "autocomplete" type inputs.
             forceSelection: true, // true to restrict the selected value to one of the values in the list, false to allow the user to set arbitrary text into the field.
             store: this.roleStore

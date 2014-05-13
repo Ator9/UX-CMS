@@ -15,7 +15,8 @@ if($aSession->exists('adminData'))
 
     // Stores partners data glabally:
     $partnersDB = new adminsPartnersAdmins;
-    $GLOBALS['admin']['data']['partners'] = $partnersDB->getPartnersByAdmin();
+    $GLOBALS['admin']['data']['partners']  = $partnersDB->getPartnersByAdmin();
+    $GLOBALS['admin']['data']['partnerID'] = $aSession->get('partnerID');
 }
 elseif(basename($_SERVER['PHP_SELF']) != 'login.php')
 {

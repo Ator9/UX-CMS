@@ -69,7 +69,9 @@ function getAdminPartners()
                 name: 'partnerID',
                 displayField: 'name',
                 valueField: 'partnerID',
+                value: ".$GLOBALS['admin']['data']['partnerID'].",
                 width: '100%',
+                editable: false,
                 emptyText: 'Select Partner',
                 fields: [ 'name', 'partnerID' ],
                 store: Ext.create('Ext.data.Store', {
@@ -78,7 +80,14 @@ function getAdminPartners()
                 }),
                 listeners: {
                     'select': function(combo, records, eOpts) {
-                        //Admin.partnerID = records[0].get('partnerID');
+                        Ext.Ajax.request({
+                            scope: this,
+                            url: 'index.php?_class=adminsPartnersAdmins&_method=setPartnerID',
+                            params: { partnerID: records[0].get('partnerID') },
+                            success: function(response) {
+                                location.reload();
+                            }
+                        });
                     }
                 }
             }]";
