@@ -46,12 +46,16 @@ Ext.application({
             fbar: [ <? echo getAdminTreeButtons(); ?> ], // Footer Bar
             listeners: {
                 itemclick: function(view, record, item, index, e) {
+                    Admin.cards.setLoading(); // Show loading mask
+                    
                     if(Ext.Array.indexOf(Admin.loadedModules, index) === -1) {
                         Admin.loadedModules[Admin.loadedModules.length] = index;
                         Admin.cards.add( Ext.create(record.raw.panel+'.app', { title: record.raw.text }) );
                     }
+                    
                     Admin.cards.layout.setActiveItem(Ext.Array.indexOf(Admin.loadedModules, index));
                     location.hash = record.raw.panel;
+                    Admin.cards.setLoading(false); // Hide loading mask
                 },
                 afterrender: function(view, model) {
                     this.getSelectionModel().select(Admin.firstModule); // select firstModule

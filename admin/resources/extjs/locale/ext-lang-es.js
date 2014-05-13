@@ -92,6 +92,11 @@ Ext.define("Ext.locale.es.view.AbstractView", {
     loadingText: "Cargando..."
 });
 
+Ext.define("Ext.locale.es.LoadMask", {
+    override: "Ext.LoadMask",
+    msg: "Cargando..."
+});
+
 Ext.define("Ext.locale.es.picker.Date", {
     override: "Ext.picker.Date",
     todayText: "Hoy",
