@@ -13,7 +13,7 @@ class ConnExtjs extends Conn
 	// ------------------------------------------------------------------------------- //
 
 
-    // Save:
+    // Save (Form):
     public function extSave()
     {
         $this->get($_POST[$this->_index]);
