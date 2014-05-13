@@ -7,7 +7,7 @@
  * http://www.linkedin.com/in/sgasparri
  *
  * Usage 1. Load file & translate:
- * $lang = new Lang;
+ * $lang = new Lang('es');
  * $lang->load($path_to_csv_locale);
  * $lang->t('add');
  *
@@ -33,21 +33,11 @@ class Lang
     /*
     * Construct
     *
-    * Set language or loads admin locale if $aSession exists
+    * Set language
     */
 	public function __construct($lang = '')
     {
         if($lang != '') $this->lang = $lang;
-        else
-        {
-            global $aSession; // Admin session
-            if(is_object($aSession))
-            {
-                $this->lang = $aSession->get('locale');
-                $this->load(ROOT.'/admin/locale/'.$this->lang.'_core.csv'); // Loads admin core locale
-                $this->load(ROOT.'/admin/locale/'.$this->lang.'.csv'); // Loads admin custom locale
-            }
-        }
     }
     
     

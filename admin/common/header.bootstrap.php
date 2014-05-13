@@ -6,4 +6,3 @@
 <link rel="stylesheet" type="text/css" href="<? echo staticLoader('resources/lib/bootstrap/css/bootstrap.min.css') ?>">
 <script type="text/javascript" src="<? echo staticLoader('resources/lib/jquery/jquery-1.min.js') ?>"></script>
 <script type="text/javascript" src="<? echo staticLoader('resources/lib/bootstrap/js/bootstrap.min.js') ?>"></script>
-<? if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<? echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><? } ?>

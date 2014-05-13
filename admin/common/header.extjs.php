@@ -7,7 +7,6 @@
 <? if(file_exists(dirname(__FILE__).'/../resources/styles.css')) { ?>
 <link rel="stylesheet" type="text/css" href="<? echo staticLoader('admin/resources/styles.css'); ?>">
 <? } ?>
-<? if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<? echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><? } ?>
 <script type="text/javascript" src="<? echo staticLoader('admin/resources/extjs/ext-all'.((LOCAL)?'-dev':'').'.js'); ?>"></script>
 <? if($aSession->get('locale') != 'en') { ?>
 <script type="text/javascript" src="<? echo staticLoader('admin/resources/extjs/locale/ext-lang-'.$aSession->get('locale').'.js'); ?>"></script>

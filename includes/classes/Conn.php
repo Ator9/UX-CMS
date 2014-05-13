@@ -22,6 +22,7 @@ class Conn extends mysqli
 
 	protected $_dependantClasses = array(); // delete childrens
 	
+	
 	// ------------------------------------------------------------------------------- //
 
 

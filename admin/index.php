@@ -5,6 +5,7 @@ $tree = getAdminTree(); // Get module list to build tree panel
 foreach($tree as $values) $modules[] = $values['panel'];
 
 require(ROOT.'/admin/common/header.extjs.php');
+if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<? echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><? }
 ?>
 <script>
 var LOCAL = <? echo var_export(LOCAL); ?>;

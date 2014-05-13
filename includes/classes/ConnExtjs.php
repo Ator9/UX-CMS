@@ -1,13 +1,12 @@
 <?php
 class ConnExtjs extends Conn
 {
+    public $_debug  = false; // True to save all queries (adminsLog)
 	public $_table	= '';
 	public $_index	= '';
 	public $_fields	= array();
 
 	protected $_dependantClasses = array(); // delete childrens
-
-	public $_debug  = false;
 	
 
 	// ------------------------------------------------------------------------------- //

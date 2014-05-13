@@ -7,6 +7,12 @@ else require(dirname(__FILE__).'/../config.default.php');
 // Admin Session:
 $aSession = new Session('admin');
 
+// Admin Lang:
+if(!$aSession->exists('locale')) $aSession->set('locale', key($GLOBALS['admin']['locale']));
+$lang = new Lang($aSession->get('locale'));
+$lang->load(ROOT.'/admin/locale/'.$lang->lang.'_core.csv');
+$lang->load(ROOT.'/admin/locale/'.$lang->lang.'.csv');
+
 // Login check:
 if($aSession->exists('adminData'))
 {
@@ -26,9 +32,6 @@ elseif(basename($_SERVER['PHP_SELF']) != 'login.php')
 
 // Admin Log:
 $log = new adminsLog;
-
-// Admin Lang:
-$lang = new Lang;
 
 // Ajax class loader:
 if(isset($_GET['_class']) && basename($_SERVER['PHP_SELF']) != 'login.php')

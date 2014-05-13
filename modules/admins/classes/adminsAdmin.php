@@ -29,17 +29,16 @@ class adminsAdmin extends ConnExtjs
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE username="'.$this->escape($user).'" AND password="'.$this->escape($pass).'" AND active="Y"';
 		if(($rs = $this->query($sql)) && $rs->num_rows == 1)
 		{
+		    // Last Login:
 		    $this->set($rs->fetch_assoc());
+		    $this->last_login = date('Y-m-d H:i:s');
+		    $this->update();
 
             $aSession->set('adminData', $this->getData());
 
-            // Log:
-            $log = new adminsLog; // Guardo el error en base de datos
+            // Login log:
+            $log = new adminsLog;
             $log->log(array('classname' => get_class($log), 'task' => 'login', 'adminID' => $this->getID()));
-
-		    // Last Login:
-		    $this->last_login = date('Y-m-d H:i:s');
-		    $this->update();
 		    
 		    return true;
 		}
