@@ -4,6 +4,9 @@
 // Admin title:
 $GLOBALS['admin']['title'] = 'UX CMS';
 
+// Admin favicon URL:
+$GLOBALS['admin']['favicon'] = '';
+
 // Admin login class (Default "adminsAdmin"):
 $GLOBALS['admin']['class'] = 'adminsAdmin';
 
