@@ -49,12 +49,12 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>$GLOBALS['admin']['title']</pre>
         </li>
         <li>
-            <b>Logged User Data</b>
+            <b>Logged Admin Data</b>
             <pre>$GLOBALS['admin']['data']<br>$GLOBALS['admin']['data']['adminID']<br>$GLOBALS['admin']['data']['roleID']<br>$GLOBALS['admin']['data']['superuser']<br>...</pre>
         </li>
         <li>
-            <b>Logged User Partners</b>
-            <pre>$GLOBALS['admin']['data']['partners']</pre>
+            <b>Logged Admin Partners</b>
+            <pre>$GLOBALS['admin']['data']['partners']<br>$GLOBALS['admin']['data']['partnerID']</pre>
         </li>
     </ul>
     <h3 id="phprobots">Default robots.txt</h3>
