@@ -89,7 +89,7 @@ Ext.define('admins.view.Partners', {
                 bodyStyle: 'padding:5px', // Custom CSS styles to be applied to the panel's body element
                 defaultType: 'textfield',
                 items: [
-                    { name: 'key', fieldLabel: 'Username / E-mail', labelWidth: 120, allowBlank: false },
+                    { name: 'key', fieldLabel: 'Username', labelWidth: 120, allowBlank: false },
                     { name: 'partnerID', xtype: 'hidden' }
                 ],
                 bbar: ['->', {
