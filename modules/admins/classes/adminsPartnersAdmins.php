@@ -12,28 +12,35 @@ class adminsPartnersAdmins extends ConnExtjs
     // Grid List:
     public function extGrid()
     {
-        if(!is_numeric($_REQUEST['partnerID'])) exit;
-    
-        $sql = 'SELECT adm.adminID, adm.username, adm.last_login, adm.email
-                FROM '.$this->_table.' as acc
-                INNER JOIN admins as adm ON (acc.adminID = adm.adminID AND partnerID = '.$_REQUEST['partnerID'].')
-                WHERE 1';
-                
-        return parent::extGrid($sql);
+        // Check:
+        $partners = $this->getPartnersByAdmin();
+        if($GLOBALS['admin']['data']['superuser'] == 'Y' || array_key_exists($_REQUEST['partnerID'], $partners))
+        {
+            $sql = 'SELECT adm.adminID, adm.username, adm.last_login, adm.email
+                    FROM '.$this->_table.' as acc
+                    INNER JOIN admins as adm ON (acc.adminID = adm.adminID AND partnerID = '.$_REQUEST['partnerID'].')
+                    WHERE 1';
+            return parent::extGrid($sql);
+        }
+
+        echo json_encode(array('success' => true));
     }
 
 
     // Delete:
     public function extDelete()
     {
-        // TODO chequear adminID
-    
-        $data = json_decode(stripslashes($_POST['data']));
-
-        $sql = 'DELETE FROM '.$this->_table.' WHERE partnerID = '.(int) $_POST['partnerID'].' AND adminID = '.(int) $data->adminID;
+        $response['success'] = false;
         
-        if($this->query($sql)) $response['success'] = true;
-        else $response['success'] = false;
+        // Check:
+        $partners = $this->getPartnersByAdmin();
+        if($GLOBALS['admin']['data']['superuser'] == 'Y' || array_key_exists($_POST['partnerID'], $partners))
+        {
+            $data = json_decode(stripslashes($_POST['data']));
+
+            $sql = 'DELETE FROM '.$this->_table.' WHERE partnerID = '.(int) $_POST['partnerID'].' AND adminID = '.(int) $data->adminID;
+            if($this->query($sql)) $response['success'] = true;
+        }
 
         echo json_encode($response);
     }
@@ -59,7 +66,7 @@ class adminsPartnersAdmins extends ConnExtjs
             while($row = $rs->fetch_assoc())
             {
                 if(!$aSession->exists('partnerID')) $aSession->set('partnerID', $row['partnerID']);
-                
+
                 $array[$row['partnerID']] = $row;
             }
         }
@@ -83,17 +90,22 @@ class adminsPartnersAdmins extends ConnExtjs
     // E:
     public function addAdminToPartner()
     {
-        $sql = 'SELECT adminID FROM admins WHERE username = "'.$this->escape($_POST['key']).'"';
+        $response['success'] = false;
         
-        if(($rs = $this->query($sql)) && $rs->num_rows == 1)
+        // Check:
+        $partners = $this->getPartnersByAdmin();
+        if($GLOBALS['admin']['data']['superuser'] == 'Y' || array_key_exists($_POST['partnerID'], $partners))
         {
-            list($adminID) = $rs->fetch_row();
-        
-            $this->partnerID = $_POST['partnerID'];
-            $this->adminID   = $adminID;
-            if($this->insert()) $response['success'] = true;
+            $sql = 'SELECT adminID FROM admins WHERE username = "'.$this->escape($_POST['key']).'"';
+            if(($rs = $this->query($sql)) && $rs->num_rows == 1)
+            {
+                list($adminID) = $rs->fetch_row();
+            
+                $this->partnerID = $_POST['partnerID'];
+                $this->adminID   = $adminID;
+                if($this->insert()) $response['success'] = true;
+            }
         }
-        else $response['success'] = false;
         
         echo json_encode($response);
     }

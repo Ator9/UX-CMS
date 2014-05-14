@@ -106,7 +106,7 @@ Ext.define('admins.view.Partners', {
                                     add_admin.hide();
                                     Admin.Msg('Admin succesfully added.', true);
                                 },
-                                failure: function(form, action) { Admin.Msg('Admin not found.', false); }
+                                failure: function(form, action) { Admin.Msg('Admin not found or not allowed.', false); }
                             });
                         }
                         else Admin.Msg('Please complete required fields', false);
