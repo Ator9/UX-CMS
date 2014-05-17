@@ -56,9 +56,9 @@ class Conn extends mysqli
 	public function get($indexID)
 	{
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$this->_index.' = "'.$this->escape($indexID).'" LIMIT 1';
-		if(($rs = $this->query($sql)) && $rs->num_rows == 1)
+		if(($res = $this->query($sql)) && $res->num_rows == 1)
 		{
-		    $this->set($rs->fetch_assoc());
+		    $this->set($res->fetch_assoc());
 		    return true;
 		}
 		return false;
@@ -71,9 +71,9 @@ class Conn extends mysqli
 		if(in_array($field, $this->_fields))
 		{
 			$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$field.' = "'.$this->escape($value).'" LIMIT 1';
-			if(($rs = $this->query($sql)) && $rs->num_rows == 1)
+			if(($res = $this->query($sql)) && $res->num_rows == 1)
 			{
-			    $this->set($rs->fetch_assoc());
+			    $this->set($res->fetch_assoc());
 			    return true;
 			}
 		}
@@ -132,10 +132,10 @@ class Conn extends mysqli
 	}
 
 
-	public function delete()
+	public function delete($hard = false)
 	{
 	    // Soft delete:
-        if(in_array('deleted', $this->_fields))
+        if(in_array('deleted', $this->_fields) && $hard === false)
         {
             $this->deleted = 'Y';
             return $this->update();
@@ -146,10 +146,10 @@ class Conn extends mysqli
 			$db = new $className();
 			if($db->_index != '') // with primary index (checks more _dependantClasses)
 			{
-                $rs = $db->getList('SELECT * FROM '.$db->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"');
-                while($row = $rs->fetch_assoc())
+                $res = $db->getList('SELECT * FROM '.$db->_table.' WHERE '.$this->_index.' = "'.$this->escape($this->getID()).'"');
+                while($row = $res->fetch_assoc())
                 {
-                    if($db->get($row[$db->_index])) $db->delete();
+                    if($db->get($row[$db->_index])) $db->delete($hard);
                 }
 			}
 			else // no primary index (no _dependantClasses)
@@ -173,17 +173,6 @@ class Conn extends mysqli
     }
 
 
-	public function escape($str)
-    {
-        if(get_magic_quotes_gpc()) $str = stripslashes($str);
-        $str = trim($str);
-        return parent::real_escape_string($str);
-    }
-
-
-	// Extra -------------------------------------------------------------------------------------------------- //
-
-
     public function getID()
     {
         return $this->{$this->_index};
@@ -205,10 +194,7 @@ class Conn extends mysqli
 	{
 		$sql = 'SHOW COLUMNS FROM '.$this->_table;
 		$res = $this->query($sql);
-	    while($row = $res->fetch_assoc())
-	    {               
-            $fields[] = $row['Field'];
-        }
+	    while($row = $res->fetch_assoc()) $fields[] = $row['Field'];
 
     	return $fields;
 	}
@@ -235,28 +221,32 @@ class Conn extends mysqli
     public function getCount()
 	{
 		$sql = 'SELECT COUNT(*) FROM '.$this->_table;
-
-		$rs  	 = $this->query($sql);
-    	list($c) = $rs->fetch_row();
-
+		$res = $this->query($sql);
+		
+    	list($c) = $res->fetch_row();
     	return $c;
 	}
 
 
-	// Check available field (email / username UNIQUE):
+	// Check for available field:
 	public function isAvailable($field, $value)
 	{
 		if(in_array($field, $this->_fields))
 		{
 			$sql = 'SELECT '.$field.' FROM '.$this->_table.' WHERE '.$field.' = "'.$this->escape($value).'" LIMIT 1';
-
-			if($rs = $this->query($sql))
-			{
-				if($rs->num_rows == 0) return true;
-			}
+			$res = $this->query($sql);
+			if($res->num_rows == 0) return true;
 		}
 		return false;
 	}
+
+
+	public function escape($str)
+    {
+        if(get_magic_quotes_gpc()) $str = stripslashes($str);
+        $str = trim($str);
+        return parent::real_escape_string($str);
+    }
 
 	
     // Query logger:
