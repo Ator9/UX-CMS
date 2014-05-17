@@ -6,6 +6,7 @@
  * http://www.linkedin.com/in/sgasparri
  *
  * Reserved column names (automatic usage):
+ * - deleted         // delete()
  * - adminID_created // insert()
  * - adminID_updated // update()
  * - date_created    // insert()
@@ -138,6 +139,13 @@ class Conn extends mysqli
 
 	public function delete()
 	{
+	    // Soft delete:
+        if(in_array('deleted', $this->_fields))
+        {
+            $this->deleted = 'Y';
+            return $this->update();
+        }
+	
 		foreach($this->_dependantClasses as $className)
 		{
 			$db = new $className();

@@ -16,7 +16,6 @@ class ConnExtjs extends Conn
     public function extSave()
     {
         $this->get($_POST[$this->_index]);
-        
         $this->set($_POST);
         
         if($this->save()) $response['success'] = true;
@@ -32,7 +31,6 @@ class ConnExtjs extends Conn
         $data = (array) json_decode(stripslashes($_POST['data']));
 
         $this->get($data[$this->_index]);
-
         $this->set($data);
         
         if($this->save())
@@ -62,7 +60,7 @@ class ConnExtjs extends Conn
     public function extGrid($sql='', $filter=true, $return=false)
     {
         // Default select:
-        if($sql=='') $sql = 'SELECT * FROM '.$this->_table.' WHERE 1';
+        if($sql=='') $sql = 'SELECT * FROM '.$this->_table.' WHERE 1'.((in_array('deleted', $this->_fields)) ? ' AND deleted="N"' : '');
 
         // Default filter:
         if($filter && isset($_REQUEST['search']))
@@ -74,7 +72,7 @@ class ConnExtjs extends Conn
                 $where[] = $field.' LIKE "%'.$this->escape($_REQUEST['search']).'%"';
             }
 
-            $sql = str_replace('WHERE 1', 'WHERE 1 AND ('.implode(' OR ', $where).') ', $sql);
+            $sql = str_replace(array('WHERE 1', 'WHERE 1 AND deleted="N"'), 'WHERE 1 AND '.((in_array('deleted', $this->_fields)) ? 'deleted="N" AND ' : '').' ('.implode(' OR ', $where).') ', $sql);
         }
 
         if(strpos($sql, 'ORDER BY')===false && $_REQUEST['sort'] != '') $sql.= ' ORDER BY '.$this->escape($_REQUEST['sort']).' '.$this->escape($_REQUEST['dir']);

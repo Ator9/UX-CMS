@@ -11,8 +11,9 @@ class adminsAdmin extends ConnExtjs
 							'firstname',
 							'lastname',
 							'superuser',
-							'active',
 							'last_login',
+							'active',
+							'deleted',
 							'adminID_created', // (Reserved) Automatic usage on insert (Conn.php)
 							'adminID_updated', // (Reserved) Automatic usage on update (Conn.php)
 							'date_created',    // (Reserved) Automatic usage on insert (Conn.php)
