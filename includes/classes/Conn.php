@@ -6,7 +6,7 @@
  * http://www.linkedin.com/in/sgasparri
  *
  * Reserved column names (automatic usage):
- * - deleted         // delete()
+ * - deleted         // insert() & delete()
  * - adminID_created // insert()
  * - adminID_updated // update()
  * - date_created    // insert()
@@ -103,11 +103,9 @@ class Conn extends mysqli
 			$arr[$field] = '"'.$this->escape($this->$field).'"';
 		}
 
+        if(in_array('deleted', $this->_fields)) $arr['deleted'] = '"N"';
 		if(in_array('date_created', $this->_fields)) $arr['date_created'] = 'NOW()';
-		if(in_array('adminID_created', $this->_fields))
-		{
-			$arr['adminID_created'] = '"'.$GLOBALS['admin']['data']['adminID'].'"';
-		}
+		if(in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = '"'.$GLOBALS['admin']['data']['adminID'].'"';
 
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
 		if($this->query($sql))
@@ -127,10 +125,7 @@ class Conn extends mysqli
 	    }
 		
         unset($arr['date_updated']);
-		if(in_array('adminID_updated', $this->_fields))
-		{
-		    $arr['adminID_updated'] = 'adminID_updated = "'.$GLOBALS['admin']['data']['adminID'].'"';
-		}
+		if(in_array('adminID_updated', $this->_fields)) $arr['adminID_updated'] = 'adminID_updated = "'.$GLOBALS['admin']['data']['adminID'].'"';
 
 		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';
 		return $this->query($sql);
@@ -260,25 +255,6 @@ class Conn extends mysqli
 				if($rs->num_rows == 0) return true;
 			}
 		}
-		return false;
-	}
-
-
-	public function getAutoincrement($db=DB_NAME)
-	{
-		$sql = 'SELECT Auto_increment FROM information_schema.tables WHERE table_schema = "'.$db.'" AND table_name = "'.$this->_table.'"';
-
-		$rs  	 = $this->query($sql);
-    	list($c) = $rs->fetch_row();
-
-    	return $c;
-	}
-
-
-	public function isTable($table)
-	{
-		$rs = $this->query('SHOW tables LIKE "'.$table.'"');
-		if($rs->num_rows == 1) return true;
 		return false;
 	}
 

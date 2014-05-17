@@ -58,7 +58,7 @@ class adminsPartnersAdmins extends ConnExtjs
         $sql = 'SELECT acc.partnerID, acc.name
                 FROM '.$this->_table.' as aa
                 INNER JOIN partners as acc USING (partnerID)
-                WHERE adminID = '.$GLOBALS['admin']['data']['adminID'].' AND active = "Y"
+                WHERE adminID = '.$GLOBALS['admin']['data']['adminID'].' AND active = "Y" AND deleted = "N"
                 ORDER BY name';
                 
         if(($rs = $this->query($sql)) && $rs->num_rows > 0)
