@@ -55,11 +55,11 @@ class adminsPartnersAdmins extends ConnExtjs
     {
         global $aSession;
     
-        $sql = 'SELECT acc.partnerID, acc.name
-                FROM '.$this->_table.' as aa
-                INNER JOIN partners as acc USING (partnerID)
-                WHERE adminID = '.$GLOBALS['admin']['data']['adminID'].' AND active = "Y" AND deleted = "N"
-                ORDER BY name';
+        $sql = 'SELECT pa.partnerID, p.name
+                FROM '.$this->_table.' as pa
+                INNER JOIN partners as p USING (partnerID)
+                WHERE pa.adminID = '.$GLOBALS['admin']['data']['adminID'].' AND p.active = "Y" AND p.deleted <> "Y"
+                ORDER BY p.name';
                 
         if(($rs = $this->query($sql)) && $rs->num_rows > 0)
         {

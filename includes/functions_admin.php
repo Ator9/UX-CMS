@@ -69,7 +69,7 @@ function getAdminPartners()
                 name: 'partnerID',
                 displayField: 'name',
                 valueField: 'partnerID',
-                value: ".$GLOBALS['admin']['data']['partnerID'].",
+                ".(($GLOBALS['admin']['data']['partnerID']>0) ? "value: ".$GLOBALS['admin']['data']['partnerID']."," : '')."
                 width: '100%',
                 editable: false,
                 emptyText: 'Select Partner',

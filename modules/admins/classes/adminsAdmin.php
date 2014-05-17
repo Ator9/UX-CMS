@@ -27,7 +27,8 @@ class adminsAdmin extends ConnExtjs
 	{
         global $aSession;
 	
-		$sql = 'SELECT * FROM '.$this->_table.' WHERE username="'.$this->escape($user).'" AND password="'.$this->escape($pass).'" AND active="Y"';
+		$sql = 'SELECT * FROM '.$this->_table.' 
+		        WHERE username = "'.$this->escape($user).'" AND password = "'.$this->escape($pass).'" AND active = "Y" AND deleted <> "Y"';
 		if(($rs = $this->query($sql)) && $rs->num_rows == 1)
 		{
 		    // Last Login:
