@@ -11,7 +11,7 @@ Ext.define('admins.view.Partners', {
         var partnerStore = Ext.create('admins.store.Partners').load(); // Store + Load
 
         var grid = Ext.create('Ext.grid.Panel', {
-            plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
+            plugins: [ Ext.create('Ext.grid.plugin.RowEditing') ],
             store: partnerStore,
             tbar: [
                 Ext.create('Ext.ux.GridRowInsert'), '-',
@@ -60,7 +60,7 @@ Ext.define('admins.view.Partners', {
         this.partnersAdminsStore = Ext.create('admins.store.PartnersAdmins');
 
         this.config =  Ext.create('Ext.grid.Panel', {
-            plugins: [ Ext.create('Ext.grid.plugin.RowEditing', { pluginId: 'rowediting' }) ],
+            plugins: [ Ext.create('Ext.grid.plugin.RowEditing') ],
             store: this.partnersConfigStore,
             title: 'Config',
             region: 'north',

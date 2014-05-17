@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS `admins` (
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `admins` (`adminID`, `roleID`, `username`, `password`, `email`, `firstname`, `lastname`, `superuser`, `active`, `last_login`, `adminID_created`, `adminID_updated`, `date_created`, `date_updated`)
-VALUES (1, 0, 'admin', 'test', '', '', '', 'Y', 'Y', '2014-02-22 20:28:58', 0, 0, '0000-00-00 00:00:00', '2014-02-22 20:30:23');
+INSERT INTO `admins` (`adminID`, `roleID`, `username`, `password`, `email`, `firstname`, `lastname`, `superuser`, `active`, `deleted`, `last_login`, `adminID_created`, `adminID_updated`, `date_created`, `date_updated`)
+VALUES (1, 0, 'admin', 'test', '', '', '', 'Y', 'Y', 'Y', '2014-02-22 20:28:58', 0, 0, '0000-00-00 00:00:00', '2014-02-22 20:30:23');
 
 
 CREATE TABLE IF NOT EXISTS `admins_logs` (

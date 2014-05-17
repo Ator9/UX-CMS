@@ -2,7 +2,6 @@
  * Grid Row Delete plugin
  *
  * @author Sebastián Gasparri
- * @version 24/11/2013 18:25:05
  * http://www.linkedin.com/in/sgasparri
  *
  * Usage: 
