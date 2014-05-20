@@ -1,15 +1,15 @@
 <?php
 // You can create a custom "includes/functions.php" (it will be loaded automatically)
 
-// Class autoload:
+// Class Autoloader:
 // Example 1: class task{} = modules/task/task.php
 // Example 2: class taskNew{} = modules/task/taskNew.php
 // Example 3: class task_calendarNew{} = modules/task_calendar/task_calendarNew.php
-function __autoload($class)
+function class_autoloader($class)
 {
-	if(file_exists(ROOT.'/includes/classes/'.$class.'.php')) require(ROOT.'/includes/classes/'.$class.'.php');
-	else require(ROOT.'/modules/'.getModuleDir($class).'/classes/'.$class.'.php');
-}
+	if(is_file($file = ROOT.'/includes/classes/'.$class.'.php')) require $file;
+	elseif(is_file($file = ROOT.'/modules/'.getModuleDir($class).'/classes/'.$class.'.php')) require $file;
+} spl_autoload_register('class_autoloader');
 
 
 // Get current URL:

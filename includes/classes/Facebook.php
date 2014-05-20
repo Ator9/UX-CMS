@@ -9,5 +9,5 @@
  *
  */
 
-require(dirname(__FILE__).'/../lib/facebook/facebook.php');
+require(INCLUDES.'/lib/facebook/facebook.php');
 

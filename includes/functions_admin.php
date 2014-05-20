@@ -26,8 +26,8 @@ function getAdminTree()
 // Get module config:
 function getModuleConfig($module)
 {
-    if(file_exists(ROOT.'/modules/'.$module.'/config.php')) require(ROOT.'/modules/'.$module.'/config.php');
-    elseif(file_exists(ROOT.'/modules/'.$module.'/config.default.php')) require(ROOT.'/modules/'.$module.'/config.default.php');
+    if(is_file($file = ROOT.'/modules/'.$module.'/config.php')) require $file;
+    elseif(is_file($file = ROOT.'/modules/'.$module.'/config.default.php')) require $file;
 
     return $config;
 }

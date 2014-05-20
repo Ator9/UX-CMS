@@ -30,5 +30,5 @@
  *
  */
 
-require(dirname(__FILE__).'/../lib/phpmailer/class.phpmailer.php');
+require(INCLUDES.'/lib/phpmailer/class.phpmailer.php');
 
