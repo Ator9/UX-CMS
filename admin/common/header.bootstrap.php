@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<? echo $GLOBALS['admin']['doctype']; ?>
 <html>
 <head>
 <title><? echo $GLOBALS['admin']['title']; ?></title>

@@ -21,14 +21,12 @@ else
 }
 
 // E-mail config:
-define('SMTP_HOST', 'smtp.fibertel.com.ar');
-define('SMTP_USER', 'botimail');
-define('SMTP_PASS', 'bot12345');
+define('SMTP_HOST', '');
+define('SMTP_USER', '');
+define('SMTP_PASS', '');
 define('SMPT_PORT', 25);
 
 // Timezone:
 date_default_timezone_set('America/Argentina/Buenos_Aires');
-
-// ----------------------------------------------------------------------------------------------------------------------- //
 
 
