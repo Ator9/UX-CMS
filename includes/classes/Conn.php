@@ -16,12 +16,12 @@
  
 class Conn extends mysqli
 {
-    public $_debug  = false; // True to save all queries (adminsLog)
-	public $_table	= 'table';
-	public $_index	= 'table_primary';
-	public $_fields	= array();
+    public $_debug  = false;   // True to save all queries (adminsLog)
+	public $_table	= '';      // Table name
+	public $_index	= '';      // Table primary Key
+	public $_fields	= array(); // Table columns (auto filled with "getColumns()" if not set)
 
-	protected $_dependantClasses = array(); // delete childrens
+	protected $_dependantClasses = array(); // Delete childrens
 	
 	
 	// ------------------------------------------------------------------------------- //
@@ -34,7 +34,7 @@ class Conn extends mysqli
 		if(!parent::set_charset('utf8')) throw new Exception(mysqli_error($this));
 		
 		if(empty($this->_fields)) $this->_fields = $this->getColumns(); // automatic fields
-		elseif($this->_index != '') array_push($this->_fields, $this->_index); // adds index to field list
+		elseif($this->_index != '') array_unshift($this->_fields, $this->_index); // adds index to field list
 	}
 
 
@@ -51,31 +51,21 @@ class Conn extends mysqli
 	    return false;
 	}
 
-
-	// Returns NULL if there are no more rows in resultset.
-	public function get($indexID)
+    
+    /**
+     * Get single row with PK or custom column
+     *
+     * @return boolean
+     */
+	public function get($value, $field = '')
 	{
-		$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$this->_index.' = "'.$this->escape($indexID).'" LIMIT 1';
+	    if($field == '' || !in_array($field, $this->_fields)) $field = $this->_index;
+	    
+		$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$field.' = "'.$this->escape($value).'" LIMIT 1';
 		if(($res = $this->query($sql)) && $res->num_rows == 1)
 		{
 		    $this->set($res->fetch_assoc());
 		    return true;
-		}
-		return false;
-	}
-
-
-	// Returns NULL if there are no more rows in resultset.
-	public function getBy($field, $value)
-	{
-		if(in_array($field, $this->_fields))
-		{
-			$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$field.' = "'.$this->escape($value).'" LIMIT 1';
-			if(($res = $this->query($sql)) && $res->num_rows == 1)
-			{
-			    $this->set($res->fetch_assoc());
-			    return true;
-			}
 		}
 		return false;
 	}
@@ -188,7 +178,7 @@ class Conn extends mysqli
     /**
      * Get table columns
      *
-     * @return Array
+     * @return array
      */
     public function getColumns()
 	{
@@ -203,7 +193,7 @@ class Conn extends mysqli
     /**
      * Get table data
      *
-     * @return Array
+     * @return array
      */
     public function getData()
     {
@@ -216,7 +206,7 @@ class Conn extends mysqli
     /**
      * Get row count
      *
-     * @return Int
+     * @return int
      */
     public function getCount()
 	{
