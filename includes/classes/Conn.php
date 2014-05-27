@@ -47,7 +47,7 @@ class Conn extends mysqli
 		if($result = parent::query($sql)) return $result;
 		
 	    $this->logQuery($sql, 'SQL Error');
-	    if(LOCAL) throw new Exception(mysqli_error($this).' '.$sql);
+	    if(mysqli_errno($this) && LOCAL) throw new Exception(mysqli_error($this).' '.$sql);
 	    return false;
 	}
 
@@ -245,7 +245,7 @@ class Conn extends mysqli
         $log = new adminsLog;
         $data['classname'] = get_class($this);
         $data['task']      = $task;
-        $data['comment']   = (mysqli_error($this) ? mysqli_error($this).'<br>' : '').$sql;
+        $data['comment']   = (mysqli_errno($this) ? mysqli_error($this).'<br>' : '').$sql;
         $log->log($data);
 	}
 }
