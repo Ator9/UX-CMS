@@ -218,19 +218,6 @@ class Conn extends mysqli
 	}
 
 
-	// Check for available field:
-	public function isAvailable($field, $value)
-	{
-		if(in_array($field, $this->_fields))
-		{
-			$sql = 'SELECT '.$field.' FROM '.$this->_table.' WHERE '.$field.' = "'.$this->escape($value).'" LIMIT 1';
-			$res = $this->query($sql);
-			if($res->num_rows == 0) return true;
-		}
-		return false;
-	}
-
-
 	public function escape($str)
     {
         if(get_magic_quotes_gpc()) $str = stripslashes($str);
