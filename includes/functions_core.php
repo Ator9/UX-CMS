@@ -182,26 +182,6 @@ function seo($txt)
 }
 
 
-function meses($num='')
-{
-    $data[1] = 'Enero';
-    $data[2] = 'Febrero';
-    $data[3] = 'Marzo';
-    $data[4] = 'Abril';
-    $data[5] = 'Mayo';
-    $data[6] = 'Junio';
-    $data[7] = 'Julio';
-    $data[8] = 'Agosto';
-    $data[9] = 'Septiembre';
-    $data[10] = 'Octubre';
-    $data[11] = 'Noviembre';
-    $data[12] = 'Diciembre';
-
-    if(array_key_exists($num, $data)) return $data[$num];
-    return $data;
-}
-
-
 function now()
 { 
     return date('Y-m-d H:i:s');
