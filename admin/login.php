@@ -51,19 +51,19 @@ body{padding:40px 0;background-color:#eee}
         <? } ?>
 		<legend><? echo $GLOBALS['admin']['title']; ?></legend>
 		<label>
-			<?=$lang->t('user');?>
+			<?=ucfirst($lang->t('user'));?>
 			<input type="text" name="name" class="form-control" required autofocus />
 		</label>
 		<label>
-			<?=$lang->t('password');?>
+			<?=ucfirst($lang->t('password'));?>
 			<input type="password" name="pass" class="form-control" required />
 		</label>
 		<?
-		// Select languages if needed (admin/config.php):
+		// Languages (admin/config.php):
         if(count($GLOBALS['admin']['locale']) > 1)
         {
 		    ?>
-		    <label><?=$lang->t('language');?>
+		    <label><?=ucfirst($lang->t('language'));?>
 			    <select name="locale" class="form-control">
 			    <?
                 foreach($GLOBALS['admin']['locale'] as $key => $locale)
@@ -78,7 +78,7 @@ body{padding:40px 0;background-color:#eee}
 		}
 		?>
 		<input type="hidden" name="login" value="1" />
-		<button type="submit" class="btn btn-lg btn-primary btn-block"><?=$lang->t('login');?></button>
+		<button type="submit" class="btn btn-lg btn-primary btn-block"><?=ucfirst($lang->t('login'));?></button>
 	</form>
 </div>
 </body>
