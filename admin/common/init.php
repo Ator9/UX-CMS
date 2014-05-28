@@ -10,7 +10,7 @@ $aSession = new Session('admin');
 // Admin Lang:
 if(!$aSession->exists('locale')) $aSession->set('locale', key($GLOBALS['admin']['locale']));
 $lang = new Lang($aSession->get('locale'));
-$lang->load(ROOT.'/admin/locale/'.$lang->lang.'_core.csv');
+$lang->load(ROOT.'/admin/locale/'.$lang->lang.'.default.csv');
 $lang->load(ROOT.'/admin/locale/'.$lang->lang.'.csv');
 
 // Login check:

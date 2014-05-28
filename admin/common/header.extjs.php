@@ -3,7 +3,7 @@
 <head>
 <title><? echo $GLOBALS['admin']['title']; ?></title>
 <link rel="stylesheet" type="text/css" href="<? echo staticLoader('admin/resources/extjs/resources/css/ext-all.css'); ?>">
-<link rel="stylesheet" type="text/css" href="<? echo staticLoader('admin/resources/styles_core.css'); ?>">
+<link rel="stylesheet" type="text/css" href="<? echo staticLoader('admin/resources/styles.default.css'); ?>">
 <? if(is_file(dirname(__FILE__).'/../resources/styles.css')) { ?>
 <link rel="stylesheet" type="text/css" href="<? echo staticLoader('admin/resources/styles.css'); ?>">
 <? } ?>

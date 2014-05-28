@@ -26,7 +26,7 @@ Ext.application({
         Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : Ext.Array.indexOf(Admin.modules, '<? echo $GLOBALS['admin']['default_module']; ?>');
         if(Admin.firstModule === -1) Admin.firstModule = 0;
         
-        // Language Engine:
+        // Language functionality:
         Admin.lang = [];
         for(var i in Admin.modules) Admin.lang[Admin.modules[i]] = [];
         Admin.t = function(key) { // Translate function

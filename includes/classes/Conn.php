@@ -55,7 +55,7 @@ class Conn extends mysqli
     /**
      * Get single row with PK or custom column
      *
-     * @return boolean
+     * @return Boolean
      */
 	public function get($value, $field = '')
 	{
@@ -178,7 +178,7 @@ class Conn extends mysqli
     /**
      * Get table columns
      *
-     * @return array
+     * @return Array
      */
     public function getColumns()
 	{
@@ -193,7 +193,7 @@ class Conn extends mysqli
     /**
      * Get table data
      *
-     * @return array
+     * @return Array
      */
     public function getData()
     {
@@ -206,7 +206,7 @@ class Conn extends mysqli
     /**
      * Get row count
      *
-     * @return int
+     * @return Int
      */
     public function getCount()
 	{

@@ -1,9 +1,8 @@
 <?php
 /**
- * Lang Class. CSV format
+ * Language Class. CSV format
  *
  * @author Sebastián Gasparri
- * @version 08/04/2014 15:46:13
  * http://www.linkedin.com/in/sgasparri
  *
  * Usage 1. Load file & translate:
@@ -23,7 +22,7 @@
  */
 class Lang
 {
-	public $lang = 'es'; // Current lang
+	public $lang = 'es';     // Current lang
 	public $words = array(); // Loaded translations
 	
 

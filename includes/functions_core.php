@@ -16,9 +16,16 @@ function class_autoloader($class)
 function getCurrentUrl($strip_query=false)
 {
     $url = HOST.substr($_SERVER['REQUEST_URI'], 1);
-    if($strip_query) $url = current(explode('?',$url));
+    if($strip_query) $url = current(explode('?', $url));
 
     return $url;
+}
+
+
+// Get subdomain:
+function getSubdomain()
+{
+    return array_shift(explode('.', $_SERVER['HTTP_HOST']));
 }
 
 
@@ -36,14 +43,7 @@ function isEmail($email)
 }
 
 
-// Get subdomain:
-function getSubdomain()
-{
-    return array_shift(explode('.', $_SERVER['HTTP_HOST']));
-}
-
-
-function cleanUserInput($data)
+function cleanForm($data)
 {
 	$data = array_map_recursive('strip_tags', $data);
 	$data = array_map_recursive('trim', $data);
@@ -80,6 +80,7 @@ function deleteCookie($name)
 }
 
 
+/* TODO fix this
 function recursiveTree($db, $table, $indexID, $parentID, $IDs, $backwards=false)
 {
 	$db->_table = $table;
@@ -104,23 +105,7 @@ function recursiveTree($db, $table, $indexID, $parentID, $IDs, $backwards=false)
 		return array_merge($data, recursiveTree($db, $table, $indexID, $parentID, $data, $backwards));
 	}
 	return $data;
-}
-
-
-function youtube($code, $size='640x385', $img=0)
-{
-	list($w, $h) = explode('x', $size);
-
-	if($img==1) return '<img src="http://i.ytimg.com/vi/'.$code.'/default.jpg" style="width:'.$w.'px;height:'.$h.'px" alt="" />';
-	if($img==2) return 'http://i.ytimg.com/vi/'.$code.'/default.jpg';
-	
-	return '<object width="'.$w.'" height="'.$h.'">
-				<param name="movie" value="http://www.youtube.com/v/'.$code.'?hl=es&amp;fs=1&amp;rel=0" />
-				<param name="allowFullScreen" value="true" />
-				<param name="allowscriptaccess" value="always" />
-				<embed src="http://www.youtube.com/v/'.$code.'?hl=es&amp;fs=1&amp;rel=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="transparent" width="'.$w.'" height="'.$h.'"></embed>
-			</object>';
-}
+}*/
 
 
 function getFilesFromDir($dir)
@@ -129,10 +114,10 @@ function getFilesFromDir($dir)
 
 	if(is_dir($dir))
 	{
-		$objects = new DirectoryIterator($dir); // RecursiveDirectoryIterator
+		$objects = new DirectoryIterator($dir);
 		foreach($objects as $object)
 		{
-		    if($object->getFilename() == '.' || $object->getFilename() == '..') continue; // no hace falta con RecursiveDirectoryIterator (es mejor)
+		    if($object->getFilename() == '.' || $object->getFilename() == '..') continue;
 		    
 			++$i;
 		    $data[$i]['path']  = $object->getPathname();
@@ -147,7 +132,11 @@ function getFilesFromDir($dir)
 }
 
 
-// Truncate string:
+/**
+ * Truncate string
+ *
+ * @return String
+ */
 function truncate($str, $num)
 {
     if(strlen($str) > $num)
@@ -159,7 +148,11 @@ function truncate($str, $num)
 }
 
 
-// SEO URL:
+/**
+ * SEO URL
+ *
+ * @return String
+ */
 function seo($txt)
 {
 	$txt = mb_strtolower($txt, 'UTF-8');
@@ -179,12 +172,6 @@ function seo($txt)
 	$txt = trim($txt, '-');
 
     return $txt;
-}
-
-
-function now()
-{ 
-    return date('Y-m-d H:i:s');
 }
 
 
