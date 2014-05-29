@@ -1,4 +1,5 @@
 Don't modify "*.default.csv" files.
+Don't use "." (dot) in keywords.
 You can create custom locales and it will be loaded automatically.
 
 Examples:

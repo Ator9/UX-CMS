@@ -26,13 +26,25 @@ Ext.application({
         Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : Ext.Array.indexOf(Admin.modules, '<? echo $GLOBALS['admin']['default_module']; ?>');
         if(Admin.firstModule === -1) Admin.firstModule = 0;
         
-        // Language functionality:
+        // Translate words:
         Admin.lang = [];
+        Admin.lang._ = [];
         for(var i in Admin.modules) Admin.lang[Admin.modules[i]] = [];
-        Admin.t = function(key) { // Translate function
+        <? echo getAdminLocale($modules); ?>
+        
+        // Translate function:
+        Admin.t = function(key, obj) {
+            if(key.indexOf('.') !== -1)
+            {
+                var module = key.split('.')[0];
+                key = key.split('.')[1];
+            }
+            else if(obj) var module = obj.$className.split('.')[0];
+            
+            if(module && key in Admin.lang[module]) return Admin.lang[module][key];
+            if(key in Admin.lang._) return Admin.lang._[key];
             return key;
         }
-        <? echo getAdminLocale($modules); ?>
 
         // Main items:
         Admin.cards = Ext.create('Ext.panel.Panel', { region: 'center', layout: 'card', margin: '5 0 5 0', border: false } );

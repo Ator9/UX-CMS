@@ -110,36 +110,19 @@ function getAdminTreeButtons()
 // Get Admin Translations:
 function getAdminLocale($modules=array())
 {
-    global $aSession;
+    global $aSession, $lang;
+    
+    // Global words:
+    foreach($lang->words as $key => $value) $js.= 'Admin.lang._["'.$key.'"]="'.$value.'";';
 
+    // Module words:
     foreach($modules as $module)
+    foreach($lang->loadModule($module, false) as $key => $value)
     {
-        foreach(getModuleLocale($module, $aSession->get('locale')) as $key => $value)
-        {
-            $js.= 'Admin.lang.'.$module.'["'.$key.'"]="'.$value.'";';
-        }
+        $js.= 'Admin.lang.'.$module.'["'.$key.'"]="'.$value.'";';
     }
 
     echo $js;
-}
-
-
-// Get module lang file:
-function getModuleLocale($module='', $lang='es')
-{
-    if(file_exists(ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv')) $file = ROOT.'/modules/'.$module.'/locale/'.$lang.'.csv';
-    elseif(file_exists(ROOT.'/admin/locale/'.$lang.'.csv')) $file = ROOT.'/admin/locale/'.$lang.'.csv';
-
-    if($file != '' && ($handle = fopen($file, 'r')) !== FALSE)
-    {
-        while(($data = fgetcsv($handle, 1000)) !== FALSE)
-        {
-            $words[$data[0]] = $data[1];
-        }
-        fclose($handle);
-    }
-    
-    return (array) $words;
 }
 
 

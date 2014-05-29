@@ -89,10 +89,10 @@ class Lang
 		{
 		    if(($handle = fopen($file, 'r')) !== FALSE)
             {
-                while(($data = fgetcsv($handle, 1000)) !== FALSE) $words[$data[0]] = $data[1];
+                while(($data = fgetcsv($handle, 1000)) !== FALSE) if($data[0] != '') $words[$data[0]] = $data[1];
                 fclose($handle);
                 
-                if($merge_words) $this->words = array_merge($this->words, $words);
+                if($merge_words) $this->words = array_merge($this->words, (array) $words);
             }
 		}
 		return (array) $words;
