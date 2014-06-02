@@ -31,8 +31,7 @@ if(isset($_GET['logout']))
 header('HTTP/1.1 401 Unauthorized');
 
 require(ROOT.'/admin/common/header.bootstrap.php');
-?>
-<? if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<? echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><? } ?>
+if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<?php echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><?php } ?>
 <style type="text/css">
 body{padding:40px 0;background-color:#eee}
 .form-signin{max-width:300px;padding:20px 30px;margin:0 auto;background-color:#fff;border:1px solid #e5e5e5;
@@ -43,29 +42,29 @@ body{padding:40px 0;background-color:#eee}
 <body>
 <div class="container">
 	<form method="post" class="form-signin">
-	    <? if(isset($error)) { ?>
+	    <?php if(isset($error)) { ?>
 	    <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <strong>Warning!</strong><br>No match for Username / Password
         </div>
-        <? } ?>
-		<h4><? echo $GLOBALS['admin']['title']; ?></h4><hr>
+        <?php } ?>
+		<h4><?php echo $GLOBALS['admin']['title']; ?></h4><hr>
 		<label>
-			<?=$lang->t('User');?>
+			<?php echo $lang->t('User');?>
 			<input type="text" name="name" class="form-control" required autofocus />
 		</label>
 		<label>
-			<?=$lang->t('Password');?>
+			<?php echo $lang->t('Password');?>
 			<input type="password" name="pass" class="form-control" required />
 		</label>
-		<?
+		<?php
 		// Languages (admin/config.php):
         if(count($GLOBALS['admin']['locale']) > 1)
         {
 		    ?>
-		    <label><?=$lang->t('Language');?>
+		    <label><?php echo $lang->t('Language');?>
 			    <select name="locale" class="form-control">
-			    <?
+			    <?php
                 foreach($GLOBALS['admin']['locale'] as $key => $locale)
                 {
                     $sel = ($key==$aSession->get('locale')) ? ' selected' : '';
@@ -74,11 +73,11 @@ body{padding:40px 0;background-color:#eee}
 			    ?>
 			    </select>
 		    </label>
-		    <?
+		    <?php
 		}
 		?>
 		<input type="hidden" name="login" value="1" />
-		<button type="submit" class="btn btn-lg btn-primary btn-block"><?=$lang->t('Login');?></button>
+		<button type="submit" class="btn btn-lg btn-primary btn-block"><?php echo $lang->t('Login');?></button>
 	</form>
 </div>
 </body>

@@ -13,10 +13,8 @@ $GLOBALS['admin']['class'] = 'adminsAdmin';
 // Admin partners needed:
 $GLOBALS['admin']['partners_enabled'] = false;
 
-// DOCTYPE
-// http://www.sencha.com/forum/showthread.php?137309-Summary-of-lt-!DOCTYPE-gt-Recommendations
-// IE6/7 support: <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-$GLOBALS['admin']['doctype'] = '<!DOCTYPE html>';
+// Header (admin/common/):
+$GLOBALS['admin']['header'] = 'header.extjs5.php';
 
 // Languages (Default first position):
 $GLOBALS['admin']['locale'] = array('es'=>'Español', 'en'=>'English');
