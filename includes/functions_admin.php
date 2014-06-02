@@ -15,7 +15,7 @@ function getAdminTree()
         if(!empty($config['admins']) && !in_array($GLOBALS['admin']['data']['adminID'], $config['admins'])) continue; // Allowed admins (array)
 
         $panel = basename($module['path']);
-        $tree[$lang->t($panel.'.'.$config['name'])] = array('text'=>$lang->t($panel.'.'.$config['name']), 'panel'=>$panel, 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
+        $tree[$lang->t($panel.'.'.$config['name'])] = array('text'=>$lang->t($panel.'.'.$config['name']), 'id'=>$panel, 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
     }
     
     ksort($tree); // Alphabetical order

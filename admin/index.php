@@ -2,7 +2,7 @@
 require(dirname(__FILE__).'/common/init.php');
 
 $tree = getAdminTree(); // Get module list to build tree panel
-foreach($tree as $values) $modules[] = $values['panel'];
+foreach($tree as $values) $modules[] = $values['id'];
 
 require(ROOT.'/admin/common/'.$GLOBALS['admin']['header']);
 if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<?php echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><? }
@@ -59,12 +59,12 @@ Ext.application({
             fbar: [ <?php echo getAdminTreeButtons(); ?> ], // Footer Bar
             listeners: {
                 itemclick: function(view, record, item, index, e) {
-                    location.hash = record.raw.panel; // Set new hash (module dir name)
+                    location.hash = record.data.id; // Set new hash (module dir name)
                     
                     if(Ext.Array.indexOf(Admin.loadedModules, index) === -1) {
                         Admin.loadedModules[Admin.loadedModules.length] = index;
                         Admin.cards.setLoading(); // Show loading mask before load
-                        Admin.cards.add( Ext.create(record.raw.panel+'.app', { title: record.raw.text }) );
+                        Admin.cards.add( Ext.create(record.data.id+'.app', { title: record.data.text }) );
                         Admin.cards.setLoading(false); // Hide loading mask after load
                     }
                     
