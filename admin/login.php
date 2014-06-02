@@ -49,7 +49,7 @@ body{padding:40px 0;background-color:#eee}
             <strong>Warning!</strong><br>No match for Username / Password
         </div>
         <? } ?>
-		<legend><? echo $GLOBALS['admin']['title']; ?></legend>
+		<h4><? echo $GLOBALS['admin']['title']; ?></h4><hr>
 		<label>
 			<?=$lang->t('User');?>
 			<input type="text" name="name" class="form-control" required autofocus />
