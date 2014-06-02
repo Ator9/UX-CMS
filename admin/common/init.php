@@ -34,10 +34,10 @@ elseif(basename($_SERVER['PHP_SELF']) != 'login.php')
 $log = new adminsLog;
 
 // Ajax class loader:
-if(isset($_GET['_class']) && basename($_SERVER['PHP_SELF']) != 'login.php')
+if(isset($_GET['_class']) && isset($_GET['_method']) && basename($_SERVER['PHP_SELF']) != 'login.php')
 {
     $obj = new $_GET['_class'];
-    if(isset($_GET['_method'])) $obj->$_GET['_method']();
+    $obj->$_GET['_method']();
     exit;
 }
 
