@@ -25,26 +25,6 @@ Ext.application({
         // Load default module (admin/config.php):
         Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : Ext.Array.indexOf(Admin.modules, '<?php echo $GLOBALS['admin']['default_module']; ?>');
         if(Admin.firstModule === -1) Admin.firstModule = 0;
-        
-        // Translate words:
-        Admin.lang = [];
-        Admin.lang._ = [];
-        for(var i in Admin.modules) Admin.lang[Admin.modules[i]] = [];
-        <?php echo getAdminLocale($modules); ?>
-        
-        // Translate function:
-        Admin.t = function(key, obj) {
-            if(key.indexOf('.') !== -1)
-            {
-                var module = key.split('.')[0];
-                key = key.split('.')[1];
-            }
-            else if(obj) var module = obj.$className.split('.')[0];
-            
-            if(module && key in Admin.lang[module]) return Admin.lang[module][key];
-            if(key in Admin.lang._) return Admin.lang._[key];
-            return key;
-        }
 
         // Main items:
         Admin.cards = Ext.create('Ext.panel.Panel', { region: 'center', layout: 'card', margin: '5 0 5 0', border: false } );
@@ -76,7 +56,25 @@ Ext.application({
             <?php if($GLOBALS['admin']['partners_enabled']===true) getAdminPartners(); ?>
         });
         
-        // Global renderers/functions:
+        // Translate function:
+        Admin.lang = [];
+        Admin.lang._ = [];
+        for(var i in Admin.modules) Admin.lang[Admin.modules[i]] = [];
+        <?php echo getAdminLocale($modules); ?>
+        Admin.t = function(key, obj) {
+            if(key.indexOf('.') !== -1)
+            {
+                var module = key.split('.')[0];
+                key = key.split('.')[1];
+            }
+            else if(obj) var module = obj.$className.split('.')[0];
+            
+            if(module && key in Admin.lang[module]) return Admin.lang[module][key];
+            if(key in Admin.lang._) return Admin.lang._[key];
+            return key;
+        }
+        
+        // Common renderers/functions:
         Admin.getStatusIcon = function(value) { return '<span class="status-'+value+'"></span>'; }; // status-Y/N icons
         Admin.getModulesUrl = function(module) {
             var current_module = (module) ? '/'+module.$className.split('.')[0]+'/admin' : '';
