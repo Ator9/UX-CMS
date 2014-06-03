@@ -72,7 +72,7 @@ Ext.application({
                 },
                 afterrender: function(view, model) {
                     this.getSelectionModel().select(Admin.firstModule); // select firstModule
-                    this.fireEvent('itemclick', this, this.getSelectionModel().getLastSelected(), '', Admin.firstModule); // activate firstModule
+                    this.getView().fireEvent('itemclick', this, this.getSelectionModel().getLastSelected(), '', Admin.firstModule); // activate firstModule
                 }
             }
             <?php if($GLOBALS['admin']['partners_enabled']===true) getAdminPartners(); ?>
