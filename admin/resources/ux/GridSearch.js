@@ -59,7 +59,7 @@ Ext.define('Ext.ux.GridSearch', {
         // Install key map ENTER:
         new Ext.util.KeyMap({
             target: this.field.id,
-            key: Ext.EventObject.ENTER,
+            key: 13, // ENTER
             fn: this.onTriggerSearch,
             scope: this
         });
