@@ -58,21 +58,19 @@ Ext.application({
             root: { children: <?php echo json_encode(array_values($tree)); ?> },
             fbar: [ <?php echo getAdminTreeButtons(); ?> ], // Footer Bar
             listeners: {
-                itemclick: function(view, record, item, index, e) {
-                    location.hash = record.data.id; // Set new hash (module dir name)
-                    
-                    if(Ext.Array.indexOf(Admin.loadedModules, index) === -1) {
-                        Admin.loadedModules[Admin.loadedModules.length] = index;
+                selectionchange: function(view, record, e) {
+                    location.hash = record[0].get('id'); // Set new hash (module dir name)
+
+                    if(Ext.Array.indexOf(Admin.loadedModules, record[0].get('id')) === -1) {
+                        Admin.loadedModules[Admin.loadedModules.length] = record[0].get('id');
                         Admin.cards.setLoading(); // Show loading mask before load
-                        Admin.cards.add( Ext.create(record.data.id+'.app', { title: record.data.text }) );
+                        Admin.cards.add( Ext.create(record[0].get('id')+'.app', { title: record[0].get('text') }) ); // Add card
                         Admin.cards.setLoading(false); // Hide loading mask after load
                     }
-                    
-                    Admin.cards.layout.setActiveItem(Ext.Array.indexOf(Admin.loadedModules, index)); // Activate/Show selected module
+                    Admin.cards.layout.setActiveItem( Ext.Array.indexOf(Admin.loadedModules, record[0].get('id')) ); // Activate/Show selected module
                 },
                 afterrender: function(view, model) {
                     this.getSelectionModel().select(Admin.firstModule); // select firstModule
-                    this.getView().fireEvent('itemclick', this, this.getSelectionModel().getLastSelected(), '', Admin.firstModule); // activate firstModule
                 }
             }
             <?php if($GLOBALS['admin']['partners_enabled']===true) getAdminPartners(); ?>
