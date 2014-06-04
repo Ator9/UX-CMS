@@ -1,11 +1,11 @@
 <?php
 /**
+ * reCAPTCHA
  *
- * @author http://recaptcha.net/
+ * @author Sebastián Gasparri
+ * https://www.google.com/recaptcha/admin#createsite
  *
- * Keys by Ator
- *
- * Opciones Interface:
+ * Options:
  * <script>
  * var RecaptchaOptions = {theme:'white' , lang:'es'};
  * </script>
@@ -14,12 +14,10 @@
 
 class Captcha
 {
+    public $publickey  = ''; // You got this from the signup page
+	public $privatekey = ''; // You got this from the signup page
 	public $lang  	   = 'es';
 	public $theme 	   = 'white';
-
-	public $publickey  = '6Lc4MwsAAAAAAKHE4HdqQhd6phmRADeEBtREAAIz';
-	public $privatekey = '6Lc4MwsAAAAAAHIzlU0c2-XWNsQWiqT6yZ6HeppG';
-
 
 	public function get()
 	{
@@ -45,5 +43,4 @@ class Captcha
 	}
 }
 
-require(dirname(__FILE__).'/../lib/recaptcha/recaptchalib.php');
-
+require(INCLUDES.'/lib/recaptcha/recaptchalib.php');

@@ -1,9 +1,11 @@
 <?php
-
 /**
+ * PHPMailer
+ *
+ * @author Sebastián Gasparri
+ * https://github.com/PHPMailer/PHPMailer
  *
  * Example:
- *
  * $mail= new PHPMailer();
  * $mail->ContentType = 'text/html';
  * $mail->CharSet 	   = 'utf-8';
@@ -17,7 +19,7 @@
  * $mail->AddAttachment('images/phpmailer.gif');
  *
  *
- * // Need STMP?:
+ * Need STMP?:
  * $mail->IsSMTP();
  * $mail->SMTPAuth = true;
  * $mail->Host	   = SMTP_HOST;
@@ -25,10 +27,8 @@
  * $mail->Username = SMTP_USER;
  * $mail->Password = SMTP_PASS;
  *
- *
  * $mail->Send();
  *
  */
 
 require(INCLUDES.'/lib/phpmailer/class.phpmailer.php');
-
