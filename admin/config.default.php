@@ -14,7 +14,7 @@ $GLOBALS['admin']['class'] = 'adminsAdmin';
 $GLOBALS['admin']['partners_enabled'] = false;
 
 // Header (admin/common/):
-$GLOBALS['admin']['header'] = 'header.extjs5.php';
+$GLOBALS['admin']['header'] = 'header.extjs4.php';
 
 // Languages (Default first position):
 $GLOBALS['admin']['locale'] = array('es'=>'Español', 'en'=>'English');
