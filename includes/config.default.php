@@ -29,4 +29,9 @@ define('SMPT_PORT', 25);
 // Timezone:
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
+// Marks the cookie as accessible only through the HTTP protocol. 
+// This means that the cookie won't be accessible by JavaScript. 
+// This setting can effectively help to reduce identity theft through XSS attacks.
+ini_set('session.cookie_httponly', 1);
+
 

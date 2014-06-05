@@ -3,6 +3,7 @@
  * reCAPTCHA
  *
  * @author Sebastián Gasparri
+ * http://www.linkedin.com/in/sgasparri
  * https://www.google.com/recaptcha/admin#createsite
  *
  * Options:

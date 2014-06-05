@@ -1,18 +1,17 @@
 <?php
 /**
+ * Session Manager Class
  *
- * @name 	Session Manager
- * @version 1.0
+ * @author Sebastián Gasparri
+ * http://www.linkedin.com/in/sgasparri
+ *
+ * Usage:
+ * $session = new Session('web_user');
+ * $session->set('id', 500);
+ * if($session->exists('id')) $logged_id = $session->get('id');
  *
  */
-
-
-// Marks the cookie as accessible only through the HTTP protocol. 
-// This means that the cookie won't be accessible by scripting languages, such as JavaScript. 
-// This setting can effectively help to reduce identity theft through XSS attacks.
-// .htaccess: Header edit Set-Cookie ^(.*)$ $1;HttpOnly
-ini_set('session.cookie_httponly', 1);
-
+ 
 class Session
 {
 	public $session_name = '';
