@@ -3,7 +3,7 @@
  * Session Manager Class
  *
  * @author Sebastián Gasparri
- * http://www.linkedin.com/in/sgasparri
+ * @link https://github.com/Ator9
  *
  * Usage:
  * $session = new Session('web_user');

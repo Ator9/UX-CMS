@@ -4,7 +4,7 @@
  * Twig template loader
  *
  * @author Sebastián Gasparri
- * http://www.linkedin.com/in/sgasparri
+ * @link https://github.com/Ator9
  *
  * Example:
  * $twig = new Twig();

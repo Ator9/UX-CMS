@@ -3,8 +3,8 @@
  * reCAPTCHA
  *
  * @author Sebastián Gasparri
- * http://www.linkedin.com/in/sgasparri
- * https://www.google.com/recaptcha/admin#createsite
+ * @link https://github.com/Ator9
+ * @link https://www.google.com/recaptcha/admin#createsite
  *
  * Options:
  * <script>

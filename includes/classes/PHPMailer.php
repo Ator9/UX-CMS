@@ -3,7 +3,8 @@
  * PHPMailer
  *
  * @author Sebastián Gasparri
- * https://github.com/PHPMailer/PHPMailer
+ * @link https://github.com/Ator9
+ * @link https://github.com/PHPMailer/PHPMailer
  *
  * Example:
  * $mail= new PHPMailer();

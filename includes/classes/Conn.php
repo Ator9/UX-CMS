@@ -3,7 +3,7 @@
  * Database Connection Class
  *
  * @author Sebastián Gasparri
- * http://www.linkedin.com/in/sgasparri
+ * @link https://github.com/Ator9
  *
  * Reserved column names (automatic usage):
  * - deleted         // insert() & delete()

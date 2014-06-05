@@ -3,7 +3,7 @@
  * Language Class. CSV format
  *
  * @author Sebastián Gasparri
- * http://www.linkedin.com/in/sgasparri
+ * @link https://github.com/Ator9
  *
  * Usage 1. Load file & translate:
  * $lang = new Lang('es');
