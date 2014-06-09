@@ -30,7 +30,7 @@ Ext.application({
         Admin.cards = Ext.create('Ext.panel.Panel', { region: 'center', layout: 'card', margin: '5 0 5 0', border: false } );
         Admin.tree  = Ext.create('Ext.tree.Panel', {
             region: 'west',
-            title: '<?php echo ucfirst($lang->t('modules'));?>',
+            title: '<?php echo ucfirst($lang->t('Modules'));?>',
             width: 160,
             margin: '5 5 5 0',
             collapsible: true, // True to make the panel collapsible and have an expand/collapse toggle Tool added into the header tool button area
