@@ -36,7 +36,7 @@ class adminsPartnersAdmins extends ConnExtjs
         $partners = $this->getPartnersByAdmin();
         if($GLOBALS['admin']['data']['superuser'] == 'Y' || array_key_exists($_POST['partnerID'], $partners))
         {
-            $data = json_decode(stripslashes($_POST['data']));
+            $data = json_decode($_POST['data']);
 
             $sql = 'DELETE FROM '.$this->_table.' WHERE partnerID = '.(int) $_POST['partnerID'].' AND adminID = '.(int) $data->adminID;
             if($this->query($sql)) $response['success'] = true;

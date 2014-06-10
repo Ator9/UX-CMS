@@ -14,7 +14,7 @@ class adminsPartnersConfig extends ConnExtjs
     {
         if(!is_numeric($_REQUEST['partnerID'])) exit;
     
-        $data = (array) json_decode(stripslashes($_POST['data']));
+        $data = (array) json_decode($_POST['data']);
     
         $sql = 'INSERT INTO '.$this->_table.' (partnerID, name, value) 
                 VALUES ('.$_REQUEST['partnerID'].' , "'.$this->escape($data['name']).'", "'.$this->escape($data['value']).'")
