@@ -65,7 +65,7 @@ class adminsPartnersAdmins extends ConnExtjs
         {
             while($row = $rs->fetch_assoc())
             {
-                if(!$aSession->exists('partnerID')) $aSession->set('partnerID', $row['partnerID']);
+                if(!$aSession->exists('partnerID') && $GLOBALS['admin']['data']['superuser'] != 'Y') $aSession->set('partnerID', $row['partnerID']);
 
                 $array[$row['partnerID']] = $row;
             }
