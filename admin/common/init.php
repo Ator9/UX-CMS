@@ -22,7 +22,7 @@ if($aSession->exists('adminData'))
     // Stores partners data glabally:
     $partnersDB = new adminsPartnersAdmins;
     $GLOBALS['admin']['data']['partners']  = $partnersDB->getPartnersByAdmin();
-    $GLOBALS['admin']['data']['partnerID'] = $aSession->get('partnerID');
+    $GLOBALS['admin']['data']['partnerID'] = (int) $aSession->get('partnerID'); // Superusers don't have default partnerID setted at login
 }
 elseif(basename($_SERVER['PHP_SELF']) != 'login.php')
 {
