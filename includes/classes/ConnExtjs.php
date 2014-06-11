@@ -60,7 +60,7 @@ class ConnExtjs extends Conn
     public function extGrid($sql='', $filter=true, $return=false)
     {
         // Default select:
-        if($sql=='') $sql = 'SELECT * FROM '.$this->_table.' WHERE 1'.((in_array('deleted', $this->_fields)) ? ' AND deleted="N"' : '');
+        if($sql=='') $sql = 'SELECT * FROM '.$this->_table.' WHERE ((('.((in_array('deleted', $this->_fields)) ? 'deleted="N"' : '1').')))';
 
         // Default filter:
         if($filter && isset($_REQUEST['search']))
@@ -72,7 +72,7 @@ class ConnExtjs extends Conn
                 $where[] = $field.' LIKE "%'.$this->escape($_REQUEST['search']).'%"';
             }
 
-            $sql = str_replace(array('WHERE 1', 'WHERE 1 AND deleted="N"'), 'WHERE 1 AND '.((in_array('deleted', $this->_fields)) ? 'deleted="N" AND ' : '').' ('.implode(' OR ', $where).') ', $sql);
+            $sql = preg_replace('/WHERE \(\(\((.*)\)\)\)/', 'WHERE $1 AND ('.implode(' OR ', $where).') ', str_replace('WHERE 1', 'WHERE (((1)))', $sql), 1);
         }
 
         if(strpos($sql, 'ORDER BY')===false && $_REQUEST['sort'] != '') $sql.= ' ORDER BY '.$this->escape($_REQUEST['sort']).' '.$this->escape($_REQUEST['dir']);
