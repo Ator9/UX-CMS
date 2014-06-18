@@ -50,7 +50,29 @@ class adminsPartnersConfig extends ConnExtjs
         $response['totalCount'] = count($config['partners_config']);
     	echo json_encode($response);
     }
-
+    
+    
+    /**
+     * Get all partner values from config
+     *
+     * @return Array|false
+     */
+    public function getValues($partnerID=0)
+    {
+        if($partnerID > 0)
+        {
+            $sql = 'SELECT name, value FROM '.$this->_table.' WHERE partnerID = '.$partnerID;
+            if(($rs = $this->query($sql)) && $rs->num_rows > 0)
+            {
+                while($row = $rs->fetch_assoc())
+                {
+                    $array[$row['name']] = $row['value'];
+                }
+                return $array;
+            } 
+        }
+        return false;
+    }
 }
 
 
