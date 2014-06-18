@@ -17,7 +17,7 @@ $GLOBALS['admin']['partners_enabled'] = false;
 $GLOBALS['admin']['header'] = 'header.extjs4.php';
 
 // Languages (Default first position):
-$GLOBALS['admin']['locale'] = array('es'=>'Español', 'en'=>'English');
+$GLOBALS['admin']['locale'] = array('es_AR'=>'Español', 'en_US'=>'English');
 
 // Default module (Default "admins"): 
 $GLOBALS['admin']['default_module'] = 'admins';

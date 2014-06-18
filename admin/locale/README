@@ -1,8 +1,11 @@
 Don't modify "*.default.csv" files.
-Don't use "." (dot) in keywords.
 You can create custom locales and it will be loaded automatically.
 
-Examples:
-- en.csv
-- es.csv
-- pt.csv
+Examples of custom locales:
+- en_US.csv
+- es_AR.csv
+- pt_BR.csv
+
+Format:
+- CSV.
+- Don't use "." (dot) in keywords.
