@@ -2,9 +2,7 @@
 // Create "config.php" & change
 
 // Define local/online:
-if(in_array($_SERVER['HTTP_HOST'], array('localhost'))) define('LOCAL', true);
-else define('LOCAL', false);
-
+define('LOCAL', in_array($_SERVER['HTTP_HOST'], array('localhost')));
 if(LOCAL)
 {
 	define('DB_HOST', 'localhost');
