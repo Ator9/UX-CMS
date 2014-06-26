@@ -5,9 +5,8 @@ $config = array(
     'icon'    => 'user-detective.png',
     'admins'  => array(), // Allowed admins (array with adminID)
     'partners_config' => array( // config => description
-        'api_user'    => 'api user description',
-        'api_pass'    => 'api pass description', 
-        'api_enabled' => 'api enabled description',
+        'api_user'            => 'API Username',
+        'api_pass'            => 'API Password'
     )
 );
 
