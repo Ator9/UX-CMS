@@ -10,7 +10,7 @@ if(file_exists(dirname(__FILE__).'/functions.php')) require(dirname(__FILE__).'/
 
 // Paths:
 $local_dir = (LOCAL) ? '/'.next(explode('/', $_SERVER['PHP_SELF'])) : '';
-$protocol  = ($_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
+$protocol  = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
 
 define('HOST'     , $protocol.'://'.$_SERVER['HTTP_HOST'].$local_dir);
 define('ADMIN'    , HOST.'/admin');
