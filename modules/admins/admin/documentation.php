@@ -10,13 +10,74 @@ require(ROOT.'/admin/common/header.bootstrap.php');
 <div id="header"><h1>UX <span class="myadmin">CMS</span></h1></div>
 <ul class="header">
     <li><a href="#top">Top</a></li>
+    <li><a href="#db">Database Class</a></li>
     <li><a href="#php">Framework Hints</a></li>
     <li><a href="#git">Git Commands</a></li>
-    <li><a href="#extjs">Ext JS</a></li>
     <li><a href="#links">Links</a></li>
 </ul>
 
 <div id="body">
+    <h2 id="db">Database Class</h2>
+    <ul>
+        <li><b>Class Creation</b>
+            <pre>
+class myClass extends Conn
+{
+    public $_table  = '';      // Table name
+    public $_index  = '';      // Table primary Key
+}</pre>
+        </li>
+        <li><b>Simple Query</b>
+            <pre>$conn = new myClass();
+            
+$res = $conn->query('SELECT * FROM admins');
+if($res->num_rows > 0)
+{
+    while($row = $res->fetch_assoc())
+    {
+        vd($row);
+    }
+}</pre>
+        </li>
+        <li><b>Update</b>
+            <pre>$conn = new myClass();
+            
+if($conn->get( $_GET['key']) )
+{
+    $conn->firstname = 'name';
+    $conn->lastname  = 'lastname';
+    if($conn->update())
+    {
+        echo 'Record updated successfully ID: '.$conn->getID();
+    }
+    else echo 'Error while trying to update';
+}
+else echo 'Record not found';</pre>
+        </li>
+        <li><b>Insert</b>
+            <pre>$conn = new myClass();
+            
+$conn->firstname = 'name';
+$conn->lastname  = 'lastname';
+if($conn->insert())
+{
+    echo 'Record inserted successfully. ID: '.$conn->getID();
+}
+else echo 'Error while trying to insert';</pre>
+        </li>
+        <li><b>Save (Update or Insert)</b> If primary key exists, record is updated. If primary key is not set, inserts new record.
+            <pre>$conn = new myClass();
+            
+$conn->get($_POST['key']); // Get primary key
+$conn->set($_POST)) // Set all data
+if($conn->save())
+{
+    echo 'Record saved successfully. ID: '.$conn->getID();
+}
+else echo 'Error while trying to save';</pre>
+        </li>
+    </ul>
+    
     <h2 id="php">Framework Hints</h2>
     <ul>
         <li><a href="#phpconstants">Site Constants</a></li>
@@ -30,16 +91,16 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>LOCAL (true | false)</pre>
         </li>
         <li>
+            <b>Database</b>
+            <pre>DB_HOST<br>DB_USER<br>DB_PASS<br>DB_NAME</pre>
+        </li>
+        <li>
             <b>External URLs - http://www.example.com (HOST)</b>
             <pre>HOST<br>ADMIN (/admin)<br>MODULES (/modules)<br>RESOURCES (/resources)<br>UPLOAD (/upload)</pre>
         </li>
         <li>
             <b>Internal Paths - /var/www/example.com (ROOT)</b>
             <pre>ROOT<br>COMMON (/common)<br>INCLUDES (/includes)</pre>
-        </li>
-        <li>
-            <b>Database</b>
-            <pre>DB_HOST<br>DB_USER<br>DB_PASS<br>DB_NAME</pre>
         </li>
     </ul>
     <h3 id="phpadminsglobals">Admin GLOBALS</h3>
@@ -108,12 +169,6 @@ require(ROOT.'/admin/common/header.bootstrap.php');
         be used for this.
     </p>
     */?>
-    
-    <h2 id="extjs">Ext JS</h2>
-    <ul>
-        <li><a href="http://docs.sencha.com/extjs/" target="_blank">Documentation</a></li>
-        <li><a href="http://extjs.com/deploy/dev/docs/?class=Ext.Component" target="_blank">Component List</a></li>
-    </ul>
     
     <h2 id="links">Links</h2>
     <ul>
