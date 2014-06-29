@@ -5,7 +5,7 @@ $tree = getAdminTree(); // Get module list to build tree panel
 foreach($tree as $values) $modules[] = $values['id'];
 
 require(ROOT.'/admin/common/'.$GLOBALS['admin']['header']);
-if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<?php echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><? }
+if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<?php echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><?php }
 ?>
 <script>
 var LOCAL = <?php echo var_export(LOCAL); ?>;
