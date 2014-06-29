@@ -96,7 +96,7 @@ class Conn extends mysqli
         unset($arr[$this->_index]);
         if(in_array('deleted', $this->_fields)) $arr['deleted'] = '"N"';
 		if(in_array('date_created', $this->_fields)) $arr['date_created'] = 'NOW()';
-		if(in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = (int) $GLOBALS['admin']['data']['adminID'];
+		if(isset($GLOBALS['admin']) && in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = (int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
 		if($this->query($sql))
@@ -116,7 +116,7 @@ class Conn extends mysqli
 	    }
 		
         unset($arr['date_updated']);
-		if(in_array('adminID_updated', $this->_fields)) $arr['adminID_updated'] = 'adminID_updated = '.(int) $GLOBALS['admin']['data']['adminID'];
+		if(isset($GLOBALS['admin']) && in_array('adminID_updated', $this->_fields)) $arr['adminID_updated'] = 'adminID_updated = '.(int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';
 		return $this->query($sql);
