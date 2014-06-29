@@ -33,7 +33,7 @@ class Conn extends mysqli
 		if(mysqli_connect_errno()) throw new Exception(mysqli_connect_error());
 		if(!parent::set_charset('utf8')) throw new Exception(mysqli_error($this));
 		
-		if(empty($this->_fields)) $this->_fields = $this->getColumns(); // automatic fields
+		if(empty($this->_fields) && $this->_table != '') $this->_fields = $this->getColumns(); // automatic fields
 		elseif($this->_index != '') array_unshift($this->_fields, $this->_index); // adds index to field list
 	}
 
@@ -93,9 +93,10 @@ class Conn extends mysqli
 			$arr[$field] = '"'.$this->escape($this->$field).'"';
 		}
 
+        unset($arr[$this->_index]);
         if(in_array('deleted', $this->_fields)) $arr['deleted'] = '"N"';
 		if(in_array('date_created', $this->_fields)) $arr['date_created'] = 'NOW()';
-		if(in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = '"'.$GLOBALS['admin']['data']['adminID'].'"';
+		if(in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = (int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
 		if($this->query($sql))
@@ -115,7 +116,7 @@ class Conn extends mysqli
 	    }
 		
         unset($arr['date_updated']);
-		if(in_array('adminID_updated', $this->_fields)) $arr['adminID_updated'] = 'adminID_updated = "'.$GLOBALS['admin']['data']['adminID'].'"';
+		if(in_array('adminID_updated', $this->_fields)) $arr['adminID_updated'] = 'adminID_updated = '.(int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';
 		return $this->query($sql);
