@@ -85,6 +85,7 @@ class Lang
      */ 
 	public function load($file='', $merge_words=true)
 	{
+	    $words = array();
 		if(file_exists($file))
 		{
 		    if(($handle = fopen($file, 'r')) !== FALSE)
@@ -92,10 +93,10 @@ class Lang
                 while(($data = fgetcsv($handle, 1000)) !== FALSE) if($data[0] != '') $words[$data[0]] = $data[1];
                 fclose($handle);
                 
-                if($merge_words) $this->words = array_merge($this->words, (array) $words);
+                if($merge_words) $this->words = array_merge($this->words, $words);
             }
 		}
-		return (array) $words;
+		return $words;
 	}
 }
 
