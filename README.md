@@ -1,6 +1,6 @@
 #### Requirements
 * Apache
-* PHP 5.2+
+* PHP 5.3+
 * MySQL 5.5+
 
 ## Installation
