@@ -4,8 +4,7 @@
 * MySQL 5.5+
 
 ## Installation
-Setup your own clean git repository and add this remote repository.
-
+Create your own repository and add UX-CMS as remote repository:
 ```sh
 mkdir myProject; cd myProject/
 git init
