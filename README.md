@@ -1,13 +1,15 @@
 UX-CMS
 ======
 
-UX-CMS Framework: PHP, Ext JS, MySQL, MVC
+Requirements: 
+* Apache
+* PHP 5.2+
+* MySQL 5.5+
 
 
 ## Installation
 
 Setup your own clean git repository and add this remote repository.
-Create a folder like "myProject"
 
 ```sh
 mkdir myProject; cd myProject/
