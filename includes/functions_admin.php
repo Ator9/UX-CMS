@@ -110,7 +110,7 @@ function getAdminTreeButtons()
 // Get Admin Translations:
 function getAdminLocale($modules=array())
 {
-    global $aSession, $lang;
+    global $aSession, $lang; $js = '';
     
     // Global words:
     foreach($lang->words as $key => $value) $js.= 'Admin.lang._["'.$key.'"]="'.$value.'";';
