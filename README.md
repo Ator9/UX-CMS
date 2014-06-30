@@ -1,7 +1,4 @@
-UX-CMS
-======
-
-Requirements: 
+# Requirements: 
 * Apache
 * PHP 5.2+
 * MySQL 5.5+
