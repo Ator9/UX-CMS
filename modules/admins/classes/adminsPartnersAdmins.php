@@ -53,8 +53,8 @@ class adminsPartnersAdmins extends ConnExtjs
      */
     public function getPartnersByAdmin()
     {
-        global $aSession;
-    
+        global $aSession; $array = array();
+        
         $sql = 'SELECT pa.partnerID, p.name
                 FROM '.$this->_table.' as pa
                 INNER JOIN partners as p USING (partnerID)
@@ -71,7 +71,7 @@ class adminsPartnersAdmins extends ConnExtjs
             }
         }
 
-        return (array) $array;
+        return $array;
     }
 
 
