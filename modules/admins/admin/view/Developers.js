@@ -2,7 +2,7 @@ Ext.define('admins.view.Developers', {
     extend: 'Ext.tab.Panel',
     
     initComponent: function() {
-        var items = []
+        var items = [];
 
         items.push(Ext.create('Ext.ux.IFrame', {
             title: 'Documentation',
