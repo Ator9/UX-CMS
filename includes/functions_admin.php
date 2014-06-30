@@ -11,7 +11,7 @@ function getAdminTree()
         if(!is_dir($module['path'])) continue;
 
         $config = getModuleConfig($module['name']);
-        if($config['enabled'] != true) continue;
+        if(!isset($config['enabled']) || $config['enabled'] !== true) continue;
         if(!empty($config['admins']) && !in_array($GLOBALS['admin']['data']['adminID'], $config['admins'])) continue; // Allowed admins (array)
 
         $panel = basename($module['path']);
