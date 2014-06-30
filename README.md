@@ -7,7 +7,6 @@ UX-CMS Framework: PHP, Ext JS, MySQL, MVC
 ## Installation
 
 Setup your own clean git repository and add this remote repository.
-
 Create a folder like "myProject"
 
 ```sh
