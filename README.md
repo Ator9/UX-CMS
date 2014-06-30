@@ -1,11 +1,9 @@
-# Requirements: 
+## Requirements
 * Apache
 * PHP 5.2+
 * MySQL 5.5+
 
-
 ## Installation
-
 Setup your own clean git repository and add this remote repository.
 
 ```sh
