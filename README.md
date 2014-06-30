@@ -1,16 +1,17 @@
 UX-CMS
 ======
 
-CMS Framework: PHP, Ext JS, MySQL, MVC
+UX-CMS Framework: PHP, Ext JS, MySQL, MVC
 
 
 ## Installation
 
-Setup your own git repository and add UX-CMS remote
+Setup your own clean git repository and add this remote repository.
+Create a folder like "myProject"
 
 ```sh
+mkdir myProject; cd myProject/
 git init
-git config core.fileMode false
 git remote add upstream https://github.com/Ator9/UX-CMS.git
 git fetch upstream
 git merge upstream/master
