@@ -110,7 +110,7 @@ function recursiveTree($db, $table, $indexID, $parentID, $IDs, $backwards=false)
 
 function getFilesFromDir($dir)
 {
-	$data = array();
+	$data = array(); $i = 0;
 
 	if(is_dir($dir))
 	{
@@ -119,15 +119,15 @@ function getFilesFromDir($dir)
 		{
 		    if($object->getFilename() == '.' || $object->getFilename() == '..') continue;
 		    
-			++$i;
 		    $data[$i]['path']  = $object->getPathname();
 		    $data[$i]['name']  = $object->getFilename();
 		    $data[$i]['ext']   = pathinfo($object->getFilename(),PATHINFO_EXTENSION);
 		    $data[$i]['size']  = $object->getSize();
 		    $data[$i]['mtime'] = $object->getMTime();
+		    $i++;
 		}
 	}
-	
+
 	return $data;
 }
 

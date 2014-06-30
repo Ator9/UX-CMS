@@ -10,7 +10,7 @@ class adminsLog extends ConnExtjs
 
 
     // Grid List:
-    public function extGrid()
+    public function extGrid($sql = '', $filter = true, $return = false)
     {
         $sql = 'SELECT t1.*, t2.username
                 FROM '.$this->_table.' AS t1

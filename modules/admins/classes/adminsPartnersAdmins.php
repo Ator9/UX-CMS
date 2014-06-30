@@ -10,7 +10,7 @@ class adminsPartnersAdmins extends ConnExtjs
 
 
     // Grid List:
-    public function extGrid()
+    public function extGrid($sql = '', $filter = true, $return = false)
     {
         // Check:
         $partners = $this->getPartnersByAdmin();
