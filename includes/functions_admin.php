@@ -43,6 +43,7 @@ function getModuleDir($classname='')
 // Get extjs class paths:
 function getAdminPaths()
 {
+    $paths = '';
     foreach(getFilesFromDir(ROOT.'/modules') as $module)
     {
         if(!is_dir($module['path'])) continue;
@@ -51,7 +52,6 @@ function getAdminPaths()
         
         $paths.= ", '".basename($module['path'])."': '../modules/".basename($module['path'])."/admin'";
     }
-
     return $paths;
 }
 
