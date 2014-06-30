@@ -9,7 +9,8 @@ require(dirname(__FILE__).'/functions_core.php');
 if(file_exists(dirname(__FILE__).'/functions.php')) require(dirname(__FILE__).'/functions.php'); 
 
 // Paths:
-$localdir = (LOCAL) ? next(($dirlocal = explode('/', $_SERVER['PHP_SELF']))) : '';
+$localdir = explode('/', $_SERVER['PHP_SELF']);
+$localdir = (LOCAL) ? next($localdir) : '';
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
 
 define('HOST'     , $protocol.'://'.$_SERVER['HTTP_HOST'].'/'.$localdir);
