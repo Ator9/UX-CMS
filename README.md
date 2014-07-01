@@ -1,5 +1,5 @@
 #### Requirements
-* Apache 2.21+
+* Apache 2.2+
 * PHP 5.3+
 * MySQL 5.1+
 
