@@ -76,13 +76,13 @@ class ConnExtjs extends Conn
         }
 
         if(strpos($sql, 'ORDER BY')===false && $_REQUEST['sort'] != '') $sql.= ' ORDER BY '.$this->escape($_REQUEST['sort']).' '.$this->escape($_REQUEST['dir']);
-        if($_REQUEST['csvExport'] != 'Y' && strpos($sql, 'LIMIT')===false) $sql.= ' LIMIT '.(int) $_REQUEST['start'].', '.(int) $_REQUEST['limit'];
+        if(isset($_REQUEST['csvExport']) && strpos($sql, 'LIMIT')===false) $sql.= ' LIMIT '.(int) $_REQUEST['start'].', '.(int) $_REQUEST['limit'];
         
         // Query SQL_CALC_FOUND_ROWS:
         $sql = preg_replace('/SELECT /', 'SELECT SQL_CALC_FOUND_ROWS ', $sql, 1); // 1 = only first match
         $rs  = $this->query($sql);
 
-        if($_REQUEST['csvExport'] == 'Y')
+        if(isset($_REQUEST['csvExport']))
         {
             $csv = new CSVExport($_REQUEST['csvName']);
             $csv->putResultset($rs);
