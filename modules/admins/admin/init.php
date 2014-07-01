@@ -1,2 +1,2 @@
 <?php
-require(dirname(__FILE__).'/../../../admin/common/init.php');
+require(__DIR__.'/../../../admin/common/init.php');

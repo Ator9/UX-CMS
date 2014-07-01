@@ -1,5 +1,5 @@
 <?php
-require(dirname(__FILE__).'/common/init.php');
+require(__DIR__.'/common/init.php');
 
 // IP restriction:
 checkAdminIpAccess();

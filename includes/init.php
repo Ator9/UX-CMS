@@ -1,12 +1,12 @@
 <?php
 // Database & Site Config:
-if(file_exists(dirname(__FILE__).'/config.php')) require(dirname(__FILE__).'/config.php');
-else require(dirname(__FILE__).'/config.default.php');
+if(is_file(__DIR__.'/config.php')) require(__DIR__.'/config.php');
+else require(__DIR__.'/config.default.php');
 
 // Functions:
-require(dirname(__FILE__).'/functions_admin.php');
-require(dirname(__FILE__).'/functions_core.php');
-if(file_exists(dirname(__FILE__).'/functions.php')) require(dirname(__FILE__).'/functions.php'); 
+require(__DIR__.'/functions_admin.php');
+require(__DIR__.'/functions_core.php');
+if(is_file(__DIR__.'/functions.php')) require(__DIR__.'/functions.php'); 
 
 // Paths:
 $localdir = explode('/', $_SERVER['PHP_SELF']);
@@ -19,7 +19,7 @@ define('MODULES'  , HOST.'/modules');
 define('RESOURCES', HOST.'/resources');
 define('UPLOAD'   , HOST.'/upload');
 
-define('ROOT'     , str_replace(DIRECTORY_SEPARATOR.'includes', '', dirname(__FILE__)));
+define('ROOT'     , str_replace(DIRECTORY_SEPARATOR.'includes', '', __DIR__));
 define('COMMON'   , ROOT.'/common');
 define('INCLUDES' , ROOT.'/includes');
 

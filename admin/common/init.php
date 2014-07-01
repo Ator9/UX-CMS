@@ -1,5 +1,5 @@
 <?php
-require(dirname(__FILE__).'/../../includes/init.php');
+require(__DIR__.'/../../includes/init.php');
 
 // Admin Config:
 if(file_exists(INCLUDES.'/config_admin.php')) require(INCLUDES.'/config_admin.php');

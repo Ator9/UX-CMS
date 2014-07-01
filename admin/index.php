@@ -1,5 +1,5 @@
 <?php
-require(dirname(__FILE__).'/common/init.php');
+require(__DIR__.'/common/init.php');
 
 $tree = getAdminTree(); // Get module list to build tree panel
 foreach($tree as $values) $modules[] = $values['id'];
