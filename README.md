@@ -15,6 +15,4 @@ git pull framework master
 
 git fetch framework
 git merge framework/master
-
-
 ```
