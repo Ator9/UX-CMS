@@ -10,13 +10,13 @@ Ext.define('admins.view.Developers', {
         }));
 
         items.push(Ext.create('Ext.ux.IFrame', {
-            title: 'Documentation',
-            src: Admin.getModulesUrl(this)+'/documentation.php'
-        }));
-
-        items.push(Ext.create('Ext.ux.IFrame', {
             title: 'PHP Info',
             src: Admin.getModulesUrl(this)+'/phpinfo.php'
+        }));
+        
+        items.push(Ext.create('Ext.ux.IFrame', {
+            title: 'Documentation',
+            src: Admin.getModulesUrl(this)+'/documentation.php'
         }));
 
         this.items = items;
