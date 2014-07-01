@@ -1,8 +1,9 @@
 <?php
 require(dirname(__FILE__).'/../../includes/init.php');
 
-if(file_exists(dirname(__FILE__).'/../config.php')) require(dirname(__FILE__).'/../config.php');
-else require(dirname(__FILE__).'/../config.default.php');
+// Admin Config:
+if(file_exists(INCLUDES.'/admin_config.php')) require(INCLUDES.'/admin_config.php');
+else require(INCLUDES.'/admin_config.default.php');
 
 // Admin Session:
 $aSession = new Session('admin');
