@@ -22,7 +22,7 @@ Ext.application({
         Admin.modules = <?php echo json_encode($modules); ?>; // Modules list
         Admin.loadedModules = []; // Fills with loaded modules
         
-        // Load default module (admin/config.php):
+        // Load default module (includes/config_admin.php):
         Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : Ext.Array.indexOf(Admin.modules, '<?php echo $GLOBALS['admin']['default_module']; ?>');
         if(Admin.firstModule === -1) Admin.firstModule = 0;
 
@@ -85,7 +85,7 @@ Ext.application({
             var icon  = (type) ? Ext.Msg.INFO : Ext.Msg.ERROR;
             Ext.Msg.show({ title: title, msg: msg, buttons: Ext.Msg.OK, icon: icon });
         }
-        <?php echo $GLOBALS['admin']['custom_js']; /* Add custom js from admin/config.php */ ?>
+        <?php echo $GLOBALS['admin']['custom_js']; /* Add custom js (includes/config_admin.php) */ ?>
         
         // Main container:
         Ext.create('Ext.container.Viewport', {
