@@ -21,10 +21,10 @@ cd hooks; touch post-receive; chmod +x post-receive; vi post-receive
 ```
 ```sh
 #!/bin/sh
-git --work-tree=/var/www/domain.com --git-dir=/var/repo/site.git checkout -f
+git --work-tree=/var/www/domain.com --git-dir=/home/repo/site.git checkout -f
 ```
 Push from local:
 ```sh
-git remote add online ssh://user@server:/home/repository
+git remote add online ssh://user@server:/home/repo/site.git
 git push online master
 ```
