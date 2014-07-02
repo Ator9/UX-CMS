@@ -1,4 +1,4 @@
-/* You can create a custom "styles.css" (it will be loaded automatically) */
+/* You can create a custom "extjs.css" or "styles.css" and it will be loaded automatically by its header (extjs or bootstrap) */
 
 .crosstick-Y{background:url(icons/crosstick-Y.png) no-repeat;padding-left:16px}
 .crosstick-N{background:url(icons/crosstick-N.png) no-repeat;padding-left:16px}

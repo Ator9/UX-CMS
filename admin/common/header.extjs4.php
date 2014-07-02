@@ -8,9 +8,9 @@ if(strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 6.') !== false || strpos($_SERVER['
 <head>
 <title><?php echo $GLOBALS['admin']['title']; ?></title>
 <link rel="stylesheet" type="text/css" href="<?php echo staticLoader('admin/resources/extjs4/resources/css/ext-all.css'); ?>">
-<link rel="stylesheet" type="text/css" href="<?php echo staticLoader('admin/resources/styles.default.css'); ?>">
-<?php if(is_file(__DIR__.'/../resources/styles.css')) { ?>
-<link rel="stylesheet" type="text/css" href="<?php echo staticLoader('admin/resources/styles.css'); ?>">
+<link rel="stylesheet" type="text/css" href="<?php echo staticLoader('admin/resources/extjs.default.css'); ?>">
+<?php if(is_file(__DIR__.'/../resources/extjs.css')) { ?>
+<link rel="stylesheet" type="text/css" href="<?php echo staticLoader('admin/resources/extjs.css'); ?>">
 <?php } ?>
 <script type="text/javascript" src="<?php echo staticLoader('admin/resources/extjs4/ext-all'.((LOCAL)?'-dev':'').'.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo staticLoader('admin/resources/extjs4/locale/ext-lang-'.$aSession->get('locale').'.js'); ?>"></script>
