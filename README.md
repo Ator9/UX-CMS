@@ -14,13 +14,16 @@ git pull framework master
 ## Push online from local repository (SSH):
 Create online repository:
 ```sh
-mkdir myProject; cd myProject/
+mkdir site.git; cd site.git/
 git init --bare
 ```
 Create hook to deploy:
 ```sh
-cd myProject/
-git init --bare
+cd hooks/
+cat > post-receive
+
+#!/bin/sh
+git --work-tree=/var/www/domain.com --git-dir=/var/repo/site.git checkout -f
 ```
 Push from local:
 ```sh
