@@ -6,7 +6,7 @@
 ## Installation via GIT
 Create local repository and add UX-CMS as remote repository:
 ```sh
-mkdir myProject; cd myProject/
+mkdir myProject; cd myProject
 git init
 git remote add framework https://github.com/Ator9/UX-CMS.git
 git pull framework master
@@ -14,12 +14,12 @@ git pull framework master
 ## Push online from local repository (SSH):
 Create online repository:
 ```sh
-mkdir site.git; cd site.git/
+mkdir site.git; cd site.git
 git init --bare
 ```
 Create hook to deploy:
 ```sh
-cd hooks/
+cd hooks
 cat > post-receive
 
 #!/bin/sh
