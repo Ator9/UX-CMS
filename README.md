@@ -20,7 +20,8 @@ git init --bare
 Create hook to deploy:
 ```sh
 cd hooks
-cat > post-receive
+touch post-receive
+chmod +x post-receive
 
 #!/bin/sh
 git --work-tree=/var/www/domain.com --git-dir=/var/repo/site.git checkout -f
