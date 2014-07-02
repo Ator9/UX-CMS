@@ -17,10 +17,8 @@ Create online repository and setup hook:
 mkdir site.git; cd site.git
 git init --bare
 
-cd hooks
-touch post-receive; chmod +x post-receive; vi post-receive
+cd hooks; touch post-receive; chmod +x post-receive; vi post-receive
 ```
-"post-receive":
 ```sh
 #!/bin/sh
 git --work-tree=/var/www/domain.com --git-dir=/var/repo/site.git checkout -f
