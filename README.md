@@ -15,8 +15,12 @@ git pull framework master
 Create online repository:
 ```sh
 mkdir myProject; cd myProject/
-git init
-git config receive.denyCurrentBranch ignore
+git init --bare
+```
+Create hook to deploy:
+```sh
+cd myProject/
+git init --bare
 ```
 Push from local:
 ```sh
