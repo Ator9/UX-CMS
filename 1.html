@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AdverMail</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="http://localhost/AdverMail/resources/lib/bootstrap/css/bootstrap.min.1393115399.css">
+<script type="text/javascript" src="http://localhost/AdverMail/resources/lib/jquery/jquery-1.min.1399864855.js"></script>
+<script type="text/javascript" src="http://localhost/AdverMail/resources/lib/bootstrap/js/bootstrap.min.1393115399.js"></script>
+<style type="text/css">
+body{padding:40px 0;background-color:#eee}
+.form-signin{max-width:300px;padding:20px 30px;margin:0 auto;background-color:#fff;border:1px solid #e5e5e5;
+-webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px}
+.form-control{font-size:16px;height:auto;margin:5px 0 12px;padding:7px 9px}
+</style>
+</head>
+<body>
+<div class="container">
+	<form method="post" class="form-signin">
+	    		<legend>AdverMail</legend>
+		<label>
+			usuario			<input type="text" name="name" class="form-control" required autofocus />
+		</label>
+		<label>
+			contraseña			<input type="password" name="pass" class="form-control" required />
+		</label>
+				    <label>idioma			    <select name="locale" class="form-control">
+			    <option value="es" selected>Español</option><option value="en">English</option>			    </select>
+		    </label>
+		    		<input type="hidden" name="login" value="1" />
+		<button type="submit" class="btn btn-lg btn-primary btn-block">ingresar</button>
+	</form>
+</div>
+</body>
+</html>
+{% for user in users %}
+        <li>{{ user.username|e }}</li>
+    {% endfor %}
