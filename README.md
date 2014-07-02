@@ -12,17 +12,14 @@ git remote add framework https://github.com/Ator9/UX-CMS.git
 git pull framework master
 ```
 ## Push online from local repository (SSH):
-Create online repository:
+Create online repository and setup hook:
 ```sh
 mkdir site.git; cd site.git
 git init --bare
-```
-Create hook to deploy:
-```sh
-cd hooks
-touch post-receive
-chmod +x post-receive
 
+cd hooks; touch post-receive; chmod +x post-receive; vi post-receive
+```
+```sh
 #!/bin/sh
 git --work-tree=/var/www/domain.com --git-dir=/var/repo/site.git checkout -f
 ```
