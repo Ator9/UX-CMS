@@ -22,13 +22,6 @@ function getCurrentUrl($strip_query=false)
 }
 
 
-// Get subdomain:
-function getSubdomain()
-{
-    return array_shift(explode('.', $_SERVER['HTTP_HOST']));
-}
-
-
 function dateFormat($format, $datetime)
 {
 	if($datetime!='' && !strstr($datetime,'0000-00-00')) return date($format, strtotime($datetime));
@@ -74,38 +67,17 @@ function staticLoader($file='', $disallow=false)
 }
 
 
+// Get subdomain:
+function getSubdomain()
+{
+    return array_shift(explode('.', $_SERVER['HTTP_HOST']));
+}
+
+
 function deleteCookie($name)
 {
 	setcookie($name, '', time()-3600, '/', '', false, true);
 }
-
-
-/* TODO fix this
-function recursiveTree($db, $table, $indexID, $parentID, $IDs, $backwards=false)
-{
-	$db->_table = $table;
-	$db->_index	= $indexID;
-
-	$sql = $data = array();
-
-	$whereID = ($backwards) ? $indexID  : $parentID;
-	$dataID  = ($backwards) ? $parentID : $indexID;
-
-	if(is_numeric($IDs)) $data[] = $db->get($IDs);
-	elseif(is_array($IDs))
-	{
-		foreach($IDs as $value) $sql[] = $value[$dataID];
-		if(!empty($sql)) $params['WHERE'] = $whereID.' IN ('.implode(',', $sql).')';
-		$rs = $db->getList($params);
-		if($rs->num_rows > 0) while($row = $rs->fetch_assoc()) $data[] = $row;
-	}
-
-	if(!empty($data) && is_array(recursiveTree($db, $table, $indexID, $parentID, $data, $backwards)))
-	{
-		return array_merge($data, recursiveTree($db, $table, $indexID, $parentID, $data, $backwards));
-	}
-	return $data;
-}*/
 
 
 function getFilesFromDir($dir)
