@@ -12,13 +12,13 @@ git remote add framework https://github.com/Ator9/UX-CMS.git
 git pull framework master
 ```
 ## Push online from local repository (SSH):
-- Create online repository:
+Create online repository:
 ```sh
 mkdir myProject; cd myProject/
 git init
 git config receive.denyCurrentBranch ignore
 ```
-- Push from local:
+Push from local:
 ```sh
 git remote add online ssh://user@server:/home/repository
 git push online master
