@@ -35,7 +35,7 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>git checkout -- file.xxx</pre>
         </li>
         <li>
-            <b>Show Status (changes)</b>
+            <b>Show status (changes)</b>
             <pre>git status</pre>
         </li>
         <li>
@@ -64,6 +64,10 @@ require(ROOT.'/admin/common/header.bootstrap.php');
     </ul>
     <h2>Config</h2>
     <ul>
+        <li>
+            <b>Show  config</b>
+            <pre>git config core.fileMode false</pre>
+        </li>
         <li>
             <b>Ignore chmod</b>
             <pre>git config core.fileMode false</pre>
