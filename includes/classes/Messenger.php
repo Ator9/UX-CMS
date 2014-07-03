@@ -8,15 +8,16 @@
  * Usage:
  * $messenger = new Messenger();
  * $messenger->add('my message', 'custom_type');
+ * $messenger->addPredefined('created');
  * echo $messenger->show();
  *
  */
 
 class Messenger
 {
-    private $type       = 'success';  // Default bootstrap style type
-	private $messages   = array(); // Stored messages
-	private $predefined = array(); // Predefined messages
+    private $type       = 'success'; // Default bootstrap style type
+	private $messages   = array();   // Stored messages
+	private $predefined = array();   // Predefined messages
 	public  $html       = '';
 
 
@@ -49,15 +50,24 @@ class Messenger
 	    if(array_key_exists($type, $this->predefined)) $this->add($this->predefined[$type][0], $this->predefined[$type][1]);
 	}
 	
-
+	
 	public function show()
 	{
 		if(!empty($this->messages))
 		foreach($this->messages as $data)
 		{
-			$this->html .= '<div class="messenger_class '.$this->types[$data[1]].'">'.$data[0].'</div>';
+			$this->html .= '<div class="'.$this->types[$data[1]].'">
+			                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			                    '.$data[0].'
+			                </div>';
 		}
 		return $this->html;
+	}
+	
+	
+	public function getCount()
+	{
+	    return count($this->messages);
 	}
 	
 	
@@ -65,12 +75,6 @@ class Messenger
 	{
 	    if(array_key_exists($type, $this->types)) $this->type = $type;
 	    else exit('Message type not found.');
-	}
-	
-	
-	public function getCount()
-	{
-	    return count($this->messages);
 	}
 }
 
