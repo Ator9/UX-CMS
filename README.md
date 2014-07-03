@@ -13,16 +13,16 @@ git init && git remote add framework https://github.com/Ator9/UX-CMS.git && git 
 ## Push online from local repository (SSH)
 Create online repository and setup hook:
 ```sh
-mkdir site.git; cd site.git
+mkdir site.git && cd site.git
 
 git init --bare && cd hooks && touch post-receive && chmod +x post-receive && vi post-receive
 ```
 ```sh
 #!/bin/sh
-git --work-tree=/var/www/domain.com --git-dir=/home/repo/site.git checkout -f
+git --work-tree=/var/www/domain.com --git-dir=/home/repos/site.git checkout -f
 ```
 Push from local:
 ```sh
-git remote add online ssh://user@server:/home/repo/site.git
+git remote add online ssh://user@server:/home/repos/site.git
 git push online master
 ```
