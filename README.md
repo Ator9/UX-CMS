@@ -15,7 +15,7 @@ Create online repository and setup hook:
 ```sh
 mkdir site.git && cd site.git
 
-git init --bare && cd hooks && touch post-receive && chmod +x post-receive && vi post-receive
+git init --bare && cd hooks && touch post-receive && chmod +x post-receive && nano post-receive
 ```
 ```sh
 #!/bin/sh
