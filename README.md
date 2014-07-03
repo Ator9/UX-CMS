@@ -8,17 +8,14 @@ Create local repository and add UX-CMS as remote repository:
 ```sh
 mkdir myProject && cd myProject
 
-git init &&
-git remote add framework https://github.com/Ator9/UX-CMS.git &&
-git pull framework master
+git init && git remote add framework https://github.com/Ator9/UX-CMS.git && git pull framework master
 ```
 ## Push online from local repository (SSH)
 Create online repository and setup hook:
 ```sh
 mkdir site.git; cd site.git
-git init --bare
 
-cd hooks; touch post-receive; chmod +x post-receive; vi post-receive
+git init --bare && cd hooks && touch post-receive && chmod +x post-receive && vi post-receive
 ```
 ```sh
 #!/bin/sh
