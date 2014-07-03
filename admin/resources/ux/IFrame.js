@@ -23,11 +23,15 @@ Ext.define('Ext.ux.IFrame', {
         '<iframe src="{src}" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>'
     ],
 
+    childEls: {
+        iframeEl: { selectNode: 'iframe' }
+    },
+
+
     initComponent: function () {
         this.callParent();
-
         this.frameName = this.frameName || this.id + '-frame';
-
+        
         Ext.apply(this.renderSelectors, {
             iframeEl: 'iframe'
         });
