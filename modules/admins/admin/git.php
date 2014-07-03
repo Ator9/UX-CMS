@@ -20,7 +20,7 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>git pull</pre>
         </li>
         <li>
-            <b>Add NEW file (not tracked)</b>
+            <b>Commit NEW file (not tracked)</b>
             <pre>git add file.xxx<br>git commit -m "comment"<br>git push</pre>
         </li>
         <li>
@@ -67,7 +67,7 @@ require(ROOT.'/admin/common/header.bootstrap.php');
         </li>
         <li>
             <b>Set User</b>
-            <pre>git config user.email "email@email.com"</pre>
+            <pre>git config user.name "Your Name"<br>git config user.email "your@email.com"</pre>
         </li>
     </ul>
 </div>

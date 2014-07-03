@@ -18,6 +18,11 @@ Ext.define('admins.view.Developers', {
             title: 'Documentation',
             src: Admin.getModulesUrl(this)+'/documentation.php'
         }));
+        
+        items.push(Ext.create('Ext.ux.IFrame', {
+            title: 'Git',
+            src: Admin.getModulesUrl(this)+'/git.php'
+        }));
 
         this.items = items;
         this.callParent(arguments);

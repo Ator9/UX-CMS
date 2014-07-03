@@ -12,7 +12,6 @@ require(ROOT.'/admin/common/header.bootstrap.php');
     <li><a href="#top">Top</a></li>
     <li><a href="#db">Database Class</a></li>
     <li><a href="#php">Framework Hints</a></li>
-    <li><a href="#git">Git Commands</a></li>
     <li><a href="#links">Links</a></li>
 </ul>
 
@@ -120,46 +119,6 @@ else echo 'Error while trying to save';</pre>
     </ul>
     <h3 id="phprobots">Default robots.txt</h3>
     <pre>User-agent: *<br>Allow: /</pre>
-
-    <h2 id="git">Git Commands</h2>
-    <ul>
-        <li>
-            <b>Clone Repository</b>
-            <pre>$ git clone https://github.com/Ator9/CMS my_project_folder/</pre>
-        </li>
-        <li>
-            <b>Pull Changes</b>
-            <pre>(@project_folder) $ git pull</pre>
-        </li>
-        <li>
-            <b>Commit NEW file (not tracked)</b>
-            <pre>(@project_folder) $ git add file.xxx<br>(@project_folder) $ git commit -m "comment"<br>(@project_folder) $ git push</pre>
-        </li>
-        <li>
-            <b>Commit all modified files (tracked)</b>
-            <pre>(@project_folder) $ git commit -a -m "comment"<br>(@project_folder) $ git push</pre>
-        </li>
-        <li>
-            <b>Reset single file changes</b>
-            <pre>(@project_folder) $ git checkout -- file.xxx</pre>
-        </li>
-        <li>
-            <b>Show Status (changes)</b>
-            <pre>(@project_folder) $ git status</pre>
-        </li>
-        <li>
-            <b>View Logs (GUI)</b>
-            <pre>$ sudo apt-get install gitk<br>(@project_folder) $ gitk</pre>
-        </li>
-        <li>
-            <b>Config - Ignore chmod changes</b>
-            <pre>(@project_folder) $ git config core.fileMode false</pre>
-        </li>
-        <li>
-            <b>Config - Set User (push requirement)</b>
-            <pre>(@project_folder) $ git config user.email "email@email.com"</pre>
-        </li>
-    </ul>
 
     <? /*
     <p class="important">
