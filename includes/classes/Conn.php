@@ -192,11 +192,11 @@ class Conn extends mysqli
     
     
     /**
-     * Get table data
+     * Get table data in array format
      *
      * @return Array
      */
-    public function getData()
+    public function getArray()
     {
         foreach($this->_fields as $field) $arr[$field] = $this->$field;
         
