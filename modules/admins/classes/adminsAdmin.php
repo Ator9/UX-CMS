@@ -36,7 +36,7 @@ class adminsAdmin extends ConnExtjs
 		    $this->last_login = date('Y-m-d H:i:s');
 		    $this->update();
 
-            $aSession->set('adminData', $this->getData());
+            $aSession->set('adminData', $this->getArray());
 
             // Login log:
             $log = new adminsLog;
