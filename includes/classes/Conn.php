@@ -16,10 +16,10 @@
  
 class Conn extends mysqli
 {
-    public $_debug  = false;   // True to save all queries (adminsLog)
-	public $_table	= '';      // Table name
-	public $_index	= '';      // Table primary Key
-	public $_fields	= array(); // Table columns (auto filled with "getColumns()" if not set)
+        public $debug  = false;   // True to save all queries (adminsLog)
+	protected $_table	= '';      // Table name
+	protected $_index	= '';      // Table primary Key
+	protected $_fields	= array(); // Table columns (auto filled with "getColumns()" if not set)
 
 	protected $_dependantClasses = array(); // Delete childrens
 	
@@ -43,7 +43,7 @@ class Conn extends mysqli
 	// For other successful queries mysqli_query() will return TRUE.
 	public function query($sql)
 	{
-		if($this->_debug) $this->logQuery($sql, 'SQL Debug');
+		if($this->debug) $this->logQuery($sql, 'SQL Debug');
 		if($result = parent::query($sql)) return $result;
 		
 	    $this->logQuery($sql, 'SQL Error');
