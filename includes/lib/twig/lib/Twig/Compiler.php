@@ -66,7 +66,7 @@ class Twig_Compiler implements Twig_CompilerInterface
      * Compiles a node.
      *
      * @param Twig_NodeInterface $node        The node to compile
-     * @param int                $indentation The current indentation
+     * @param integer            $indentation The current indentation
      *
      * @return Twig_Compiler The current compiler instance
      */
@@ -236,7 +236,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Indents the generated code.
      *
-     * @param int     $step The number of indentation to add
+     * @param integer $step The number of indentation to add
      *
      * @return Twig_Compiler The current compiler instance
      */
@@ -250,7 +250,7 @@ class Twig_Compiler implements Twig_CompilerInterface
     /**
      * Outdents the generated code.
      *
-     * @param int     $step The number of indentation to remove
+     * @param integer $step The number of indentation to remove
      *
      * @return Twig_Compiler The current compiler instance
      *
