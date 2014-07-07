@@ -29,11 +29,11 @@ class Conn extends mysqli
 
 	function __construct($host=DB_HOST, $user=DB_USER, $pass=DB_PASS, $db=DB_NAME)
 	{
-		parent::__construct($host, $user, $pass, $db);
-		if(mysqli_connect_errno()) throw new Exception(mysqli_connect_error());
-		if(!parent::set_charset('utf8')) throw new Exception(mysqli_error($this));
+		@parent::__construct($host, $user, $pass, $db);
+		if(mysqli_connect_errno()) exit('Database connection error');
+		if(!parent::set_charset('utf8')) exit('Database utf8 error');
 		
-		if(empty($this->_fields) && $this->_table != '') $this->_fields = $this->getColumns(); // automatic fields
+		if($this->_table != '' && empty($this->_fields)) $this->_fields = $this->getColumns(); // automatic fields
 		elseif($this->_index != '') array_unshift($this->_fields, $this->_index); // adds index to field list
 	}
 
