@@ -12,6 +12,13 @@ function class_autoloader($class)
 } spl_autoload_register('class_autoloader');
 
 
+// Simple query:
+function query($sql)
+{
+    $q = new Conn();
+    return $q->query($sql);
+}
+
 // Get current URL:
 function getCurrentUrl($strip_query=false)
 {
