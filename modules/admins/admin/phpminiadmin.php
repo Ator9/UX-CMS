@@ -36,7 +36,7 @@ if (function_exists('date_default_timezone_set')) date_default_timezone_set('UTC
 
  $self=$_SERVER['PHP_SELF'];
 
- session_start();
+ //session_start();
  if (!isset($_SESSION['XSS'])) $_SESSION['XSS']=get_rand_str(16);
  $xurl='XSS='.$_SESSION['XSS'];
 

@@ -28,7 +28,7 @@ class adminsPartnersConfig extends ConnExtjs
 
 
     // Grid List | Filters with config:
-    public function extGrid()
+    public function extGrid($sql = '', $filter = true, $return = false)
     {
         if(!is_numeric($_REQUEST['partnerID'])) exit;
     
@@ -44,7 +44,7 @@ class adminsPartnersConfig extends ConnExtjs
         ksort($config['partners_config']);
         foreach($config['partners_config'] as $name => $desc)
         {
-            $response['data'][] = array('name' => $name, 'value' => $results[$name], 'description' => $desc);
+            $response['data'][] = array('name' => $name, 'value' => isset($results[$name]) ? $results[$name] : '', 'description' => $desc);
         }
         
         $response['totalCount'] = count($config['partners_config']);

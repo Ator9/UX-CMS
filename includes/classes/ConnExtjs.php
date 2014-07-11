@@ -57,7 +57,7 @@ class ConnExtjs extends Conn
 
 
     // Grid List:
-    public function extGrid($sql='', $filter=true, $return=false)
+    public function extGrid($sql = '', $filter = true, $return = false)
     {
         // Default select:
         if($sql=='') $sql = 'SELECT * FROM '.$this->_table.' WHERE ((('.((in_array('deleted', $this->_fields)) ? 'deleted="N"' : '1').')))';
@@ -89,14 +89,16 @@ class ConnExtjs extends Conn
             $csv->export($_REQUEST['csvZip']=='true'); // Force boolean (true/false)
             exit;
         }
-        
+
         if($rs->num_rows > 0)
-        while($row = $rs->fetch_assoc())
         {
-            $response['data'][] = $row;
+            while($row = $rs->fetch_assoc())
+            {
+                $response['data'][] = $row;
+            }
         }
 
-        if($return) return (array) $response['data'];
+        if($return) return isset($response['data']) ? $response['data'] : array();
 
         $rs = $this->query('SELECT FOUND_ROWS()');
         list($response['totalCount']) = $rs->fetch_row();

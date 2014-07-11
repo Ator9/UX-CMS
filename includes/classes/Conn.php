@@ -90,7 +90,7 @@ class Conn extends mysqli
 	{
 		foreach($this->_fields as $field)
 		{
-			$arr[$field] = '"'.$this->escape($this->$field).'"';
+			if(isset($this->$field)) $arr[$field] = '"'.$this->escape($this->$field).'"';
 		}
 
         unset($arr[$this->_index]);
@@ -159,7 +159,7 @@ class Conn extends mysqli
     {
         foreach($this->_fields as $field)
         {
-            $this->$field = isset($data[$field]) ? $data[$field] : $this->$field;
+            if(isset($data[$field])) $this->$field = $data[$field];
         }
     }
 

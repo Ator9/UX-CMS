@@ -22,7 +22,7 @@ class adminsLog extends ConnExtjs
     
 
     // Log:
-    public function log($data=array())
+    public function log($data = array())
     {
         $this->adminID   = ($data['adminID']) ? $data['adminID'] : $GLOBALS['admin']['data']['adminID'];
         $this->classname = $data['classname'];
