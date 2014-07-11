@@ -166,7 +166,8 @@ class Conn extends mysqli
 
     public function getID()
     {
-        return $this->{$this->_index};
+        if(isset($this->{$this->_index})) return $this->{$this->_index};
+        return false;
     }
 
 
