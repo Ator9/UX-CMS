@@ -38,6 +38,10 @@ body{padding:40px 0;background-color:#eee}
 -webkit-border-radius:15px;-moz-border-radius:15px;border-radius:15px}
 .form-control{font-size:16px;height:auto;margin:5px 0 12px;padding:7px 9px}
 </style>
+<script>
+// Redirect iframe to match parent:
+if(window.location != parent.location) parent.location = 'login.php';
+</script>
 </head>
 <body>
 <div class="container">
