@@ -65,15 +65,15 @@ require(ROOT.'/admin/common/header.bootstrap.php');
     <h2>Config</h2>
     <ul>
         <li>
-            <b>Show  config</b>
-            <pre>git config core.fileMode false</pre>
+            <b>Show config</b>
+            <pre>git config -l</pre>
         </li>
         <li>
             <b>Ignore chmod</b>
             <pre>git config core.fileMode false</pre>
         </li>
         <li>
-            <b>Set User</b>
+            <b>Set commit user</b>
             <pre>git config user.name "Your Name"<br>git config user.email "your@email.com"</pre>
         </li>
     </ul>
