@@ -6,41 +6,64 @@
  * @link https://github.com/Ator9
  *
  *
+ * Client Setup:
+ * $api = new RestApi(array('api_url' => 'http://example.com/api'));
+ * or
+ * $api = new RestApi($config); // $config with url, username and password
+ * or
+ * $api = new customRestApi(); // Custom class extends RestApi with hardcoded config
+ *
+ * Client Methods:
+ * $response = $api->get('/products'); // Get product list
+ * $response = $api->get('/products/333'); // Get product ID 333
+ * $response = $api->post('/products', 'data'); // Adds a new product
+ * $response = $api->put('/products/333', 'data'); // Updates product ID 333
+ * $response = $api->delete('/products/333'); // Deletes product ID 333
+ *
+ *
  * Server Setup:
  * <IfModule mod_rewrite.c>
  * RewriteEngine On
  * RewriteCond %{REQUEST_FILENAME} !-f
- * RewriteCond %{REQUEST_FILENAME} !-d
- * RewriteRule api/(.*)$ common/api.php?request=$1 [L,NC,QSA]
+ * RewriteRule api/(.*)$ common/api.php?request=/$1 [L,NC,QSA]
  * </IfModule>
  * 
  */
 class RestApi
 {
-    protected $api_url    = '';
-    protected $app_id     = '';
-    protected $app_secret = '';
+    protected $api_url      = ''; // http://example.com/api
+    protected $api_username = '';
+    protected $api_password = '';
 
 
     public function __construct($config = array())
     {
-        if(isset($config['api_url']))    $this->api_url    = $config['api_url'];
-        if(isset($config['app_id']))     $this->app_id     = $config['app_id'];
-        if(isset($config['app_secret'])) $this->app_secret = $config['app_secret'];
+        if(isset($config['api_url']))      $this->api_url      = $config['api_url'];
+        if(isset($config['api_username'])) $this->api_username = $config['api_username'];
+        if(isset($config['api_password'])) $this->api_password = $config['api_password'];
     }
     
     
+    /**
+     * Execute a GET Request
+     * 
+     * @param string $path
+     * @return Array
+     */
     public function get($path)
     {
-    
+        return $this->execute($path);
     }
+    
     
     /**
      * Execute a POST Request
      * 
+     * @param string $path
+     * @param string $body
      * @return Array
      */
-    public function post($path, $body=array())
+    public function post($path, $body)
     {
         $opts = array(
             CURLOPT_HTTPHEADER => array('Content-Type: application/json'),
@@ -53,17 +76,52 @@ class RestApi
     
     
     /**
-     * Execute requests and returns the json body and headers
+     * Execute a PUT Request
      * 
+     * @param string $path
+     * @param string $body
      * @return Array
      */
-    public function execute($path, $opts)
+    public function put($path, $body)
+    {
+        $opts = array(
+            CURLOPT_HTTPHEADER    => array('Content-Type: application/json'),
+            CURLOPT_CUSTOMREQUEST => 'PUT',
+            CURLOPT_POSTFIELDS    => json_encode($body)
+        );
+        
+        return $this->execute($path, $opts);
+    }
+    
+    
+    /**
+     * Execute a DELETE Request
+     * 
+     * @param string $path
+     * @return Array
+     */
+    public function delete($path) {
+        $opts = array(
+            CURLOPT_CUSTOMREQUEST => 'DELETE'
+        );
+        
+        return $this->execute($path, $opts);
+    }
+    
+    
+    /**
+     * Execute requests and returns the json body and status header
+     * 
+     * @param string $path
+     * @return Array
+     */
+    public function execute($path, $opts = array())
 	{
 	    $ch = curl_init($this->api_url.$path);
 	    curl_setopt_array($ch, $opts);
 	    
-	    $return['body'] = json_decode(curl_exec($ch));
-        $return['code'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	    $return['body']   = json_decode(curl_exec($ch));
+        $return['status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         
         return $return;
