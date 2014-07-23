@@ -50,9 +50,12 @@ class Captcha
 	{
 	    if($challenge == '') $challenge = $_POST['recaptcha_challenge_field'];
 	    if($response == '')  $response  = $_POST['recaptcha_response_field'];
+	    
 		$resp = recaptcha_check_answer($this->private_key, $_SERVER['REMOTE_ADDR'], $challenge, $response);
 		return $resp->is_valid;
 	}
 }
 
 require(INCLUDES.'/lib/recaptcha/recaptchalib.php');
+
+

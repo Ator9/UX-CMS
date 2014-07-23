@@ -38,9 +38,10 @@ class RestApi
 
     public function __construct($config = array())
     {
-        if(isset($config['api_url']))      $this->api_url      = $config['api_url'];
-        if(isset($config['api_username'])) $this->api_username = $config['api_username'];
-        if(isset($config['api_password'])) $this->api_password = $config['api_password'];
+        foreach($config as $key => $value)
+        {
+            if(isset($this->$key)) $this->$key = $value;
+        }
     }
     
     

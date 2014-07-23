@@ -18,12 +18,6 @@ else
 	define('DB_NAME', 'cms');
 }
 
-// E-mail config:
-define('SMTP_HOST', '');
-define('SMTP_USER', '');
-define('SMTP_PASS', '');
-define('SMPT_PORT', 25);
-
 // Timezone:
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
