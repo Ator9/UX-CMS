@@ -6,17 +6,13 @@
  * @link https://github.com/Ator9
  *
  *
- * Setup:
+ * Setup api_client.php:
  * $api = new RestApiClient(array('api_url' => 'http://example.com/api'));
- * or
- * $api = new RestApiClient($config); // $config with url, username and password
- *
- * Methods:
  * $response = $api->get('/products'); // Get product list
- * $response = $api->get('/products/333'); // Get product ID 333
- * $response = $api->post('/products', 'data'); // Adds a new product
- * $response = $api->put('/products/333', 'data'); // Updates product ID 333
- * $response = $api->delete('/products/333'); // Deletes product ID 333
+ * $response = $api->get('/products', array('id' => 333)); // Get product ID 333
+ * $response = $api->post('/products', array('data' => 'add')); // Adds a new product
+ * $response = $api->put('/products', array('id' => 333, 'data' => 'update')); // Updates product ID 333
+ * $response = $api->delete('/products', array('id' => 333))); // Deletes product ID 333
  *
  */
 class RestApiClient
@@ -24,9 +20,9 @@ class RestApiClient
     protected $api_url      = ''; // http://example.com/api
     protected $api_username = '';
     protected $api_password = '';
-    protected $curl_opts    = array(
+    protected $curl_opts    = array( // Custom cURL options
         CURLOPT_RETURNTRANSFER => true
-    ); // Custom cURL options
+    );
     
 
     /*
@@ -44,20 +40,32 @@ class RestApiClient
     /**
      * Execute a GET Request
      * 
-     * @param string $path
+     * @param String $path
+     * @param Array $data
      * @return Array
      */
-    public function get($path)
+    public function get($path, $data = array())
     {
-        return $this->execute($path);
+        $opts = array();
+        
+        if(!empty($data))
+        {
+            $opts = array(
+                CURLOPT_HTTPHEADER    => array('Content-Type: application/json; charset=UTF-8'),
+                CURLOPT_CUSTOMREQUEST => 'GET',
+                CURLOPT_POSTFIELDS    => json_encode($data)
+            );
+        }
+        
+        return $this->execute($path, $opts);
     }
     
     
     /**
      * Execute a POST Request
      * 
-     * @param string $path
-     * @param string $data
+     * @param String $path
+     * @param Array $data
      * @return Array
      */
     public function post($path, $data)
@@ -75,8 +83,8 @@ class RestApiClient
     /**
      * Execute a PUT Request
      * 
-     * @param string $path
-     * @param string $data
+     * @param String $path
+     * @param Array $data
      * @return Array
      */
     public function put($path, $data)
@@ -94,13 +102,22 @@ class RestApiClient
     /**
      * Execute a DELETE Request
      * 
-     * @param string $path
+     * @param String $path
+     * @param Array $data
      * @return Array
      */
-    public function delete($path) {
-        $opts = array(
-            CURLOPT_CUSTOMREQUEST => 'DELETE'
-        );
+    public function delete($path, $data = array())
+    {
+        $opts = array();
+        
+        if(!empty($data))
+        {
+            $opts = array(
+                CURLOPT_HTTPHEADER    => array('Content-Type: application/json; charset=UTF-8'),
+                CURLOPT_CUSTOMREQUEST => 'DELETE',
+                CURLOPT_POSTFIELDS    => json_encode($data)
+            );
+        }
         
         return $this->execute($path, $opts);
     }
@@ -109,7 +126,7 @@ class RestApiClient
     /**
      * Execute requests and returns the json body and status header
      * 
-     * @param string $path
+     * @param String $path
      * @return Array
      */
     public function execute($path, $opts = array())

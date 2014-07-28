@@ -6,33 +6,53 @@
  * @link https://github.com/Ator9
  *
  *
- * Setup:
+ * Setup .htaccess:
  * <IfModule mod_rewrite.c>
  * RewriteEngine On
  * RewriteCond %{REQUEST_FILENAME} !-f
  * RewriteRule api/(.*)$ common/api_server.php?request=/$1 [L,NC,QSA]
  * </IfModule>
  *
- * Example api_server.php:
+ * Setup api_server.php:
+ * class MyApiServer extends RestApiServer
+ * {
+ *   public function getProducts() {
+ *     $products = array();
+ *     return $this->response($products);
+ *   }
  *
+ *   public function postProducts($params) {
+ *     if($json->id > 0) $result = someData();
+ *     else $result = errorData();
+ *     return $this->response($result);
+ *   }
+ *   public function putProducts($params) {}
+ *   public function deleteProducts($params) {}
+ * }
  *
+ * $api = new MyApiServer($_GET['request']); // $_GET['request'] = "/products"
  *
- * 
  */
 class RestApiServer
 {
     public function __construct($url = '')
     {
-        $url = trim($url, '/');
-        $method = strtolower($_SERVER['REQUEST_METHOD']).ucfirst($url);
+        $method = strtolower($_SERVER['REQUEST_METHOD']).ucfirst(trim($url, '/'));
         
-        if(!method_exists($this, $method)) return $this->response('Not found', 404);
-        
-        $this->$method();
+        if(!method_exists($this, $method)) return $this->response(array('Error: Service Not found'), 404);
+
+        $this->$method(json_decode(file_get_contents('php://input')));
     }
     
     
-    public function response($data = '', $status = 200)
+    /**
+     * API Response
+     * 
+     * @param Array $data
+     * @param Int $status
+     * @return Json
+     */
+    public function response($data = array(), $status = 200)
     {
         http_response_code($status);
         header('Content-type: application/json; charset=UTF-8');
