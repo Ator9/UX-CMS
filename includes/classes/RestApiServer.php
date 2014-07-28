@@ -40,6 +40,7 @@ class RestApiServer
         $method = strtolower($_SERVER['REQUEST_METHOD']).ucfirst(trim($url, '/'));
         
         if(!method_exists($this, $method)) return $this->response(array('Error: Service Not found'), 404);
+        if(!$this->login($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) return $this->response(array('Error: Forbidden'), 403);
 
         $this->$method(json_decode(file_get_contents('php://input')));
     }
@@ -58,6 +59,19 @@ class RestApiServer
         header('Content-type: application/json; charset=UTF-8');
         
         echo json_encode($data);
+    }
+    
+    
+    /*
+     * Login check
+     *
+     * @param String $username
+     * @param String $password
+     * @return Boolean
+     */
+    public function login($username, $password)
+    {
+        return true;
     }
 }
 

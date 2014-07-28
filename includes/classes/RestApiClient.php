@@ -134,6 +134,7 @@ class RestApiClient
 	    $ch = curl_init($this->api_url.$path);
 	    curl_setopt_array($ch, $this->curl_opts);
 	    curl_setopt_array($ch, $opts);
+	    if($this->api_username != '' && $this->api_password != '') curl_setopt($ch, CURLOPT_USERPWD, $this->api_username.':'.$this->api_password); 
 	    
 	    $return['data']   = json_decode(curl_exec($ch));
         $return['status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
