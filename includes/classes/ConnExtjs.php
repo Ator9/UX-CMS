@@ -18,6 +18,7 @@ class ConnExtjs extends Conn
      * Example:
      * form.load({
      *   url: 'index.php?_class=className&_method=extGet',
+     *   method: 'GET',
      *   params: {
      *       id: this.id
      *   },
@@ -28,18 +29,25 @@ class ConnExtjs extends Conn
      *
      * @return Json
      */
-    public function extGet()
+    public function extGet($sql = '')
     {
-        if($this->get($_POST[$this->_index]))
+        $response['success'] = false;
+        $response['data']    = 'Record not found';
+            
+        if($sql != '')
+        {
+            $res = $this->query($sql);
+            if($res->num_rows == 1)
+            {
+                $response['success'] = true;
+                $response['data']    = $res->fetch_assoc();
+            }
+        }
+        elseif($this->get($_GET[$this->_index]))
         {
             $response['success'] = true;
             $response['data']    = $this->getArray();
             
-        }
-        else
-        {
-            $response['success'] = false;
-            $response['data']    = 'Record not found';
         }
         
         echo json_encode($response);
