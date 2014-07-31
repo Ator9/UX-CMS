@@ -12,6 +12,40 @@ class ConnExtjs extends Conn
 	// ------------------------------------------------------------------------------- //
 
 
+    /**
+     * Get - Single record Form load
+     *
+     * Example:
+     * form.load({
+     *   url: 'index.php?_class=className&_method=extGet',
+     *   params: {
+     *       id: this.id
+     *   },
+     *   failure: function(form, action) {
+     *     Ext.Msg.alert('Load failed', action.result.data);
+     *   }
+     * });
+     *
+     * @return Json
+     */
+    public function extGet()
+    {
+        if($this->get($_POST[$this->_index]))
+        {
+            $response['success'] = true;
+            $response['data']    = $this->getArray();
+            
+        }
+        else
+        {
+            $response['success'] = false;
+            $response['data']    = 'Record not found';
+        }
+        
+        echo json_encode($response);
+    }
+    
+    
     // Save (Form):
     public function extSave()
     {
