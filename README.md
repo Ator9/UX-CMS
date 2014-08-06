@@ -27,28 +27,26 @@ git remote add online user@server:/home/repos/site.git
 git push online master
 ```
 ##### Option B - SSH Key and Push
-Client Setup. Create ssh key, copy public key to server and set "config" file at /home/user./ssh:
+Client Setup. Create "gitkey" ssh key and set "config" file at /home/user./ssh:
 ```sh
 ssh-keygen
-```
-```sh
 nano config
 ```
 ```sh
 Host repohostCom
   HostName repohost.com
-  User git
-  IdentityFile /home/user/.ssh/git
+  User gituser
+  IdentityFile /home/user/.ssh/gitkey
 ```
 ```sh
 git remote add online repohostCom:/home/repos/site.git
 git push online master
 ```
-Server Setup:
+Server Setup. Create git user and set client public ssh key ("gitkey.pub"):
 ```sh
-sudo adduser git
+sudo adduser gituser
 ```
 ```sh
-mkdir /home/git/.ssh
-echo "client_ssh_public_key" >> /home/git/.ssh/authorized_keys
+mkdir /home/gituser/.ssh
+echo "client_ssh_public_key" >> /home/gituser/.ssh/authorized_keys
 ```
