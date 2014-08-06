@@ -48,5 +48,5 @@ sudo adduser gituser
 ```
 ```sh
 mkdir /home/gituser/.ssh
-echo "client_ssh_public_key" >> /home/gituser/.ssh/authorized_keys
+echo "client_public_ssh_key" >> /home/gituser/.ssh/authorized_keys
 ```
