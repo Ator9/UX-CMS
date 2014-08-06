@@ -21,8 +21,34 @@ git init --bare && cd hooks && touch post-receive && chmod +x post-receive && na
 #!/bin/sh
 git --work-tree=/var/www/domain.com --git-dir=/home/repos/site.git checkout -f
 ```
-Push from local:
+##### Option A - Simple SSH and Push
 ```sh
 git remote add online user@server:/home/repos/site.git
 git push online master
+```
+##### Option B - SSH Key and Push
+Client Setup. Create ssh key, copy public key to server and set "config" file at /home/user./ssh:
+```sh
+ssh-keygen
+```
+```sh
+nano config
+```
+```sh
+Host repohostCom
+  HostName repohost.com
+  User git
+  IdentityFile /home/user/.ssh/git
+```
+```sh
+git remote add online repohostCom:/home/repos/site.git
+git push online master
+```
+Server Setup:
+```sh
+sudo adduser git
+```
+```sh
+mkdir /home/git/.ssh
+echo "client_ssh_public_key" >> /home/git/.ssh/authorized_keys
 ```
