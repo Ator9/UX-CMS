@@ -23,6 +23,6 @@ git --work-tree=/var/www/domain.com --git-dir=/home/repos/site.git checkout -f
 ```
 Push from local:
 ```sh
-git remote add online ssh://user@server:/home/repos/site.git
+git remote add online user@server:/home/repos/site.git
 git push online master
 ```
