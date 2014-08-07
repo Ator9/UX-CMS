@@ -23,11 +23,11 @@ git --work-tree=/var/www/domain.com --git-dir=/repos/site.git checkout -f
 ```
 ##### Option A - Simple SSH and Push
 ```sh
-git remote add online gituser@server.com:/home/repos/site.git
+git remote add online gituser@server.com:/repos/site.git
 git push online master
 ```
 ##### Option B - SSH Key and Push
-Client Setup. Create "gitkey" ssh key and set "config" file at /home/user./ssh:
+Client Setup. Create "gitkey" ssh key and set "config" file at ~/.ssh:
 ```sh
 ssh-keygen
 nano config
@@ -39,7 +39,7 @@ Host serverCom
   IdentityFile ~/.ssh/gitkey
 ```
 ```sh
-git remote add online serverCom:/home/repos/site.git
+git remote add online serverCom:/repos/site.git
 git push online master
 ```
 Server Setup. Create git user and set client public ssh key ("gitkey.pub"):
