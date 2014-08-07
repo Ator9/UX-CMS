@@ -36,7 +36,7 @@ nano config
 Host repohostCom
   HostName repohost.com
   User gituser
-  IdentityFile /home/user/.ssh/gitkey
+  IdentityFile ~/.ssh/gitkey
 ```
 ```sh
 git remote add online repohostCom:/home/repos/site.git
