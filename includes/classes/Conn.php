@@ -90,7 +90,10 @@ class Conn extends mysqli
 	{
 		foreach($this->_fields as $field)
 		{
-			if(isset($this->$field)) $arr[$field] = '"'.$this->escape($this->$field).'"';
+			if(isset($this->$field))
+			{
+			    $arr[$field] = ($this->$field != 'NULL') ? '"'.$this->escape($this->$field).'"' : 'NULL';
+			}
 		}
 
         unset($arr[$this->_index]);
@@ -112,7 +115,7 @@ class Conn extends mysqli
 	{
 		foreach($this->_fields as $field)
 		{
-			$arr[$field] = $field.' = "'.$this->escape($this->$field).'"';
+			$arr[$field] = ($this->$field != 'NULL') ? $field.' = "'.$this->escape($this->$field).'"' : $field.' = NULL';
 	    }
 		
         unset($arr['date_updated']);
