@@ -9,9 +9,6 @@ if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<?php e
 ?>
 <script>
 var LOCAL = <?php echo var_export(LOCAL); ?>;
-Ext.Loader.setConfig({
-    disableCaching: LOCAL
-}); 
 
 Ext.application({
     name: 'Admin',
