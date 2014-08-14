@@ -38,7 +38,7 @@ class Session
 
 	function set($name, $value)
 	{
-		if(!empty($name) && !empty($value))
+		if(!empty($name))
 		{
 			if(isset($_SESSION[$this->session_name]))
 			{
