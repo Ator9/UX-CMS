@@ -59,38 +59,46 @@ function getAdminPaths()
 // Get admin partners select (admin config.php):
 function getAdminPartners()
 {
-    foreach($GLOBALS['admin']['data']['partners'] as $value)
+    if(count($GLOBALS['admin']['data']['partners']) > 1)
     {
-        $partners[] = "{ 'partnerID': ".$value['partnerID'].", 'name': '".$value['name']."' }";
-    }
-    
-    echo ", tbar: [{ 
-                xtype: 'combobox',
-                name: 'partnerID',
-                displayField: 'name',
-                valueField: 'partnerID',
-                ".(($GLOBALS['admin']['data']['partnerID']>0) ? "value: ".$GLOBALS['admin']['data']['partnerID']."," : '')."
-                width: '100%',
-                editable: false,
-                emptyText: 'Select Partner',
-                fields: [ 'name', 'partnerID' ],
-                store: Ext.create('Ext.data.Store', {
-                    fields: [ 'partnerID', 'name' ],
-                    data: [".implode(',', (array) $partners)."]
-                }),
-                listeners: {
-                    'select': function(combo, records, eOpts) {
-                        Ext.Ajax.request({
-                            scope: this,
-                            url: 'index.php?_class=adminsPartnersAdmins&_method=setPartnerID',
-                            params: { partnerID: records[0].get('partnerID') },
-                            success: function(response) {
-                                location.reload();
-                            }
-                        });
+        $partners[] = "{ 'partnerID': 0, 'name': '-- Todos --' }";
+        foreach($GLOBALS['admin']['data']['partners'] as $value)
+        {
+            $partners[] = "{ 'partnerID': ".$value['partnerID'].", 'name': '".$value['name']."' }";
+        }
+        
+        echo ", tbar: [{ 
+                    xtype: 'combobox',
+                    name: 'partnerID',
+                    displayField: 'name',
+                    valueField: 'partnerID',
+                    value: ".$GLOBALS['admin']['data']['partnerID'].",
+                    width: '100%',
+                    editable: false,
+                    emptyText: 'Select Partner',
+                    fields: [ 'name', 'partnerID' ],
+                    store: Ext.create('Ext.data.Store', {
+                        fields: [ 'partnerID', 'name' ],
+                        data: [".implode(',', (array) $partners)."]
+                    }),
+                    listeners: {
+                        'select': function(combo, records, eOpts) {
+                            Ext.Ajax.request({
+                                scope: this,
+                                url: 'index.php?_class=adminsPartnersAdmins&_method=setPartnerID',
+                                params: { partnerID: records[0].get('partnerID') },
+                                success: function(response) {
+                                    location.reload();
+                                }
+                            });
+                        }
                     }
-                }
-            }]";
+                }]";
+    }
+    else
+    {
+        echo ', tbar: [ "'.$GLOBALS['admin']['data']['partners'][$GLOBALS['admin']['data']['partnerID']]['name'].'" ]';
+    }
 }
 
 

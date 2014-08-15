@@ -65,7 +65,8 @@ class adminsPartnersAdmins extends ConnExtjs
         {
             while($row = $rs->fetch_assoc())
             {
-                if(!$aSession->exists('partnerID') && $GLOBALS['admin']['data']['superuser'] != 'Y') $aSession->set('partnerID', $row['partnerID']);
+                // Set default partner:
+                if($rs->num_rows == 1 && !$aSession->exists('partnerID')) $aSession->set('partnerID', $row['partnerID']);
 
                 $array[$row['partnerID']] = $row;
             }
@@ -79,7 +80,7 @@ class adminsPartnersAdmins extends ConnExtjs
     {
         // Check:
         $partners = $this->getPartnersByAdmin();
-        if(array_key_exists($_POST['partnerID'], $partners))
+        if(array_key_exists($_POST['partnerID'], $partners) || (count($partners) > 1 && $_POST['partnerID'] == 0))
         {
             global $aSession;
             $aSession->set('partnerID', $_POST['partnerID']);
@@ -87,7 +88,6 @@ class adminsPartnersAdmins extends ConnExtjs
     }
 
     
-    // E:
     public function addAdminToPartner()
     {
         $response['success'] = false;
