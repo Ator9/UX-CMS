@@ -4,7 +4,7 @@ Ext.define('admins.view.Admins', {
 
     // Renderers:
     getRole: function(value, metaData, record, rowIndex, colIndex, store, gridView) { // getRole from store
-        var find = this.roleStore.findRecord('roleID', value); // Finds the first matching Record in this store by a specific field value.
+        var find = this.roleStore.findRecord('roleID', value, 0, false, true, true); // Finds the first matching Record in this store by a specific field value.
         return (find) ? find.get('name') : '';
     },
     

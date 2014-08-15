@@ -19,7 +19,6 @@ Ext.define('admins.store.Partners', {
         },
         reader: {
             type: 'json',
-            idProperty: 'partnerID', // Enables the use of "store.getById(value)"
             root: 'data', // php response name (api: read)
             totalProperty: 'totalCount' // PagingToolbar (php response name)
         },
