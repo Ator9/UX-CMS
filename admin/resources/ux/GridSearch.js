@@ -18,10 +18,12 @@ Ext.define('Ext.ux.GridSearch', {
     inputWidth: 200,
     paramName: 'search',
     columns: [], // Search columns. Empty = database index
+    tooltip: '', // Custom textfield tooltip. If not set, it will use columns data.
     
     initComponent: function() {
         this.field = Ext.create('Ext.form.TwinTriggerField', {
             width          : this.inputWidth,
+            inputAttrTpl   : 'data-qtip="'+((this.tooltip != '') ? this.tooltip : this.columns)+'"',
             trigger1Cls    : 'x-form-clear-trigger',
             trigger2Cls    : 'x-form-search-trigger',
             onTrigger1Click: Ext.bind(this.onTriggerClear, this),
@@ -53,7 +55,7 @@ Ext.define('Ext.ux.GridSearch', {
         store.loadPage(1); // Reload
     },
 
-    onRender: function(){
+    onRender: function() {
         if(!this.store) this.store = this.up('grid').getStore(); // Uses grid store if not set
     
         // Install key map ENTER:
