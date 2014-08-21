@@ -29,7 +29,7 @@ Ext.define('Ext.ux.GridSearch', {
             onTrigger1Click: Ext.bind(this.onTriggerClear, this),
             onTrigger2Click: Ext.bind(this.onTriggerSearch, this)
         });
-        this.items = [ 'Search', this.field ];
+        this.items = [ Admin.t('Search'), this.field ];
         
         this.callParent(arguments);
     },

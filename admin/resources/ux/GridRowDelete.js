@@ -15,7 +15,7 @@ Ext.define('Ext.ux.GridRowDelete', {
     extend: 'Ext.button.Button',
 
     itemId: 'gridDeleteButton',
-    text: 'Delete',
+    text: Admin.t('Delete'),
     icon: 'resources/icons/crosstick-N.png',
     disabled: true,
 

@@ -16,7 +16,7 @@
 Ext.define('Ext.ux.GridRowInsert', {
     extend: 'Ext.button.Button',
 
-    text: 'Add',
+    text: Admin.t('Add'),
     icon: 'resources/icons/plus.png',
     rowEditingColumn: 1,
 

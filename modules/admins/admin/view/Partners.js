@@ -19,14 +19,14 @@ Ext.define('admins.view.Partners', {
                 Ext.create('Ext.ux.GridSearch', { columns: [ 'partnerID', 'name' ] }) 
             ],
             region: 'west', // There must be a component with region: "center" in every border layout
-            width: 400,
+            width: 420,
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
                 { header: 'ID', dataIndex: 'partnerID', width: 50 },
-                { header: 'Name', dataIndex: 'name', flex: 1, editor: { allowBlank: false } },
-                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon, editor: { xtype: 'combo', store: [ 'Y', 'N' ], allowBlank: false } },
-                { header: 'Date Created', dataIndex: 'date_created', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
+                { header: Admin.t('Name'), dataIndex: 'name', flex: 1, editor: { allowBlank: false } },
+                { header: Admin.t('Active'), dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon, editor: { xtype: 'combo', store: [ 'Y', 'N' ], allowBlank: false } },
+                { header: Admin.t('Date Created'), dataIndex: 'date_created', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
             bbar: Ext.create('Ext.toolbar.Paging', { store: partnerStore, displayInfo: true }),
             listeners: {
@@ -67,9 +67,9 @@ Ext.define('admins.view.Partners', {
             height: 200,
             border: false,
             columns: [
-                { header: 'Name', dataIndex: 'name', width: 200 },
-                { header: 'Value', dataIndex: 'value', width: 300, editor: {} },
-                { header: 'Description', dataIndex: 'description', flex: 1 }
+                { header: Admin.t('Name'), dataIndex: 'name', width: 200 },
+                { header: Admin.t('Value'), dataIndex: 'value', width: 300, editor: {} },
+                { header: Admin.t('Description'), dataIndex: 'description', flex: 1 }
             ],
             listeners: {
                 edit: function(editor, context, eOpts) {
@@ -93,7 +93,7 @@ Ext.define('admins.view.Partners', {
                     { name: 'partnerID', xtype: 'hidden' }
                 ],
                 bbar: ['->', {
-                    text: 'Add',
+                    text: Admin.t('Add'),
                     icon: 'resources/icons/plus.png',
                     scope: this,
                     handler: function() {
@@ -119,7 +119,7 @@ Ext.define('admins.view.Partners', {
             store: this.partnersAdminsStore,
             region: 'center',
             tbar: [
-                { text: 'Add', icon: 'resources/icons/plus.png', handler: function(){ add_admin.show(); }}, '-', 
+                { text: Admin.t('Add'), icon: 'resources/icons/plus.png', handler: function(){ add_admin.show(); }}, '-', 
                 Ext.create('Ext.ux.GridRowDelete', { itemId: 'gridDeleteButton2', form: this.config.up() }), '-',
                 Ext.create('Ext.ux.GridSearch', { columns: [ 'adm.adminID', 'username', 'email' ] }) 
             ],
