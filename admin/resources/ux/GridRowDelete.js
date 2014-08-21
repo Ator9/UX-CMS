@@ -26,7 +26,7 @@ Ext.define('Ext.ux.GridRowDelete', {
         if(this.grid.getSelectionModel().getSelection().length) {
             Ext.MessageBox.confirm({
                 title: 'Confirm',
-                msg: 'Are you sure you want to delete this record?',
+                msg: Admin.t('Are you sure you want to delete this record?'),
                 buttons: Ext.Msg.YESNO,
                 icon: Ext.Msg.INFO,
                 scope: this,

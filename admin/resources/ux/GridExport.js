@@ -13,7 +13,7 @@
 Ext.define('Ext.ux.GridExport', {
     extend: 'Ext.button.Button',
 
-    text: 'Export',
+    text: Admin.t('Export'),
     icon: 'resources/icons/table-export.png',
     
     csvName: 'csv_export',

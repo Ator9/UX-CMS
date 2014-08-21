@@ -3,6 +3,7 @@
 "Date Created","Fecha de Creación"
 "Delete","Eliminar"
 "Description","Descripción"
+"Export","Exportar"
 "Language","Idioma"
 "Login","Ingresar"
 "Modules","Módulos"
@@ -12,6 +13,8 @@
 "Search","Buscar"
 "User","Usuario"
 "Value","Valor"
+
+"Are you sure you want to delete this record?","Seguro desea eliminar este registro?"
 
 "January","Enero"
 "February","Febrero"
