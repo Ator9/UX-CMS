@@ -31,12 +31,12 @@ require(ROOT.'/admin/common/header.bootstrap.php');
     <h2>Extras</h2>
     <ul>
         <li>
-            <b>Reset file changes</b>
-            <pre>git checkout -- file.xxx</pre>
+            <b>Restore file from specific commit</b>
+            <pre>git checkout HASH file.xxx</pre>
         </li>
         <li>
-            <b>Restore deleted file</b>
-            <pre>git checkout HASH file.xxx</pre>
+            <b>Reset file changes</b>
+            <pre>git checkout -- file.xxx</pre>
         </li>
         <li>
             <b>Show status (changes)</b>
