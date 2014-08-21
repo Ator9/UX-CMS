@@ -115,7 +115,8 @@ Ext.define('Ext.ux.IFrame', {
             }
 
             // We need to be sure we remove all our events from the iframe on unload or we're going to LEAK!
-            Ext.get(this.getWin()).on('beforeunload', me.cleanupListeners, me);
+            if(Ext.getVersion().getMajor() == 5) Ext.get(this.getWin()).on('beforeunload', me.cleanupListeners, me);
+            else Ext.EventManager.on(this.getWin(), 'beforeunload', me.cleanupListeners, me);
 
             this.el.unmask();
             this.fireEvent('load', this);
