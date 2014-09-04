@@ -35,6 +35,7 @@ Ext.define('admins.view.Admins', {
                 { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon },
                 { header: 'Last Login', dataIndex: 'last_login', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
+            viewConfig: { enableTextSelection: true },
             bbar: Ext.create('Ext.toolbar.Paging', { store: this.store, displayInfo: true }),
             listeners: {
                 itemclick: {
