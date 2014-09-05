@@ -78,7 +78,7 @@ Ext.define('admins.view.Admins', {
                                 this.grid.fireEvent('itemclick', this.grid, this.grid.getSelectionModel().getLastSelected()); // Keep new inserted id
                             }
                         });
-                        Admin.Msg('Record saved succesfully.', true);
+                        Admin.Msg(Admin.t('Record has been saved successfully'), true);
                     },
                     failure: function(form, action) { Admin.Msg('An error ocurred.', false); }
                 });
@@ -108,7 +108,7 @@ Ext.define('admins.view.Admins', {
                 ]
             }],
             bbar: ['->', {
-                text: 'Save',
+                text: Admin.t('Save'),
                 icon: 'resources/icons/disk-return-black.png',
                 height: 24,
                 scope: this,

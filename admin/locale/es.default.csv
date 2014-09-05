@@ -19,6 +19,10 @@
 "Value","Valor"
 
 "Are you sure you want to delete this record?","Seguro desea eliminar este registro?"
+"Record has been created successfully","El registro ha sido creado correctamente"
+"Record has been deleted successfully","El registro ha sido eliminado correctamente"
+"Record has been saved successfully","El registro ha sido guardado correctamente"
+"Record has been updated successfully","El registro ha sido actualizado correctamente"
 
 "January","Enero"
 "February","Febrero"
