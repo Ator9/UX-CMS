@@ -24,12 +24,9 @@ class adminsLog extends ConnExtjs
     // Log:
     public function log($data = array())
     {
-        if(isset($data['adminID'])) $this->adminID = $data['adminID'];
-        elseif(isset($GLOBALS['admin']['data']['adminID'])) $this->adminID = $GLOBALS['admin']['data']['adminID'];
-    
-        $this->classname = $data['classname'];
-        $this->task      = $data['task'];
-        $this->comment   = $data['comment'];
+        $this->set($data);
+
+        if(isset($GLOBALS['admin']['data']['adminID'])) $this->adminID = $GLOBALS['admin']['data']['adminID'];
         $this->ip        = $_SERVER['REMOTE_ADDR'];
 
         return parent::insert();
