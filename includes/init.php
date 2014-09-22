@@ -12,7 +12,7 @@ if(is_file(__DIR__.'/functions.php')) require(__DIR__.'/functions.php');
 if(!isset($custom_dir))
 {
     $custom_dir = explode('/', $_SERVER['PHP_SELF']);
-    $custom_dir = '/'.next($custom_dir);
+    $custom_dir = (LOCAL) ? '/'.next($custom_dir) : '';
 }
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
 
