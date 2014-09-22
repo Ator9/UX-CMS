@@ -10,10 +10,10 @@ if(is_file(__DIR__.'/functions.php')) require(__DIR__.'/functions.php');
 
 // Paths:
 $localdir = explode('/', $_SERVER['PHP_SELF']);
-$localdir = (LOCAL) ? next($localdir) : '';
+$localdir = (LOCAL) ? '/'.next($localdir) : '';
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
 
-define('HOST'     , $protocol.'://'.$_SERVER['HTTP_HOST'].'/'.$localdir);
+define('HOST'     , $protocol.'://'.$_SERVER['HTTP_HOST'].$localdir);
 define('ADMIN'    , HOST.'/admin');
 define('MODULES'  , HOST.'/modules');
 define('RESOURCES', HOST.'/resources');
