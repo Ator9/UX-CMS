@@ -29,8 +29,7 @@ CREATE TABLE IF NOT EXISTS `admins_logs` (
   `date_created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`logID`),
-  KEY `adminID` (`adminID`),
-  CONSTRAINT `FK_admins_logs_admins` FOREIGN KEY (`adminID`) REFERENCES `admins` (`adminID`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `adminID` (`adminID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `admins_roles` (
