@@ -9,11 +9,14 @@ require(__DIR__.'/functions_core.php');
 if(is_file(__DIR__.'/functions.php')) require(__DIR__.'/functions.php'); 
 
 // Paths:
-$localdir = explode('/', $_SERVER['PHP_SELF']);
-$localdir = (LOCAL) ? '/'.next($localdir) : '';
+if(!isset($custom_dir))
+{
+    $custom_dir = explode('/', $_SERVER['PHP_SELF']);
+    $custom_dir = '/'.next($custom_dir);
+}
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
 
-define('HOST'     , $protocol.'://'.$_SERVER['HTTP_HOST'].$localdir);
+define('HOST'     , $protocol.'://'.$_SERVER['HTTP_HOST'].$custom_dir);
 define('ADMIN'    , HOST.'/admin');
 define('MODULES'  , HOST.'/modules');
 define('RESOURCES', HOST.'/resources');
