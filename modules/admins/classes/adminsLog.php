@@ -24,7 +24,9 @@ class adminsLog extends ConnExtjs
     // Log:
     public function log($data = array())
     {
-        $this->adminID   = (isset($data['adminID']) && $data['adminID'] > 0) ? $data['adminID'] : $GLOBALS['admin']['data']['adminID'];
+        if(isset($data['adminID'])) $this->adminID = $data['adminID'];
+        elseif(isset($GLOBALS['admin']['data']['adminID'])) $this->adminID = $GLOBALS['admin']['data']['adminID'];
+    
         $this->classname = $data['classname'];
         $this->task      = $data['task'];
         $this->comment   = $data['comment'];
