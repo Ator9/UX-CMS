@@ -121,7 +121,7 @@ class Tree extends ConnExtjs
 
 
 	// Borro el nodo y los hijos. Luego reacomodo el arbol (muevo a los que estan a la derecha):
-	public function delete()
+	public function delete($hard = false)
 	{
 		$sql = 'DELETE FROM '.$this->_table.' WHERE lft BETWEEN '.$this->lft.' AND '.$this->rgt;
 		if(parent::query($sql))
