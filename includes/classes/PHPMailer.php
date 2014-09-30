@@ -10,19 +10,19 @@
  * $mail= new PHPMailer();
  * $mail->ContentType = 'text/html';
  * $mail->CharSet 	   = 'utf-8';
- * $mail->SetFrom($_POST['email'], $_POST['nombre']); // $CONFIG['email'], $CONFIG['sitename']
- * $mail->Sender      = 'info@uxers.com.ar'; // $CONFIG['email']
+ * $mail->SetFrom($_POST['email'], $_POST['nombre']);
+ * $mail->Sender      = 'info@uxers.com.ar';
  * $mail->Subject 	   = 'Contact';
  * $mail->Body 	   = $body;
  * $mail->AddAddress('info@uxers.com.ar');
  * $mail->AddCC('info@uxers.com.ar'); // Copia
  * $mail->AddBCC('info@uxers.com.ar'); // Copia Oculta
- * $mail->AddAttachment('images/phpmailer.gif');
- *
+ * $mail->AddAttachment('image.gif');
  *
  * Need STMP?:
  * $mail->IsSMTP();
  * $mail->SMTPAuth = true;
+ * $mail->SMTPSecure = 'ssl';
  * $mail->Host	   = SMTP_HOST;
  * $mail->Port     = SMPT_PORT;
  * $mail->Username = SMTP_USER;
@@ -32,4 +32,4 @@
  *
  */
 
-require(INCLUDES.'/lib/phpmailer/class.phpmailer.php');
+require(INCLUDES.'/lib/phpmailer/PHPMailerAutoload.php');
