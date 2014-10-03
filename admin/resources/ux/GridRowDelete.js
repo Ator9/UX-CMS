@@ -39,7 +39,13 @@ Ext.define('Ext.ux.GridRowDelete', {
     rowDelete: function(btn) {
         if(btn=='yes') {
             this.grid.getStore().remove(this.grid.getSelectionModel().getSelection()); // remove from grid
-            this.grid.getStore().sync(); // sync store (calling delete method)
+            this.grid.getStore().sync({ // Sync store (calling delete method)
+                scope: this,
+                failure: function(form, action) { 
+                    Admin.Msg('Delete error ocurred', false);
+                    this.grid.getStore().reload();
+                }
+            });
             this.disableComponents();
         }
     },
