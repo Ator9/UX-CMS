@@ -98,6 +98,7 @@ Ext.define('admins.view.Admins', {
                 defaultType: 'textfield',
                 items: [
                     { name: 'username', fieldLabel: 'Username', allowBlank: false },
+                    { name: 'password', fieldLabel: 'Password', inputType: 'password' },
                     { name: 'email', fieldLabel: 'E-mail', vtype: 'email' }, // vtype applies email validation rules to this field
                     { name: 'firstname', fieldLabel: 'First Name' },
                     { name: 'lastname', fieldLabel: 'Last Name' },
