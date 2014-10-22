@@ -33,7 +33,7 @@ Ext.application({
             collapsible: true, // True to make the panel collapsible and have an expand/collapse toggle Tool added into the header tool button area
             rootVisible: false, // Show root node
             root: { children: <?php echo json_encode(array_values($tree)); ?> },
-            fbar: [ <?php echo getAdminTreeButtons(); ?> ], // Footer Bar
+            <?php echo getAdminFooterBar(); ?> // Footer Bar
             listeners: {
                 selectionchange: function(view, record, e) {
                     location.hash = record[0].get('id'); // Set new hash (module dir name)
