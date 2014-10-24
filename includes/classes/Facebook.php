@@ -8,5 +8,5 @@
  *
  */
 
-require(INCLUDES.'/lib/facebook/src/facebook.php');
+require(INCLUDES.'/lib/facebook/v3/src/facebook.php');
 
