@@ -5,7 +5,7 @@ require(__DIR__.'/common/init.php');
 checkAdminIpAccess();
 
 // Login:
-if(isset($_POST['login']) && $_POST['name'] != '' && $_POST['pass'] != '' )
+if(isset($_POST['login']) && trim($_POST['name']) != '' && trim($_POST['pass']) != '')
 {
     // Lang set:
     if(array_key_exists($_POST['locale'], $GLOBALS['admin']['locale'])) $aSession->set('locale', $_POST['locale']);
