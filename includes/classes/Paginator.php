@@ -58,6 +58,7 @@ class Paginator
 		if($this->links == 0) $numeracion = str_replace(array('{A}','{T}'), array($this->pg_actual,$this->pg_total), $formato['page_alt']);
 		else
 		{
+		    $numeracion = '';
 		    for($i=$this->links; $i>=1; $i--)
 		    {
 		        $page = $this->pg_actual-$i;
