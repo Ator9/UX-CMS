@@ -12,7 +12,7 @@ git init && git remote add framework https://github.com/Ator9/UX-CMS.git && git 
 Create online repository and setup hook:
 ```sh
 git init --bare && touch hooks/post-receive && chmod +x hooks/post-receive
-printf '#!/bin/sh'"\ngit --work-tree=/var/www --git-dir=$(pwd) checkout -f" >> post-receive
+printf '#!/bin/sh'"\ngit --work-tree=/var/www --git-dir=$(pwd) checkout -f" >> hooks/post-receive
 nano post-receive
 ```
 ##### Option A - Simple SSH and Push
