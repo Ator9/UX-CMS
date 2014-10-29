@@ -103,15 +103,17 @@ function getAdminPartners()
 
 
 // Get admin tree footer buttons (admin config.php):
-function getAdminTreeButtons()
+function getAdminFooterBar()
 {
-    $fbar = array();
-
-    if(is_array($GLOBALS['admin']['fbar_buttons']))
-    foreach($GLOBALS['admin']['fbar_buttons'] as $val) {
-        $fbar[] = "{text:'".$val['text']."', type:'button', width:'".(100 / count($GLOBALS['admin']['fbar_buttons']))."%', scale:'small', url:'".$val['url']."'}";
+    if(isset($GLOBALS['admin']['fbar_buttons']) && is_array($GLOBALS['admin']['fbar_buttons']))
+    {
+        $fbar = array();
+        foreach($GLOBALS['admin']['fbar_buttons'] as $val)
+        {
+            $fbar[] = "{text:'".$val['text']."', type:'button', width:'".(100 / count($GLOBALS['admin']['fbar_buttons']))."%', scale:'small', url:'".$val['url']."'}";
+        }
+        echo 'fbar: [ '.implode(',', $fbar).' ],';
     }
-    echo implode(',', $fbar);
 }
 
 

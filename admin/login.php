@@ -5,7 +5,7 @@ require(__DIR__.'/common/init.php');
 checkAdminIpAccess();
 
 // Login:
-if(isset($_POST['login']))
+if(isset($_POST['login']) && trim($_POST['name']) != '' && trim($_POST['pass']) != '')
 {
     // Lang set:
     if(array_key_exists($_POST['locale'], $GLOBALS['admin']['locale'])) $aSession->set('locale', $_POST['locale']);
@@ -23,7 +23,8 @@ if(isset($_GET['logout']))
 {
     $aSession->destroy();
 
-    header('Location: '.ADMIN.'/login.php');
+    $url = (isset($GLOBALS['admin']['logout_url']) && $GLOBALS['admin']['logout_url'] != '') ? $GLOBALS['admin']['logout_url'] : ADMIN.'/login.php';
+    header('Location: '.$url);
     exit;
 }
 
