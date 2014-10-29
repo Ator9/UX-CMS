@@ -14,7 +14,7 @@ class adminsPartnersAdmins extends ConnExtjs
     {
         // Check:
         $partners = $this->getPartnersByAdmin();
-        if($GLOBALS['admin']['data']['superuser'] == 'Y' || array_key_exists($_REQUEST['partnerID'], $partners))
+        if(array_key_exists($_REQUEST['partnerID'], $partners))
         {
             $sql = 'SELECT adm.adminID, adm.username, adm.last_login, adm.email
                     FROM '.$this->_table.' as acc
@@ -34,11 +34,11 @@ class adminsPartnersAdmins extends ConnExtjs
         
         // Check:
         $partners = $this->getPartnersByAdmin();
-        if($GLOBALS['admin']['data']['superuser'] == 'Y' || array_key_exists($_POST['partnerID'], $partners))
+        if(array_key_exists($_POST['partnerID'], $partners))
         {
             $data = json_decode($_POST['data']);
 
-            $sql = 'DELETE FROM '.$this->_table.' WHERE partnerID = '.(int) $_POST['partnerID'].' AND adminID = '.(int) $data->adminID;
+            $sql = 'DELETE FROM '.$this->_table.' WHERE partnerID = '.$_POST['partnerID'].' AND adminID = '.(int) $data->adminID;
             if($this->query($sql)) $response['success'] = true;
         }
 
@@ -55,11 +55,16 @@ class adminsPartnersAdmins extends ConnExtjs
     {
         global $aSession; $array = array();
         
-        $sql = 'SELECT pa.partnerID, p.name
-                FROM '.$this->_table.' as pa
-                INNER JOIN partners as p USING (partnerID)
-                WHERE pa.adminID = '.$GLOBALS['admin']['data']['adminID'].' AND p.active = "Y" AND p.deleted <> "Y"
-                ORDER BY p.name';
+        // Superusers can see all partners:
+        if($GLOBALS['admin']['data']['superuser'] == 'Y') $sql = 'SELECT partnerID, name FROM partners ORDER BY name';
+        else
+        {
+            $sql = 'SELECT pa.partnerID, p.name
+                    FROM '.$this->_table.' as pa
+                    INNER JOIN partners as p USING (partnerID)
+                    WHERE pa.adminID = '.$GLOBALS['admin']['data']['adminID'].' AND p.active = "Y" AND p.deleted <> "Y"
+                    ORDER BY p.name';
+        }
                 
         if(($rs = $this->query($sql)) && $rs->num_rows > 0)
         {
@@ -94,7 +99,7 @@ class adminsPartnersAdmins extends ConnExtjs
         
         // Check:
         $partners = $this->getPartnersByAdmin();
-        if($GLOBALS['admin']['data']['superuser'] == 'Y' || array_key_exists($_POST['partnerID'], $partners))
+        if(array_key_exists($_POST['partnerID'], $partners))
         {
             $sql = 'SELECT adminID FROM admins WHERE username = "'.$this->escape($_POST['key']).'"';
             if(($rs = $this->query($sql)) && $rs->num_rows == 1)
