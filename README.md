@@ -19,7 +19,7 @@ git --work-tree=/var/project/www --git-dir=/var/project/barerepo checkout -f
 ```
 ##### Option A - Simple SSH and Push
 ```sh
-git remote add online gituser@server.com:/repos/site.git
+git remote add online gituser@server.com:/var/project/barerepo
 git push online master
 ```
 ##### Option B - SSH Key and Push
@@ -35,7 +35,7 @@ Host serverCom
   IdentityFile ~/.ssh/gitkey
 ```
 ```sh
-git remote add online serverCom:/repos/site.git
+git remote add online serverCom:/var/project/barerepo
 git push online master
 ```
 Server Setup. Create git user and set client public ssh key ("gitkey.pub"):
