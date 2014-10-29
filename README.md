@@ -15,7 +15,7 @@ git init --bare && cd hooks && touch post-receive && chmod +x post-receive && na
 ```
 ```sh
 #!/bin/sh
-git --work-tree=/var/project/www --git-dir=/var/project/barerepo checkout -f
+git --work-tree=/var/www --git-dir=/var/project/barerepo checkout -f
 ```
 ##### Option A - Simple SSH and Push
 ```sh
