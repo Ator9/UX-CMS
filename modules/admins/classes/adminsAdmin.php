@@ -1,7 +1,6 @@
 <?php
 class adminsAdmin extends ConnExtjs
 {
-    public $_debug  = false; // True to save all queries (adminsLog)
 	public $_table	= 'admins';
 	public $_index	= 'adminID';
 
@@ -24,6 +23,9 @@ class adminsAdmin extends ConnExtjs
 		    $this->update();
 
             $aSession->set('adminData', $this->getArray());
+
+            $btn_text = ($this->firstname != '') ? $this->firstname.' '.$this->lastname : $this->username;
+            $aSession->set('closeBtnTxt', $btn_text);
 
             // Login log:
             $log = new adminsLog;

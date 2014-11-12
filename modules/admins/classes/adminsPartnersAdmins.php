@@ -1,7 +1,6 @@
 <?php
 class adminsPartnersAdmins extends ConnExtjs
 {
-    public $_debug  = false; // True to save all queries (adminsLog)
 	public $_table	= 'partners_admins';
 	public $_index	= '';
 
