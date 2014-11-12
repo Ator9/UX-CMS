@@ -24,7 +24,7 @@ class adminsAdmin extends ConnExtjs
 
             $aSession->set('adminData', $this->getArray());
 
-            $btn_text = ($this->firstname != '') ? $this->firstname.' '.$this->lastname : $this->username;
+            $btn_text = (!empty($this->firstname)) ? $this->firstname.' '.$this->lastname : $this->username;
             $aSession->set('closeBtnTxt', $btn_text);
 
             // Login log:
