@@ -88,7 +88,7 @@ Ext.application({
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
             items: [ this.tree, this.cards, {
-                title: '<?php echo $GLOBALS['admin']['title'].(($aSession->exists('closeBtnTxt')) ? '<div style="float:right">'.$aSession->get('closeBtnTxt').'</div>' : ''); ?>',
+                title: '<?php echo '<div style="float:left">'.$GLOBALS['admin']['title'].'</div>'.(($aSession->exists('closeBtnTxt')) ? '<div style="float:right">'.$aSession->get('closeBtnTxt').'</div>' : ''); ?>',
                 region: 'north',
                 border: false,
                 tools: [{ type: 'close', handler: function(event, toolEl, panel) { location.href = 'login.php?logout=1'; } }]
