@@ -12,10 +12,14 @@ class adminsLog extends ConnExtjs
     // Grid List:
     public function extGrid($sql = '', $filter = true, $return = false)
     {
+        // Dates:
+        if(isset($_GET['date_from'])) $where.= ' AND t1.date_created >= "'.$this->escape($_GET['date_from']).'"';
+        if(isset($_GET['date_to'])) $where.= ' AND t1.date_created <= "'.$this->escape($_GET['date_to']).' 23:59:59"';
+    
         $sql = 'SELECT t1.*, t2.username
                 FROM '.$this->_table.' AS t1
                 LEFT JOIN admins AS t2 USING (adminID)
-                WHERE 1';
+                WHERE (((1 '.$where.')))';
 
         return parent::extGrid($sql);
     }
