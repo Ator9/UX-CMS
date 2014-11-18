@@ -11,6 +11,8 @@ class adminsLog extends ConnExtjs
     // Grid List:
     public function extGrid($sql = '', $filter = true, $return = false)
     {
+        $where = '';
+        
         // Dates:
         if(isset($_GET['date_from'])) $where.= ' AND t1.date_created >= "'.$this->escape($_GET['date_from']).'"';
         if(isset($_GET['date_to'])) $where.= ' AND t1.date_created <= "'.$this->escape($_GET['date_to']).' 23:59:59"';
