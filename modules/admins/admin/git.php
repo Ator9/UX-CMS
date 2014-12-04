@@ -31,6 +31,10 @@ require(ROOT.'/admin/common/header.bootstrap.php');
     <h2>Extras</h2>
     <ul>
         <li>
+            <b>Revert specific commit (creates a commit that cancels those changes)</b>
+            <pre>git revert HASH</pre>
+        </li>
+        <li>
             <b>Restore file from specific commit</b>
             <pre>git checkout HASH file.xxx</pre>
         </li>
