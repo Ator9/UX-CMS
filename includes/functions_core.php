@@ -8,6 +8,7 @@
 function class_autoloader($class)
 {
 	if(is_file($file = ROOT.'/includes/classes/'.$class.'.php')) require $file;
+	elseif(is_file($file = ROOT.'/includes/traits/'.$class.'.php')) require $file;
 	elseif(is_file($file = ROOT.'/modules/'.getModuleDir($class).'/classes/'.$class.'.php')) require $file;
 } spl_autoload_register('class_autoloader');
 
