@@ -57,7 +57,7 @@ class ConnExtjs extends Conn
     // Save (Form):
     public function extSave()
     {
-        $this->get($_POST[$this->_index]);
+        if(isset($_POST[$this->_index])) $this->get($_POST[$this->_index]);
         $this->set($_POST);
         
         if($this->save()) $response['success'] = true;
@@ -70,9 +70,9 @@ class ConnExtjs extends Conn
     // Create:
     public function extCreate()
     {
-        $data = (array) json_decode($_POST['data']);
+        $data = json_decode($_POST['data'], true);
         
-        $this->get($data[$this->_index]);
+        if(isset($data[$this->_index])) $this->get($data[$this->_index]);
         $this->set($data);
         
         if($this->save())

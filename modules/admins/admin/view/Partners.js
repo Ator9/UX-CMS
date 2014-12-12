@@ -46,7 +46,7 @@ Ext.define('admins.view.Partners', {
                         this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
                     }
                 },
-                edit: function(editor, context, eOpts) { 
+                edit: function(editor, context, eOpts) {
                     context.store.sync(); // Synchronizes the store with its proxy (new, updated and deleted records)
                 }     
             }

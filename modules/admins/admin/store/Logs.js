@@ -15,7 +15,6 @@ Ext.define('admins.store.Logs', {
             read: 'index.php?_class=adminsLog&_method=extGrid' // reader
         },
         reader: {
-            type: 'json',
             root: 'data', // php response name (api: read)
             totalProperty: 'totalCount' // PagingToolbar (php response)
         }
