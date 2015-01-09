@@ -40,6 +40,9 @@ class RestApiServer
         $method = strtolower($_SERVER['REQUEST_METHOD']).ucfirst(trim($url, '/'));
         
         if(!method_exists($this, $method)) return $this->response(array('Error: Service Not found'), 404);
+        
+        // htaccess: RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+        list($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']) = explode(':', base64_decode(substr($_SERVER['REDIRECT_HTTP_AUTHORIZATION'], 6)));
         if(!$this->login($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) return $this->response(array('Error: Forbidden'), 403);
 
         $this->$method(json_decode(file_get_contents('php://input')));
