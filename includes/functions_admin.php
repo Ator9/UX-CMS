@@ -159,6 +159,12 @@ function getExtAllClasses()
             $plainjs.= file_get_contents($files['path']);
         }
     }
+    
+    foreach(getFilesFromDir(ROOT.'/admin/resources/ux') as $files)
+    {
+        if($files['ext'] != 'js') continue;
+        $plainjs.= file_get_contents($files['path']);
+    }
 
     return $plainjs;
 }
