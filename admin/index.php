@@ -12,12 +12,14 @@ var LOCAL = <?php echo var_export(LOCAL); ?>;
 
 Ext.application({
     name: 'Admin',
-    paths: { 'Ext.ux': 'resources/ux', 'Extensible': 'resources/ux/extensible/src' <?php echo getAdminPaths(); ?> },
+    paths: { 'Ext.ux': 'resources/ux', 'ExtCache': 'resources/extjs-cache.php', 'Extensible': 'resources/ux/extensible/src' <?php echo getAdminPaths(); ?> },
     
     launch: function() {
         Admin = this;
         Admin.modules = <?php echo json_encode($modules); ?>; // Modules list
         Admin.loadedModules = []; // Fills with loaded modules
+        
+        Ext.require([ 'ExtCache' ]);
         
         // Load default module (includes/config_admin.php):
         Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : Ext.Array.indexOf(Admin.modules, '<?php echo $GLOBALS['admin']['default_module']; ?>');
