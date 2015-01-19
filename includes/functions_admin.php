@@ -136,6 +136,34 @@ function getAdminLocale($modules=array())
 }
 
 
+// Get Admin All Classes:
+function getExtAllClasses()
+{
+    $plainjs = '';
+    
+    foreach(getFilesFromDir(ROOT.'/modules') as $module)
+    {
+        if(!is_dir($module['path'])) continue;
+        
+        $plainjs.= file_get_contents($module['path'].'/admin/app.js');
+        
+        foreach(getFilesFromDir($module['path'].'/admin/view') as $files)
+        {
+            if($files['ext'] != 'js') continue;
+            $plainjs.= file_get_contents($files['path']);
+        }
+        
+        foreach(getFilesFromDir($module['path'].'/admin/store') as $files)
+        {
+            if($files['ext'] != 'js') continue;
+            $plainjs.= file_get_contents($files['path']);
+        }
+    }
+
+    return $plainjs;
+}
+
+
 // IP restriction (admin config.php):
 function checkAdminIpAccess()
 {
