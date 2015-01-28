@@ -145,25 +145,22 @@ function getExtAllClasses()
     {
         if(!is_dir($module['path'])) continue;
         
-        $plainjs.= file_get_contents($module['path'].'/admin/app.js');
+        if(is_file($file = $module['path'].'/admin/app.js')) $plainjs.= file_get_contents($file);
         
         foreach(getFilesFromDir($module['path'].'/admin/view') as $files)
         {
-            if($files['ext'] != 'js') continue;
-            $plainjs.= file_get_contents($files['path']);
+            if($files['ext'] == 'js') $plainjs.= file_get_contents($files['path']);
         }
         
         foreach(getFilesFromDir($module['path'].'/admin/store') as $files)
         {
-            if($files['ext'] != 'js') continue;
-            $plainjs.= file_get_contents($files['path']);
+            if($files['ext'] == 'js') $plainjs.= file_get_contents($files['path']);
         }
     }
     
     foreach(getFilesFromDir(ROOT.'/admin/resources/ux') as $files)
     {
-        if($files['ext'] != 'js') continue;
-        $plainjs.= file_get_contents($files['path']);
+        if($files['ext'] == 'js') $plainjs.= file_get_contents($files['path']);
     }
 
     return $plainjs;
