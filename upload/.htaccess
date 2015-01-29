@@ -3,3 +3,8 @@ Options -Indexes
 RemoveHandler .php .php3
 RemoveType .php .php3
 php_flag engine off
+
+<FilesMatch \.php$>
+SetHandler None
+ForceType text/plain
+</FilesMatch>
