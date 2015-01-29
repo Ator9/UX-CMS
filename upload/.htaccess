@@ -1,9 +1,11 @@
 Options -Indexes
 
+#Apache 2.2
 RemoveHandler .php .php3
 RemoveType .php .php3
 php_flag engine off
 
+#Apache 2.4
 <FilesMatch \.php$>
 SetHandler None
 ForceType text/plain
