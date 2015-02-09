@@ -55,10 +55,10 @@ class adminsPartnersAdmins extends ConnExtjs
         global $aSession; $array = array();
         
         // Superusers can see all partners:
-        if($GLOBALS['admin']['data']['superuser'] == 'Y') $sql = 'SELECT partnerID, name FROM partners ORDER BY name';
+        if($GLOBALS['admin']['data']['superuser'] == 'Y') $sql = 'SELECT * FROM partners ORDER BY name';
         else
         {
-            $sql = 'SELECT pa.partnerID, p.name
+            $sql = 'SELECT p.*
                     FROM '.$this->_table.' as pa
                     INNER JOIN partners as p USING (partnerID)
                     WHERE pa.adminID = '.$GLOBALS['admin']['data']['adminID'].' AND p.active = "Y" AND p.deleted <> "Y"
