@@ -64,7 +64,7 @@ Ext.define('admins.view.Partners', {
             store: this.partnersConfigStore,
             title: 'Config',
             region: 'north',
-            height: 200,
+            height: 400,
             border: false,
             columns: [
                 { header: Admin.t('Name'), dataIndex: 'name', width: 200 },
