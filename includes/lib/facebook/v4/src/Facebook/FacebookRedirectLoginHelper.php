@@ -85,10 +85,12 @@ class FacebookRedirectLoginHelper
    * @param array $scope List of permissions to request during login
    * @param string $version Optional Graph API version if not default (v2.0)
    * @param boolean $displayAsPopup Indicate if the page will be displayed as a popup
+   * @param bool|string $authType 'reauthenticate' or 'https', true is equivalent to 'reauthenticate',
+   *                              false or invalid value will not add auth type parameter
    *
    * @return string
    */
-  public function getLoginUrl($scope = array(), $version = null, $displayAsPopup = false, $reauthenticate = false)
+  public function getLoginUrl(array $scope = array(), $version = null, $displayAsPopup = false, $authType = false)
   {
     $version = ($version ?: FacebookRequest::GRAPH_API_VERSION);
     $this->state = $this->random(16);
@@ -101,8 +103,8 @@ class FacebookRedirectLoginHelper
       'scope' => implode(',', $scope)
     );
 
-    if (!empty($reauthenticate)) {
-      $params['auth_type'] = $reauthenticate === true ? 'reauthenticate' : $reauthenticate;
+    if (in_array($authType, array(true, 'reauthenticate', 'https'), true)) {
+      $params['auth_type'] = $authType === true ? 'reauthenticate' : $authType;
     }
     
     if ($displayAsPopup)
@@ -122,7 +124,7 @@ class FacebookRedirectLoginHelper
    *
    * @return string
    */
-  public function getReRequestUrl($scope = array(), $version = null)
+  public function getReRequestUrl(array $scope = array(), $version = null)
   {
     $version = ($version ?: FacebookRequest::GRAPH_API_VERSION);
     $this->state = $this->random(16);
@@ -274,12 +276,12 @@ class FacebookRedirectLoginHelper
   {
     if (!is_numeric($bytes)) {
       throw new FacebookSDKException(
-        "random() expects an integer"
+        'random() expects an integer'
       );
     }
     if ($bytes < 1) {
       throw new FacebookSDKException(
-        "random() expects an integer greater than zero"
+        'random() expects an integer greater than zero'
       );
     }
     $buf = '';
