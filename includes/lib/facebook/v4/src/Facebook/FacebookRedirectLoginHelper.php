@@ -174,7 +174,6 @@ class FacebookRedirectLoginHelper
    */
   public function getSessionFromRedirect()
   {
-    $this->loadState();
     if ($this->isValidRedirect()) {
       $params = array(
         'client_id' => FacebookSession::_getTargetAppId($this->appId),
@@ -203,8 +202,21 @@ class FacebookRedirectLoginHelper
    */
   protected function isValidRedirect()
   {
-    return $this->getCode() && isset($_GET['state'])
-        && $_GET['state'] == $this->state;
+    $savedState = $this->loadState();
+    if (!$this->getCode() || !isset($_GET['state'])) {
+      return false;
+    }
+    $givenState = $_GET['state'];
+    $savedLen = mb_strlen($savedState);
+    $givenLen = mb_strlen($givenState);
+    if ($savedLen !== $givenLen) {
+      return false;
+    }
+    $result = 0;
+    for ($i = 0; $i < $savedLen; $i++) {
+      $result |= ord($savedState[$i]) ^ ord($givenState[$i]);
+    }
+    return $result === 0;
   }
 
   /**
