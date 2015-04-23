@@ -111,7 +111,7 @@ class ConnExtjs extends Conn
             
             foreach($_REQUEST['columns'] as $field)
             {
-                $where[] = $field.' LIKE "%'.$this->escape($_REQUEST['search']).'%"';
+            	$where[] = (is_numeric($_REQUEST['search'])) ? $field.'='.$this->escape($_REQUEST['search']) : $field.' LIKE "%'.$this->escape($_REQUEST['search']).'%"';
             }
 
             $sql = preg_replace('/WHERE \(\(\((.*)\)\)\)/', 'WHERE $1 AND ('.implode(' OR ', $where).') ', str_replace('WHERE 1', 'WHERE (((1)))', $sql), 1);
