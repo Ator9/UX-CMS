@@ -37,8 +37,6 @@ class adminsAdmin extends ConnExtjs
 	}
 	
 	
-		
-	
 	// Select admin list for dropdown filters:
 	public function extAdminsList()
     {
