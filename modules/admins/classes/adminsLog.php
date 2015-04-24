@@ -16,6 +16,9 @@ class adminsLog extends ConnExtjs
         // Dates:
         if(isset($_GET['date_from'])) $where.= ' AND t1.date_created >= "'.$this->escape($_GET['date_from']).'"';
         if(isset($_GET['date_to'])) $where.= ' AND t1.date_created <= "'.$this->escape($_GET['date_to']).' 23:59:59"';
+        
+        // Admin
+        if(isset($_GET['adminID'])) $where.= ' AND t1.adminID = '.(int) $_GET['adminID'];
     
         $sql = 'SELECT t1.*, t2.username
                 FROM '.$this->_table.' AS t1
