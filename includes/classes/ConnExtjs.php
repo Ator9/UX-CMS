@@ -105,7 +105,8 @@ class ConnExtjs extends Conn
         if($sql=='') $sql = 'SELECT * FROM '.$this->_table.' WHERE ((('.((in_array('deleted', $this->_fields)) ? 'deleted="N"' : '1').')))';
 
         // Default filter:
-        if($filter && isset($_REQUEST['search']))
+        $_REQUEST['search'] = trim($_REQUEST['search']);
+        if($filter && $_REQUEST['search'] != '')
         {
             if(!isset($_REQUEST['columns'])) $_REQUEST['columns'] = array($this->_index);
             
