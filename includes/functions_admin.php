@@ -141,6 +141,11 @@ function getExtAllClasses()
 {
     $plainjs = '';
     
+    foreach(getFilesFromDir(ROOT.'/admin/resources/ux') as $files)
+    {
+        if($files['ext'] == 'js') $plainjs.= file_get_contents($files['path']);
+    }
+    
     foreach(getFilesFromDir(ROOT.'/modules') as $module)
     {
         if(!is_dir($module['path'])) continue;
@@ -156,11 +161,6 @@ function getExtAllClasses()
         {
             if($files['ext'] == 'js') $plainjs.= file_get_contents($files['path']);
         }
-    }
-    
-    foreach(getFilesFromDir(ROOT.'/admin/resources/ux') as $files)
-    {
-        if($files['ext'] == 'js') $plainjs.= file_get_contents($files['path']);
     }
 
     return $plainjs;
