@@ -135,7 +135,7 @@ function truncate($str, $num)
  */
 function seo($txt)
 {
-	$txt = mb_strtolower($txt, 'UTF-8');
+    $txt = mb_strtolower($txt, 'UTF-8');
 
     $txt = preg_replace('/(À|Á|Â|Ã|Ä|Å|à|á|â|ã|ä|å)/','a',$txt);
     $txt = preg_replace('/(È|É|Ê|Ë|è|é|ê|ë)/','e',$txt);
@@ -146,10 +146,10 @@ function seo($txt)
     $txt = preg_replace('/ÿ/','y',$txt);
     $txt = preg_replace('/(!|¡)/','',$txt);
     $txt = preg_replace('/(\/| |´|\'|"|_)/','-',$txt);
-
+    
     $txt = preg_replace('/[^a-z0-9.-]/', '', $txt);
-	$txt = preg_replace('/-{2,}/', '-', $txt);
-	$txt = trim($txt, '-');
+    $txt = preg_replace('/-{2,}/', '-', $txt);
+    $txt = trim($txt, '-');
 
     return $txt;
 }
