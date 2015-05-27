@@ -14,7 +14,6 @@ Ext.define('admins.store.AdminsList', {
             read: 'index.php?_class=adminsAdmin&_method=extAdminsList' // reader
         },
         reader: {
-            type: 'json',
             root: 'data', // php response name
             totalProperty: 'totalCount' // PagingToolbar (php response name)
         }
