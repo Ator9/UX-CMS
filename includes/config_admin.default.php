@@ -22,9 +22,6 @@ $GLOBALS['admin']['locale'] = array('es'=>'Español', 'en'=>'English');
 // Default module (Default "admins"): 
 $GLOBALS['admin']['default_module'] = 'admins';
 
-// Custom logout redirect url (Default empty): 
-$GLOBALS['admin']['logout_redirect_url'] = '';
-
 // Buttons tree footer (2 max): 
 $GLOBALS['admin']['fbar_buttons'][] = array('url' => HOST, 'text' => 'Home Page');
 

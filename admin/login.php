@@ -23,8 +23,7 @@ if(isset($_GET['logout']))
 {
     $aSession->destroy();
 
-    $url = (!empty($GLOBALS['admin']['logout_redirect_url'])) ? $GLOBALS['admin']['logout_redirect_url'] : ADMIN.'/login.php';
-    header('Location: '.$url);
+    header('Location: '.ADMIN.'/login.php');
     exit;
 }
 
