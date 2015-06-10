@@ -115,10 +115,14 @@ class Conn extends mysqli
 	{
 		foreach($this->_fields as $field)
 		{
-			$arr[$field] = ($this->$field != 'NULL') ? $field.' = "'.$this->escape($this->$field).'"' : $field.' = NULL';
-	    }
+			if(isset($this->$field))
+			{
+				$arr[$field] = ($this->$field != 'NULL') ? $field.' = "'.$this->escape($this->$field).'"' : $field.' = NULL';
+			}
+			
+		}
 		
-        unset($arr['date_updated']);
+        	unset($arr['date_updated']);
 		if(isset($GLOBALS['admin']['data']['adminID']) && in_array('adminID_updated', $this->_fields)) $arr['adminID_updated'] = 'adminID_updated = '.(int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';
