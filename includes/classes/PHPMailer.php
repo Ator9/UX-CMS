@@ -22,7 +22,6 @@
  * Need STMP?:
  * $mail->IsSMTP();
  * $mail->SMTPAuth = true;
- * $mail->SMTPSecure = 'ssl';
  * $mail->Host	   = SMTP_HOST;
  * $mail->Port     = SMPT_PORT;
  * $mail->Username = SMTP_USER;
