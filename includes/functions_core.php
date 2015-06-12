@@ -146,7 +146,7 @@ function seo($txt)
     $txt = preg_replace('/ÿ/','y',$txt);
     $txt = preg_replace('/(\/| |´|\'|"|_|\.)/','-',$txt);
     
-    $txt = preg_replace('/[^a-z0-9-]/', '', $txt);
+    $txt = preg_replace('/[^a-z0-9ñ-]/', '', $txt);
     $txt = preg_replace('/-{2,}/', '-', $txt);
     $txt = trim($txt, '-');
 
