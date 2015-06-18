@@ -83,10 +83,13 @@ function getAdminPartners()
                     }),
                     listeners: {
                         'select': function(combo, records, eOpts) {
+                        
+                            var pid = (Ext.getVersion().getMajor() >= 5) ? records.get('partnerID') : records[0].get('partnerID');
+                        
                             Ext.Ajax.request({
                                 scope: this,
                                 url: 'index.php?_class=adminsPartnersAdmins&_method=setPartnerID',
-                                params: { partnerID: records[0].get('partnerID') },
+                                params: { partnerID: pid },
                                 success: function(response) {
                                     location.reload();
                                 }
