@@ -88,7 +88,7 @@ function getAdminPartners()
                         
                             Ext.Ajax.request({
                                 scope: this,
-                                url: 'index.php?_class=adminsPartnersAdmins&_method=setPartnerID',
+                                url: 'index.php?_class=".$GLOBALS['admin']['partner_class']."&_method=setPartnerID',
                                 params: { partnerID: pid },
                                 success: function(response) {
                                     location.reload();
