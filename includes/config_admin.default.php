@@ -10,6 +10,9 @@ $GLOBALS['admin']['favicon'] = '';
 // Admin login class (Default "adminsAdmin"):
 $GLOBALS['admin']['class'] = 'adminsAdmin';
 
+// Admin partner class (Default "adminsPartnersAdmins"):
+$GLOBALS['admin']['partner_class'] = 'adminsPartnersAdmins';
+
 // Admin partners needed:
 $GLOBALS['admin']['partners_enabled'] = false;
 
