@@ -21,7 +21,7 @@ if($aSession->exists('adminData'))
     $GLOBALS['admin']['data'] = $aSession->get('adminData');
 
     // Stores partners data glabally:
-    $partnersDB = new adminsPartnersAdmins();
+    $partnersDB = new $GLOBALS['admin']['partner_class']();
     $GLOBALS['admin']['data']['partners']  = $partnersDB->getPartnersByAdmin(); // Superusers have all partners
     $GLOBALS['admin']['data']['partnerID'] = (int) $aSession->get('partnerID');
 }
