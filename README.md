@@ -1,8 +1,3 @@
-#### Requirements
-* Apache 2.2+
-* PHP 5.3+
-* MySQL 5.1+
-
 ## Installation via GIT
 Create local repository and add UX-CMS as remote repository:
 ```sh
