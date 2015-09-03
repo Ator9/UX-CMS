@@ -28,7 +28,7 @@ Host serverCom
   IdentityFile ~/.ssh/gitkey
 ```
 ```sh
-git remote add online serverCom:/var/project/barerepo
+git remote add online serverCom:/var/www/barerepo/private
 git push online master
 ```
 Server Setup. Create git user and set client public ssh key ("gitkey.pub"):
