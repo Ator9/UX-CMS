@@ -5,8 +5,8 @@
  *
  * Usage:
  * $params = [
- *     'git_dir'  => '/var/www/acc.adverit.com/private',
- *     'work_dir' => '/var/www/acc.adverit.com/web'
+ *     'git_dir'  => '/var/www/domain.com/private',
+ *     'work_dir' => '/var/www/domain.com/web'
  *  ];
  * $webhook = new Webhook($params);
  * $webhook->run();
