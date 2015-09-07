@@ -59,7 +59,7 @@ class Webhook
         exec($command, $output);
         vd($output);
 
-        echo $command = 'git --work-tree='.$this->work_dir.' --git-dir='.$this->git_dir.' pull';
+        echo $command = 'git --work-tree='.$this->work_dir.' --git-dir='.$this->git_dir.' pull origin master';
         exec($command, $output);
         vd($output);
     }
