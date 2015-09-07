@@ -15,6 +15,9 @@
  * Repo config:
  *     git remote add origin git@bitbucket.org:username/project.git
  *     sudo chmod -R 777 private/
+ * 
+ * Simulate user:
+ *     sudo -u web15 git...
  *
  * Fix for "--bare" repositories (adds clone configuration):
  *     git config merge.defaultToUpstream true
