@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Webhook Bitbucket / GitHub
