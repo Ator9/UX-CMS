@@ -24,7 +24,7 @@ class Webhook
 {
     private $git_dir  = ''; // /var/www/sitedir/private
     private $work_dir = ''; // /var/www/sitedir/web
-    // private whitelisted_ips = [ '131.103.20.0' ];
+    // private whitelisted_ips = [ '131.103.20.04' ];
 
 
     // ------------------------------------------------------------------------------- //
