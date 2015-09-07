@@ -12,9 +12,10 @@
  * $webhook->run();
  *
  *
- * Repo config:
+ * Repo Config:
  *     git remote add origin git@bitbucket.org:username/project.git
  *     sudo chown -R user:group .
+ *     sudo -u user ssh-keygen
  *     sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/private pull origin master
  *
  */
