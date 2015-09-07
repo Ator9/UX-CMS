@@ -47,8 +47,7 @@ class Webhook
         if($this->git_dir == '' || $this->work_dir == '') exit('Invalid dir config');
 
         echo 'Starting Git Sync...<br><br>';
-        echo 'Current User: '.exec('whoami').'<br>';
-        echo 'Current Dir: '.__DIR__.'<br><br>';
+        echo 'Current User: '.exec('whoami').'<br><br>';
 
         echo $command = 'git --work-tree=/var/www/acc.adverit.com/web --git-dir=/var/www/acc.adverit.com/private pull';
         exec($command, $output);
