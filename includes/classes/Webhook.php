@@ -5,8 +5,8 @@
  *
  * Usage:
  * $params = [
- *     'git_dir'  => '/var/www/domain.com/private',
- *     'work_dir' => '/var/www/domain.com/web'
+ *     'git_dir'  => '/var/www/domain/private',
+ *     'work_dir' => '/var/www/domain/web'
  *  ];
  * $webhook = new Webhook($params);
  * $webhook->run();
@@ -15,13 +15,7 @@
  * Repo config:
  *     git remote add origin git@bitbucket.org:username/project.git
  *     sudo chown -R user:group .
- * 
- * Simulate user: sudo -u web15 git...
- *
- * Fix for "--bare" repositories (adds clone configuration):
- *     git branch --track master origin/master
- *     git config merge.defaultToUpstream true
- *     
+ *     sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/private pull origin master
  *
  */
 class Webhook
