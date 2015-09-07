@@ -49,7 +49,7 @@ class Webhook
         echo 'Starting Git Sync...<br><br>';
         echo 'Current User: '.exec('whoami').'<br><br>';
 
-        echo $command = 'cd '.$this->git_dir.' && git --work-tree=/var/www/acc.adverit.com/web --git-dir=/var/www/acc.adverit.com/private pull';
+        echo $command = 'git --work-tree=/var/www/acc.adverit.com/web --git-dir=/var/www/acc.adverit.com/private pull<br>';
         passthru($command);
     }
 }
