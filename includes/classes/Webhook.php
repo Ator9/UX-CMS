@@ -14,14 +14,15 @@
  *
  * Repo config:
  *     git remote add origin git@bitbucket.org:username/project.git
- *     sudo chmod -R 777 private/
+ *     sudo chown -R user:group private/
  * 
  * Simulate user:
  *     sudo -u web15 git...
  *
  * Fix for "--bare" repositories (adds clone configuration):
- *     git config merge.defaultToUpstream true
  *     git branch --track master origin/master
+ *     git config merge.defaultToUpstream true
+ *     
  *
  */
 class Webhook
