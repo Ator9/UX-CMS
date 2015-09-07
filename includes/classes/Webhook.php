@@ -51,12 +51,12 @@ class Webhook
         echo 'Current User: '.exec('whoami').'<br><br>';
         echo 'Current Path: '.exec('pwd').'<br><br>';
         
-        echo $command = 'git --work-tree=/var/www/acc.adverit.com/web --git-dir=/var/www/acc.adverit.com/private checkout -f';
+        echo $command = 'git --work-tree='.$this->work_dir.' --git-dir='.$this->git_dir.' checkout -f';
         exec($command, $output);
         vd($output);
 
-        echo $command = 'git --work-tree=/var/www/acc.adverit.com/web --git-dir=/var/www/acc.adverit.com/private pull';
-        echo '<br><br>';
-        passthru($command);
+        echo $command = 'git --work-tree='.$this->work_dir.' --git-dir='.$this->git_dir.' pull';
+        exec($command, $output);
+        vd($output);
     }
 }
