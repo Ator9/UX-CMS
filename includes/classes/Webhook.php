@@ -14,10 +14,11 @@
  *
  * Add:
  *     git remote add origin git@bitbucket.org:username/project.git
+ *     sudo chown web15:client1 -R private/
  *
  * Fix for "--bare" repositories (adds clone configuration):
  *     git config merge.defaultToUpstream true
- *     git branch --set-upstream master origin/master
+ *     git branch --track master origin/master
  *
  */
 class Webhook
