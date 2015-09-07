@@ -12,7 +12,7 @@
  * $webhook->run();
  *
  *
- * Add:
+ * Repo config:
  *     git remote add origin git@bitbucket.org:username/project.git
  *     sudo chmod -R 777 private/
  *
