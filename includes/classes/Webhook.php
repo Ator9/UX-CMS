@@ -50,7 +50,7 @@ class Webhook
         echo 'Current User: '.exec('whoami').'<br>';
         echo 'Current Dir: '.__DIR__.'<br>';
 
-        $command = 'git --work-tree=/var/www/acc.adverit.com/web --git-dir=/var/www/acc.adverit.com/private pull';
+        echo $command = 'git --work-tree=/var/www/acc.adverit.com/web --git-dir=/var/www/acc.adverit.com/private pull';
         exec($command, $output);
         vd($output);
     }
