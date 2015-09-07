@@ -14,7 +14,7 @@
  *
  * Repo config:
  *     git remote add origin git@bitbucket.org:username/project.git
- *     sudo chown -R user:group private/
+ *     sudo chown -R user:group .
  * 
  * Simulate user:
  *     sudo -u web15 git...
