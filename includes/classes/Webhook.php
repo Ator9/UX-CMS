@@ -16,8 +16,7 @@
  *     git remote add origin git@bitbucket.org:username/project.git
  *     sudo chown -R user:group .
  * 
- * Simulate user:
- *     sudo -u web15 git...
+ * Simulate user: sudo -u web15 git...
  *
  * Fix for "--bare" repositories (adds clone configuration):
  *     git branch --track master origin/master
