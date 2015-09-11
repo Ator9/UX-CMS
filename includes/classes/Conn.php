@@ -96,9 +96,9 @@ class Conn extends mysqli
 			}
 		}
 
-        unset($arr[$this->_index]);
-        if(in_array('deleted', $this->_fields)) $arr['deleted'] = '"N"';
-		if(in_array('date_created', $this->_fields)) $arr['date_created'] = 'NOW()';
+        	unset($arr[$this->_index]);
+        	if(in_array('deleted', $this->_fields)) $arr['deleted'] = '"N"';
+		if(in_array('date_created', $this->_fields) && !isset($this->date_created)) $arr['date_created'] = 'NOW()';
 		if(isset($GLOBALS['admin']['data']['adminID']) && in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = (int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
