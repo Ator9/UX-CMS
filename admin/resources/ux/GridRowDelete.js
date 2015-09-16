@@ -51,7 +51,12 @@ Ext.define('Ext.ux.GridRowDelete', {
             });
             this.disableComponents();
         }
+        
+        this.customFinal(btn);
     },
+    
+    // Custom func for extra functionality:
+    customFinal: function() { },
 
     disableComponents: function() {
         this.setDisabled(true); // disable button
