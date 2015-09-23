@@ -81,12 +81,12 @@ class Conn extends mysqli
 
 	public function save()
 	{
-        if($this->getID()) return $this->update();
-        return $this->insert();
+		if($this->getID()) return $this->update();
+		return $this->insert();
 	}
 
 
-	public function insert()
+	public function insert($auto_increment = true)
 	{
 		foreach($this->_fields as $field)
 		{
@@ -95,9 +95,9 @@ class Conn extends mysqli
 			    $arr[$field] = ($this->$field != 'NULL') ? '"'.$this->escape($this->$field).'"' : 'NULL';
 			}
 		}
-
-        	unset($arr[$this->_index]);
-        	if(in_array('deleted', $this->_fields)) $arr['deleted'] = '"N"';
+		
+		if($auto_increment === true) unset($arr[$this->_index]);
+		if(in_array('deleted', $this->_fields)) $arr['deleted'] = '"N"';
 		if(in_array('date_created', $this->_fields) && !isset($this->date_created)) $arr['date_created'] = 'NOW()';
 		if(isset($GLOBALS['admin']['data']['adminID']) && in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = (int) $GLOBALS['admin']['data']['adminID'];
 
@@ -122,7 +122,7 @@ class Conn extends mysqli
 			
 		}
 		
-        	unset($arr['date_updated']);
+		unset($arr['date_updated']);
 		if(isset($GLOBALS['admin']['data']['adminID']) && in_array('adminID_updated', $this->_fields)) $arr['adminID_updated'] = 'adminID_updated = '.(int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';
