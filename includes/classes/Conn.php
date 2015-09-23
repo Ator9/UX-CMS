@@ -46,9 +46,9 @@ class Conn extends mysqli
 		if($this->_debug) $this->logQuery($sql, 'SQL Debug');
 		if($result = parent::query($sql)) return $result;
 		
-	    $this->logQuery($sql, 'SQL Error');
-	    if(mysqli_errno($this) && LOCAL) throw new Exception(mysqli_error($this).' '.$sql);
-	    return false;
+		$this->logQuery($sql, 'SQL Error');
+		if(mysqli_errno($this) && LOCAL) throw new Exception(mysqli_error($this).' '.$sql);
+		return false;
 	}
 
     
