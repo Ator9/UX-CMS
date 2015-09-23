@@ -5,6 +5,7 @@
  * @author Sebastián Gasparri
  * @link https://github.com/Ator9
  *
+ * 
  * Reserved column names (automatic usage):
  * - deleted         // insert() & delete()
  * - adminID_created // insert()
