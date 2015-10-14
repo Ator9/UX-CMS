@@ -16,9 +16,17 @@ Ext.define('admins.view.Logs', {
             queryMode: 'local', // 'remote' is typically used for "autocomplete" type inputs.
             forceSelection: true, // true to restrict the selected value to one of the values in the list, false to allow the user to set arbitrary text into the field.
             store: Ext.create('admins.store.AdminsList').load(),
-            trigger1Cls: 'x-form-clear-trigger',
-            trigger2Cls: 'x-form-trigger',
-            onTrigger1Click: Ext.bind(this.clear, this, 'adminID', true),
+            triggers: {
+                clear: {
+                    cls: 'x-form-clear-trigger',
+                    weight: -1,
+                    handler: function(obj) {
+                        this.clearValue();
+                        delete(this.up().up().store.getProxy().extraParams[obj.name]);
+                        this.up().up().store.reload(); // Reload
+                    }
+                }
+            },
             listeners: { scope: this, select: this.onSelectArea }
         });
         
@@ -86,14 +94,6 @@ Ext.define('admins.view.Logs', {
     // Selects - Store reload:
     onSelectArea: function(combo, records, eOpts) {
         this.store.getProxy().extraParams[combo.name] = combo.getValue(); // Add extra param
-        this.store.reload(); // Reload
-    },
-    
-    // Clear comboboxes:
-    clear: function(obj, name) {
-        this.down('combobox[name='+name+']').clearValue();
-        
-        delete(this.store.getProxy().extraParams[name]);
         this.store.reload(); // Reload
     }
 });
