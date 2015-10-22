@@ -19,6 +19,7 @@ Ext.define('admins.store.Roles', {
         writer: {
             writeAllFields: true,
             root: 'data', // php submit name (api: destroy, update, create)
+            rootProperty: 'data', // extjs 6 - php submit name (api: destroy, update, create)
             encode: true // True to send record data as a JSON encoded HTTP parameter named by the root configuration.
         }
     }
