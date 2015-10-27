@@ -8,8 +8,6 @@ require(ROOT.'/admin/common/'.$GLOBALS['admin']['header']);
 if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<?php echo $GLOBALS['admin']['favicon']; ?>" rel="shortcut icon" /><?php }
 ?>
 <script>
-var LOCAL = <?php echo var_export(LOCAL); ?>;
-
 Ext.application({
     name: 'Admin',
     paths: { 'Ext.ux': 'resources/ux', 'ExtCache': 'resources/extjs-cache.php', 'Extensible': 'resources/ux/extensible/src' <?php echo getAdminPaths(); ?> },
@@ -103,6 +101,9 @@ Ext.application({
 Ext.Ajax.on('requestexception', function(conn, response, options, eOpts) {
     if(response.status === 401) window.location = 'login.php';
 });
+
+var LOCAL = <?php echo var_export(LOCAL); ?>;
+var EMAIL = "<?php echo $GLOBALS['admin']['data']['email']; ?>";
 </script>
 </head>
 <body></body>
