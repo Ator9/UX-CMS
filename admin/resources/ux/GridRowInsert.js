@@ -19,12 +19,14 @@ Ext.define('Ext.ux.GridRowInsert', {
     text: Admin.t('Add'),
     icon: 'resources/icons/plus.png',
     rowEditingColumn: 1,
-    defaultValues: {},
 
     handler: function() {
+     
+        // Seteo valores default con "defaultValues". Esto tiene un bug cuando insertás varios (toma los valores del último insert):
+        var dvalues = (this.defaultValues) ? this.defaultValues : {};
 
         if(!this.grid) this.grid = this.up('grid'); // Uses parent grid if not set
-        this.grid.getStore().insert(0, this.defaultValues); // Insert row in grid
+        this.grid.getStore().insert(0, dvalues); // Insert row in grid
         this.grid.getSelectionModel().select(0); // select inserted row
 
         // If form:
