@@ -5,8 +5,8 @@
  *
  * Usage:
  * $params = [
- *     'git_dir'  => '/var/www/domain/private',
- *     'work_dir' => '/var/www/domain/web'
+ *     'git_dir'  => '/var/www/'.$_SERVER['HTTP_HOST'].'/private',
+ *     'work_dir' => '/var/www/'.$_SERVER['HTTP_HOST'].'/web'
  *  ];
  * $webhook = new Webhook($params);
  * $webhook->run();
