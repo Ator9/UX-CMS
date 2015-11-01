@@ -13,6 +13,12 @@
  * - date_created    // insert()
  * - date_updated    // update()
  *
+ * 
+ * Transactions:
+ * $this->autocommit(false);
+ * -- all your quries --
+ * $this->commit();
+ *
  */
  
 class Conn extends mysqli
