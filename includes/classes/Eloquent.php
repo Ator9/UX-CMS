@@ -3,8 +3,13 @@
  * Create a new Eloquent model instance
  *
  * @author http://laravel.com/docs/eloquent
+ * @link https://packagist.org/packages/illuminate/database
+ *
+ * Install / Updates:
+ * "composer require illuminate/database"
+ *
  */
-require_once(INCLUDES.'/lib/illuminate/database/autoload.php');
+require_once(INCLUDES.'/lib/illuminate/database/vendor/autoload.php');
 
 class Eloquent extends Illuminate\Database\Eloquent\Model
 {
