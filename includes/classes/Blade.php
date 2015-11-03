@@ -20,7 +20,7 @@ require_once(INCLUDES.'/lib/laravel/blade/vendor/autoload.php');
 
 class Blade extends Philo\Blade\Blade
 {
-    function __construct($viewPaths = array(), $cachePath = ROOT.'/cache')
+    function __construct($viewPaths = array(), $cachePath = ROOT.'/upload/cache')
     {
         parent::__construct($viewPaths, $cachePath);
     }
