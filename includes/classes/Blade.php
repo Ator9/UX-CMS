@@ -16,7 +16,7 @@
  * Install: composer require philo/laravel-blade
  *
  */
-require_once(ROOT.'/1/vendor/autoload.php');
+require_once(INCLUDES.'/lib/laravel/blade/vendor/autoload.php');
 
 class Blade extends Philo\Blade\Blade
 {
