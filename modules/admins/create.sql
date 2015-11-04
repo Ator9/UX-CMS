@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `lastname` varchar(75) NOT NULL DEFAULT '',
   `superuser` enum('Y','N') NOT NULL DEFAULT 'N',
   `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `active` enum('Y','N') NOT NULL DEFAULT 'N',
+  `active` enum('Y','N') NOT NULL DEFAULT 'Y',
   `deleted` enum('Y','N') NOT NULL DEFAULT 'N',
   `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `admins_roles` (
 CREATE TABLE IF NOT EXISTS `partners` (
   `partnerID` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '',
-  `active` enum('Y','N') NOT NULL DEFAULT 'N',
+  `active` enum('Y','N') NOT NULL DEFAULT 'Y',
   `deleted` enum('Y','N') NOT NULL DEFAULT 'N',
   `adminID_created` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `adminID_updated` mediumint(8) unsigned NOT NULL DEFAULT '0',
