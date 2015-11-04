@@ -43,6 +43,10 @@ require(ROOT.'/admin/common/header.bootstrap.php');
             <pre>git checkout -- file.xxx</pre>
         </li>
         <li>
+            <b>Reset local changes and pull again (origin/master)</b>
+            <pre>git reset --hard framework/master</pre>
+        </li>
+        <li>
             <b>Show status (changes)</b>
             <pre>git status</pre>
         </li>
