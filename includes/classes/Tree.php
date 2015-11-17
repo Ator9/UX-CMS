@@ -20,6 +20,37 @@ class Tree extends ConnExtjs
 			parent::insert();
 		}
 	}
+	
+	
+	/**
+	* Convert classic parent/child categories to nested structure
+	* Execute several times (parent/child existance)
+	*
+	* categoryID/parentID columns needed
+	*
+	* @param $table origin data
+	*/
+	public function convertToNested($table = 'origin_table')
+	{
+		$res = $this->query('SELECT * FROM '.$table.' ORDER BY parentID ASC');
+		if($res->num_rows > 0)
+		{
+			$this->checkRoot();
+
+			while($row = $res->fetch_assoc())
+			{
+				if($this->get($row[$this->_index])) continue;
+				vd($row); flush();
+
+				$this->setID($row[$this->_index]);
+				$this->name 	= $row['name'];
+				$this->parentID = ($row['parentID'] == 0) ? 1 : $row['parentID'];
+				$this->insert(false);
+			}
+		}
+
+		echo 'OK';
+	}
 
 
 	public function update()
