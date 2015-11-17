@@ -5,10 +5,9 @@
 class Tree extends ConnExtjs
 {
 	// Tree startup, need "root":
-	public function checkRoot($name='root')
+	public function checkRoot($name = 'root')
 	{
-		$rs = parent::getList(array(), 1);
-		if($rs->num_rows == 0)
+		if(parent::getCount() == 0)
 		{
 			parent::query('TRUNCATE '.$this->_table);
 
@@ -16,7 +15,8 @@ class Tree extends ConnExtjs
 			$this->lft	    = 1;
 			$this->rgt  	= 2;
 			$this->parentID = 0;
-		    $this->level    = 0;
+			$this->level    = 0;
+			
 			parent::insert();
 		}
 	}
