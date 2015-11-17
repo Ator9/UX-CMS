@@ -1,11 +1,7 @@
 <?php
-
 /**
- *
  * Nested Tree
- *
  */
-
 class Tree extends ConnExtjs
 {
 	// Tree startup, need "root":
@@ -96,7 +92,7 @@ class Tree extends ConnExtjs
 
 
 	// Acomodo el arbol e inserto:
-	public function insert()
+	public function insert($auto_increment = true)
 	{
 	    // Need parent info:
 	    $parent = new $this;
@@ -113,7 +109,7 @@ class Tree extends ConnExtjs
 		    $this->rgt   = $parent->rgt + 1;
 		    $this->level = $parent->level + 1;
 		
-		    return parent::insert();
+		    return parent::insert($auto_increment);
 		}
 		
 		return false;
