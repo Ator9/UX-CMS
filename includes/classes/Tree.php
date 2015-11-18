@@ -196,6 +196,38 @@ class Tree extends ConnExtjs
 		}
 		return $data;
 	}
+	
+	
+	// Generate canonical name (path):
+	public function generateCanonicalName($primaryID = 0, $separator = ' > ')
+	{
+		$sql = 'SELECT * FROM '.$this->_table.(($primaryID > 0) ? ' WHERE '.$this->_index.' = '.$primaryID : '');
+		$res = $this->query($sql);
+
+		if($res->num_rows > 0)
+		{
+			while($row = $res->fetch_assoc())
+			{
+				$canonical = [];
+				foreach($this->getPath($row[$this->_index]) as $data)
+				{
+					$canonical[] = $data['name'];
+
+				}
+
+				$values[] = '('.$row[$this->_index].', "'.implode($separator, $canonical).'")';
+			}
+
+			// Separo en chunks porque el query es muy largo:
+		        foreach(array_chunk($values, 100) as $value)
+		        {
+				$sql = 'INSERT INTO '.$this->_table.' ('.$this->_index.', canonical_name)
+						VALUES '.implode(',', $value).'
+						ON DUPLICATE KEY UPDATE canonical_name = VALUES(canonical_name)';
+		        	$this->query($sql);
+		        }
+		}
+	}
 
 
 	// Build select:
