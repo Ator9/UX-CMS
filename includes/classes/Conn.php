@@ -5,7 +5,7 @@
  * @author Sebastián Gasparri
  * @link https://github.com/Ator9
  *
- * 
+ *
  * Reserved column names (automatic usage):
  * - deleted         // insert() & delete()
  * - adminID_created // insert()
@@ -13,14 +13,14 @@
  * - date_created    // insert()
  * - date_updated    // update()
  *
- * 
+ *
  * Transactions:
  * $this->autocommit(false);
  * -- all your quries --
  * $this->commit();
  *
  */
- 
+
 class Conn extends mysqli
 {
 	public $_debug  = false;   // True to save all queries (adminsLog)
@@ -28,18 +28,19 @@ class Conn extends mysqli
 	public $_index	= '';      // Table primary Key
 	public $_fields	= array(); // Table columns (auto filled with "getColumns()" if not set)
 
+	protected $_extendedClasses  = array(); // Insert, Update (unique index + foregin key parent table)
 	protected $_dependantClasses = array(); // Delete childrens
-	
-	
+
+
 	// ------------------------------------------------------------------------------- //
 
 
-	function __construct($host=DB_HOST, $user=DB_USER, $pass=DB_PASS, $db=DB_NAME)
+	function __construct($host = DB_HOST, $user = DB_USER, $pass = DB_PASS, $db = DB_NAME)
 	{
 		@parent::__construct($host, $user, $pass, $db);
 		if(mysqli_connect_errno()) exit('Database connection error');
 		if(!parent::set_charset('utf8')) exit('Database utf8 error');
-		
+
 		if($this->_table != '' && empty($this->_fields)) $this->_fields = $this->getColumns(); // automatic fields
 		elseif($this->_index != '') array_unshift($this->_fields, $this->_index); // adds index to field list
 	}
@@ -52,13 +53,13 @@ class Conn extends mysqli
 	{
 		if($this->_debug) $this->logQuery($sql, 'SQL Debug');
 		if($result = parent::query($sql)) return $result;
-		
+
 		$this->logQuery($sql, 'SQL Error');
 		if(mysqli_errno($this) && LOCAL) throw new Exception(mysqli_error($this).' '.$sql);
 		return false;
 	}
 
-    
+
     /**
      * Get single row with PK or custom column
      *
@@ -67,7 +68,7 @@ class Conn extends mysqli
 	public function get($value, $field = '')
 	{
 	    if($field == '' || !in_array($field, $this->_fields)) $field = $this->_index;
-	    
+
 		$sql = 'SELECT * FROM '.$this->_table.' WHERE '.$field.' = "'.$this->escape($value).'" LIMIT 1';
 		if(($res = $this->query($sql)) && $res->num_rows == 1)
 		{
@@ -76,12 +77,11 @@ class Conn extends mysqli
 		}
 		return false;
 	}
-	
+
 
     public function getList($sql='')
 	{
 		if($sql=='') $sql = 'SELECT t1.* FROM '.$this->_table.' AS t1';
-
 		return $this->query($sql);
 	}
 
@@ -102,16 +102,28 @@ class Conn extends mysqli
 			    $arr[$field] = ($this->$field != 'NULL') ? '"'.$this->escape($this->$field).'"' : 'NULL';
 			}
 		}
-		
+
 		if($auto_increment === true) unset($arr[$this->_index]);
 		if(in_array('deleted', $this->_fields)) $arr['deleted'] = '"N"';
 		if(in_array('date_created', $this->_fields) && !isset($this->date_created)) $arr['date_created'] = 'NOW()';
 		if(isset($GLOBALS['admin']['data']['adminID']) && in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = (int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
-		if($this->query($sql))
+		if($this->query($sql) && $this->insert_id > 0)
 		{
-		    if($this->_index != '') $this->setID($this->insert_id);
+		    $this->setID($this->insert_id);
+
+            // Extended Classes (foreign keys, unique):
+            foreach($this->_extendedClasses as $className)
+    		{
+    			$db = new $className();
+                foreach($db->_fields as $field)
+        		{
+        			if(isset($this->$field)) $db->$field = $this->$field;
+        		}
+                $db->setID($this->getID());
+                $db->insert(false);
+    		}
 		    return true;
 		}
 		return false;
@@ -126,14 +138,34 @@ class Conn extends mysqli
 			{
 				$arr[$field] = ($this->$field != 'NULL') ? $field.' = "'.$this->escape($this->$field).'"' : $field.' = NULL';
 			}
-			
 		}
-		
+
 		unset($arr['date_updated']);
 		if(isset($GLOBALS['admin']['data']['adminID']) && in_array('adminID_updated', $this->_fields)) $arr['adminID_updated'] = 'adminID_updated = '.(int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'UPDATE IGNORE '.$this->_table.' SET '.implode(', ', $arr).' WHERE '. $this->_index.' = "'.$this->getID().'"';
-		return $this->query($sql);
+		if($this->query($sql))
+        {
+            // Extended Classes (foreign keys, unique):
+            foreach($this->_extendedClasses as $className)
+    		{
+    			$db = new $className();
+                if(!$db->get($this->getID()))
+                {
+                    $db->setID($this->getID());
+                    $db->insert(false); // Si no existe lo creo
+                }
+
+                foreach($db->_fields as $field)
+        		{
+        			if(isset($this->$field)) $db->$field = $this->$field;
+        		}
+
+                $db->update();
+    		}
+            return true;
+        }
+        return false;
 	}
 
 
@@ -145,7 +177,7 @@ class Conn extends mysqli
             $this->deleted = 'Y';
             return $this->update();
         }
-	
+
 		foreach($this->_dependantClasses as $className)
 		{
 			$db = new $className();
@@ -169,7 +201,7 @@ class Conn extends mysqli
 	}
 
 
-	public function set($data=array())
+	public function set($data = array())
     {
         foreach($this->_fields as $field)
         {
@@ -187,7 +219,7 @@ class Conn extends mysqli
 
     public function setID($id)
     {
-        $this->{$this->_index} = $id;
+        if($this->_index != '') $this->{$this->_index} = $id;
     }
 
 
@@ -204,8 +236,8 @@ class Conn extends mysqli
 
     	return $fields;
 	}
-    
-    
+
+
     /**
      * Get table data in array format
      *
@@ -214,7 +246,6 @@ class Conn extends mysqli
     public function getArray()
     {
         foreach($this->_fields as $field) $arr[$field] = $this->$field;
-        
         return $arr;
     }
 
@@ -228,7 +259,7 @@ class Conn extends mysqli
 	{
 		$sql = 'SELECT COUNT(*) FROM '.$this->_table;
 		$res = $this->query($sql);
-		
+
     	list($c) = $res->fetch_row();
     	return $c;
 	}
@@ -241,7 +272,7 @@ class Conn extends mysqli
         return parent::real_escape_string($str);
     }
 
-	
+
     // Query logger:
 	public function logQuery($sql, $task='SQL')
 	{
@@ -252,5 +283,3 @@ class Conn extends mysqli
         $log->log($data);
 	}
 }
-
-
