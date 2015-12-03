@@ -3,7 +3,7 @@ require(__DIR__.'/init.php');
 
 /*
  PHP Mini MySQL Admin
- (c) 2004-2014 Oleg Savchuk <osalabs@gmail.com> http://osalabs.com
+ (c) 2004-2015 Oleg Savchuk <osalabs@gmail.com> http://osalabs.com
 
  Light standalone PHP script for quick and easy access MySQL databases.
  http://phpminiadmin.sourceforge.net
@@ -11,7 +11,7 @@ require(__DIR__.'/init.php');
  Dual licensed: GPL v2 and MIT, see texts at http://opensource.org/licenses/
 */
 
- $ACCESS_PWD=(LOCAL) ? '' : DB_PASS;; #!!!IMPORTANT!!! this is script access password, SET IT if you want to protect you DB from public access
+$ACCESS_PWD = (LOCAL) ? '' : DB_PASS; #!!!IMPORTANT!!! this is script access password, SET IT if you want to protect you DB from public access
 
  #DEFAULT db connection settings
  # --- WARNING! --- if you set defaults - it's recommended to set $ACCESS_PWD to protect your db!
@@ -23,10 +23,11 @@ require(__DIR__.'/init.php');
  'port'=>"",#optional
  'chset'=>"utf8",#optional, default charset
  );
+file_exists($f=dirname(__FILE__) . '/phpminiconfig.php')&&require($f); // Read from config (easier to update)
 if (function_exists('date_default_timezone_set')) date_default_timezone_set('UTC');#required by PHP 5.1+
 
 //constants
- $VERSION='1.9.140405';
+ $VERSION='1.9.150917';
  $MAX_ROWS_PER_PAGE=50; #max number of rows in select per one page
  $D="\r\n"; #default delimiter for export
  $BOM=chr(239).chr(187).chr(191);
@@ -36,11 +37,12 @@ if (function_exists('date_default_timezone_set')) date_default_timezone_set('UTC
 
  $self=$_SERVER['PHP_SELF'];
 
- //session_start();
+ // session_set_cookie_params(0, null, null, false, true);
+ // session_start();
  if (!isset($_SESSION['XSS'])) $_SESSION['XSS']=get_rand_str(16);
  $xurl='XSS='.$_SESSION['XSS'];
 
- ini_set('display_errors',1);  #TODO turn off before deploy
+ ini_set('display_errors',0);  #turn on to debug db or script issues
  error_reporting(E_ALL ^ E_NOTICE);
 
 //strip quotes if they set
@@ -142,7 +144,7 @@ function do_sql($q){
  $SQLq=$q;
 
  if (!do_multi_sql($q)){
-    $out_message="Error: ".mysql_error($dbh);
+    $out_message="Error: ".mysqli_error($dbh);
  }else{
     if ($last_sth && $last_sql){
        $SQLq=$last_sql;
@@ -150,7 +152,7 @@ function do_sql($q){
           if ($q!=$last_sql) $out_message="Results of the last select displayed:";
           display_select($last_sth,$last_sql);
        } else {
-         $reccount=mysql_affected_rows($dbh);
+         $reccount=mysqli_affected_rows($dbh);
          $out_message="Done.";
          if (preg_match("/^insert|replace/i",$last_sql)) $out_message.=" Last inserted id=".get_identity();
          if (preg_match("/^drop|truncate/i",$last_sql)) do_sql($SHOW_T);
@@ -171,8 +173,8 @@ function display_select($sth,$q){
 
  if ($sth===FALSE or $sth===TRUE) return;#check if $sth is not a mysql resource
 
- $reccount=mysql_num_rows($sth);
- $fields_num=mysql_num_fields($sth);
+ $reccount=mysqli_num_rows($sth);
+ $fields_num=mysqli_field_count($dbh);
 
  $w='';
  if ($is_sht || $is_shd) {$w='wa';
@@ -182,7 +184,7 @@ function display_select($sth,$q){
 &nbsp;&#183;<a href='$url&q=show+variables'>Show Configuration Variables</a>
 &nbsp;&#183;<a href='$url&q=show+status'>Show Statistics</a>
 &nbsp;&#183;<a href='$url&q=show+processlist'>Show Processlist</a>";
-   if ($is_shd) $sqldr.="&nbsp;&#183;Create new database: <input type='text' name='new_db' placeholder='type db name here'> <input type='submit' name='crdb' value='Create'>";
+   if ($is_shd) $sqldr.="&nbsp;&#183;<label>Create new database: <input type='text' name='new_db' placeholder='type db name here'></label> <input type='submit' name='crdb' value='Create'>";
    $sqldr.="<br>";
    if ($is_sht) $sqldr.="&nbsp;Database:&nbsp;&#183;<a href='$url&q=show+table+status'>Show Table Status</a>";
    $sqldr.="</div>";
@@ -201,7 +203,7 @@ function display_select($sth,$q){
  if ($is_sht) $headers.="<td><input type='checkbox' name='cball' value='' onclick='chkall(this)'></td>";
  for($i=0;$i<$fields_num;$i++){
     if ($is_sht && $i>0) break;
-    $meta=mysql_fetch_field($sth,$i);
+    $meta=mysqli_fetch_field($sth);
     $headers.="<th>".$meta->name."</th>";
  }
  if ($is_shd) $headers.="<th>show create database</th><th>show table status</th><th>show triggers</th>";
@@ -209,7 +211,7 @@ function display_select($sth,$q){
  $headers.="</tr>\n";
  $sqldr.=$headers;
  $swapper=false;
- while($row=mysql_fetch_row($sth)){
+ while($row=mysqli_fetch_row($sth)){
    $sqldr.="<tr class='".$rc[$swp=!$swp]."' onclick='tc(this)'>";
    for($i=0;$i<$fields_num;$i++){
       $v=$row[$i];$more='';
@@ -285,7 +287,7 @@ tr.h{background-color:#99C}
 tr.s{background-color:#FF9}
 .err{color:#F33;font-weight:bold;text-align:center}
 .frm{width:400px;border:1px solid #999;background-color:#eee;text-align:left}
-.frm label.l{width:100px;float:left}
+.frm label .l{width:100px;float:left}
 .dot{border-bottom:1px dotted #000}
 .ajax{text-decoration: none;border-bottom: 1px dashed;}
 .qnav{width:30px}
@@ -427,7 +429,7 @@ function sht(f){
 }
 
 function print_screen(){
- global $out_message, $SQLq, $err_msg, $reccount, $time_all, $sqldr, $page, $MAX_ROWS_PER_PAGE, $is_limited_sql;
+ global $out_message, $SQLq, $err_msg, $reccount, $time_all, $sqldr, $page, $MAX_ROWS_PER_PAGE, $is_limited_sql, $last_count;
 
  $nav='';
  if ($is_limited_sql && ($page || $reccount>=$MAX_ROWS_PER_PAGE) ){
@@ -438,14 +440,14 @@ function print_screen(){
 ?>
 
 <div class="dot" style="padding:0 0 5px 20px">
-SQL-query (or multiple queries separated by ";"):&nbsp;<button type="button" class="qnav" onclick="q_prev()">&lt;</button><button type="button" class="qnav" onclick="q_next()">&gt;</button><br>
+<label for="q">SQL-query (or multiple queries separated by ";"):</label>&nbsp;<button type="button" class="qnav" onclick="q_prev()">&lt;</button><button type="button" class="qnav" onclick="q_next()">&gt;</button><br>
 <textarea id="q" name="q" cols="70" rows="10" style="width:98%"><?php eo($SQLq)?></textarea><br>
 <input type="submit" name="GoSQL" value="Go" onclick="return chksql()" style="width:100px">&nbsp;&nbsp;
 <input type="button" name="Clear" value=" Clear " onclick="document.DF.q.value=''" style="width:100px">
 </div>
 
 <div class="dot" style="padding:5px 0 5px 20px">
-Records: <b><?php eo($reccount)?></b> in <b><?php eo($time_all)?></b> sec<br>
+Records: <b><?php eo($reccount); if(!is_null($last_count) && $reccount<$last_count){eo(' out of '.$last_count);}?></b> in <b><?php eo($time_all)?></b> sec<br>
 <b><?php eo($out_message)?></b>
 </div>
 <div class="sqldr">
@@ -458,7 +460,7 @@ Records: <b><?php eo($reccount)?></b> in <b><?php eo($time_all)?></b> sec<br>
 function print_footer(){
 ?>
 </form>
-<div class="ft">&copy; 2004-2014 <a href="http://osalabs.com" target="_blank">Oleg Savchuk</a></div>
+<div class="ft">&copy; 2004-2015 <a href="http://osalabs.com" target="_blank">Oleg Savchuk</a></div>
 </body></html>
 <?php
 }
@@ -469,7 +471,7 @@ function print_login(){
 <center>
 <h3>Access protected by password</h3>
 <div style="width:400px;border:1px solid #999999;background-color:#eeeeee">
-Password: <input type="password" name="pwd" value="">
+<label>Password: <input type="password" name="pwd" value=""></label>
 <input type="hidden" name="login" value="1">
 <input type="submit" value=" Login ">
 </div>
@@ -486,14 +488,14 @@ function print_cfg(){
 <center>
 <h3>DB Connection Settings</h3>
 <div class="frm">
-<label class="l">DB user name:</label><input type="text" name="v[user]" value="<?php eo($DB['user'])?>"><br>
-<label class="l">Password:</label><input type="password" name="v[pwd]" value=""><br>
+<label><div class="l">DB user name:</div><input type="text" name="v[user]" value="<?php eo($DB['user'])?>"></label><br>
+<label><div class="l">Password:</div><input type="password" name="v[pwd]" value=""></label><br>
 <div style="text-align:right"><a href="#" class="ajax" onclick="cfg_toggle()">advanced settings</a></div>
 <div id="cfg-adv" style="display:none;">
-<label class="l">DB name:</label><input type="text" name="v[db]" value="<?php eo($DB['db'])?>"><br>
-<label class="l">MySQL host:</label><input type="text" name="v[host]" value="<?php eo($DB['host'])?>"> port: <input type="text" name="v[port]" value="<?php eo($DB['port'])?>" size="4"><br>
-<label class="l">Charset:</label><select name="v[chset]"><option value="">- default -</option><?php echo chset_select($DB['chset'])?></select><br>
-<br><input type="checkbox" name="rmb" value="1" checked> Remember in cookies for 30 days
+<label><div class="l">DB name:</div><input type="text" name="v[db]" value="<?php eo($DB['db'])?>"></label><br>
+<label><div class="l">MySQL host:</div><input type="text" name="v[host]" value="<?php eo($DB['host'])?>"></label> <label>port: <input type="text" name="v[port]" value="<?php eo($DB['port'])?>" size="4"></label><br>
+<label><div class="l">Charset:</div><select name="v[chset]"><option value="">- default -</option><?php echo chset_select($DB['chset'])?></select></label><br>
+<br><label for ="rmb"><input type="checkbox" name="rmb" id="rmb" value="1" checked> Remember in cookies for 30 days</label>
 </div>
 <center>
 <input type="hidden" name="savecfg" value="1">
@@ -510,16 +512,20 @@ function print_cfg(){
 function db_connect($nodie=0){
  global $dbh,$DB,$err_msg;
 
- $dbh=@mysql_connect($DB['host'].($DB['port']?":$DB[port]":''),$DB['user'],$DB['pwd']);
+ if ($DB['port']) {
+    $dbh=mysqli_connect($DB['host'],$DB['user'],$DB['pwd'],'',(int)$DB['port']);
+ } else {
+    $dbh=mysqli_connect($DB['host'],$DB['user'],$DB['pwd']);
+ }
  if (!$dbh) {
-    $err_msg='Cannot connect to the database because: '.mysql_error();
+    $err_msg='Cannot connect to the database because: '.mysqli_connect_error();
     if (!$nodie) die($err_msg);
  }
 
  if ($dbh && $DB['db']) {
-  $res=mysql_select_db($DB['db'], $dbh);
+  $res=mysqli_select_db($dbh, $DB['db']);
   if (!$res) {
-     $err_msg='Cannot select db because: '.mysql_error();
+     $err_msg='Cannot select db because: '.mysqli_error($dbh);
      if (!$nodie) die($err_msg);
   }else{
      if ($DB['chset']) db_query("SET NAMES ".$DB['chset']);
@@ -532,7 +538,7 @@ function db_connect($nodie=0){
 function db_checkconnect($dbh1=NULL, $skiperr=0){
  global $dbh;
  if (!$dbh1) $dbh1=&$dbh;
- if (!$dbh1 or !mysql_ping($dbh1)) {
+ if (!$dbh1 or !mysqli_ping($dbh1)) {
     db_connect($skiperr);
     $dbh1=&$dbh;
  }
@@ -541,20 +547,20 @@ function db_checkconnect($dbh1=NULL, $skiperr=0){
 
 function db_disconnect(){
  global $dbh;
- mysql_close($dbh);
+ mysqli_close($dbh);
 }
 
 function dbq($s){
  global $dbh;
  if (is_null($s)) return "NULL";
- return "'".mysql_real_escape_string($s,$dbh)."'";
+ return "'".mysqli_real_escape_string($dbh,$s)."'";
 }
 
 function db_query($sql, $dbh1=NULL, $skiperr=0){
  $dbh1=db_checkconnect($dbh1, $skiperr);
- $sth=@mysql_query($sql, $dbh1);
+ $sth=mysqli_query($dbh1, $sql);
  if (!$sth && $skiperr) return;
- if (!$sth) die("Error in DB operation:<br>\n".mysql_error($dbh1)."<br>\n$sql");
+ if (!$sth) die("Error in DB operation:<br>\n".mysqli_error($dbh1)."<br>\n$sql");
  return $sth;
 }
 
@@ -563,27 +569,28 @@ function db_array($sql, $dbh1=NULL, $skiperr=0, $isnum=0){#array of rows
  if (!$sth) return;
  $res=array();
  if ($isnum){
-   while($row=mysql_fetch_row($sth)) $res[]=$row;
+   while($row=mysqli_fetch_row($sth)) $res[]=$row;
  }else{
-   while($row=mysql_fetch_assoc($sth)) $res[]=$row;
+   while($row=mysqli_fetch_assoc($sth)) $res[]=$row;
  }
  return $res;
 }
 
 function db_row($sql){
  $sth=db_query($sql);
- return mysql_fetch_assoc($sth);
+ return mysqli_fetch_assoc($sth);
 }
 
-function db_value($sql){
- $sth=db_query($sql);
- $row=mysql_fetch_row($sth);
+function db_value($sql,$dbh1=NULL,$skiperr=0){
+ $sth=db_query($sql,$dbh1,$skiperr);
+ if (!$sth) return;
+ $row=mysqli_fetch_row($sth);
  return $row[0];
 }
 
 function get_identity($dbh1=NULL){
  $dbh1=db_checkconnect($dbh1);
- return mysql_insert_id($dbh1);
+ return mysqli_insert_id($dbh1);
 }
 
 function get_db_select($sel=''){
@@ -707,21 +714,24 @@ function savecfg(){
 
  if ($_REQUEST['rmb']){
     $tm=time()+60*60*24*30;
-    setcookie("conn[db]",  $v['db'],$tm);
-    setcookie("conn[user]",$v['user'],$tm);
-    setcookie("conn[pwd]", $v['pwd'],$tm);
-    setcookie("conn[host]",$v['host'],$tm);
-    setcookie("conn[port]",$v['port'],$tm);
-    setcookie("conn[chset]",$v['chset'],$tm);
+    newcookie("conn[db]",  $v['db'],$tm);
+    newcookie("conn[user]",$v['user'],$tm);
+    newcookie("conn[pwd]", $v['pwd'],$tm);
+    newcookie("conn[host]",$v['host'],$tm);
+    newcookie("conn[port]",$v['port'],$tm);
+    newcookie("conn[chset]",$v['chset'],$tm);
  }else{
-    setcookie("conn[db]",  FALSE,-1);
-    setcookie("conn[user]",FALSE,-1);
-    setcookie("conn[pwd]", FALSE,-1);
-    setcookie("conn[host]",FALSE,-1);
-    setcookie("conn[port]",FALSE,-1);
-    setcookie("conn[chset]",FALSE,-1);
+    newcookie("conn[db]",  FALSE,-1);
+    newcookie("conn[user]",FALSE,-1);
+    newcookie("conn[pwd]", FALSE,-1);
+    newcookie("conn[host]",FALSE,-1);
+    newcookie("conn[port]",FALSE,-1);
+    newcookie("conn[chset]",FALSE,-1);
  }
 }
+
+// Allow httponly cookies, or the password is stored plain text in a cookie
+function newcookie($n,$v,$e){$x;return setcookie($n,$v,$e,$x,$x,!!$x,!$x);}
 
 //during login only - from cookies or use defaults;
 function loadcfg(){
@@ -769,6 +779,7 @@ function print_export(){
 <?php }?>
 </div>
 <br>
+<div><label><input type="checkbox" name="sp" value="1"> import has super privileges</label></div>
 <div><label><input type="checkbox" name="gz" value="1"> compress as .gz</label></div>
 <br>
 <input type="hidden" name="doex" value="1">
@@ -782,7 +793,7 @@ function print_export(){
 }
 
 function do_export(){
- global $DB,$VERSION,$D,$BOM,$ex_isgz;
+ global $DB,$VERSION,$D,$BOM,$ex_isgz,$dbh;
  $rt=str_replace('`','',$_REQUEST['t']);
  $t=explode(",",$rt);
  $th=array_flip($t);
@@ -792,6 +803,7 @@ function do_export(){
  if(!$MAXI)$MAXI=838860;
  $aext='';$ctp='';
 
+ $ex_super=($_REQUEST['sp'])?1:0;
  $ex_isgz=($_REQUEST['gz'])?1:0;
  if ($ex_isgz) {
     $aext='.gz';$ctp='application/x-gzip';
@@ -803,26 +815,29 @@ function do_export(){
   if ($DB['chset']=='utf8') ex_w($BOM);
 
   $sth=db_query("select * from `$t[0]`");
-  $fn=mysql_num_fields($sth);
+  $fn=mysqli_field_count($dbh);
   for($i=0;$i<$fn;$i++){
-   $m=mysql_fetch_field($sth,$i);
+   $m=mysqli_fetch_field($sth);
    ex_w(qstr($m->name).(($i<$fn-1)?",":""));
   }
   ex_w($D);
-  while($row=mysql_fetch_row($sth)) ex_w(to_csv_row($row));
+  while($row=mysqli_fetch_row($sth)) ex_w(to_csv_row($row));
   ex_end();
   exit;
  }
 
  ex_hdr($ctp?$ctp:'text/plain',"$DB[db]".(($ct==1&&$t[0])?".$t[0]":(($ct>1)?'.'.$ct.'tables':'')).".sql$aext");
  ex_w("-- phpMiniAdmin dump $VERSION$D-- Datetime: ".date('Y-m-d H:i:s')."$D-- Host: $DB[host]$D-- Database: $DB[db]$D$D");
- ex_w("/*!40030 SET NAMES $DB[chset] */;$D/*!40030 SET GLOBAL max_allowed_packet=16777216 */;$D$D");
+ ex_w("/*!40030 SET NAMES $DB[chset] */;$D");
+ $ex_super && ex_w("/*!40030 SET GLOBAL max_allowed_packet=16777216 */;$D$D");
+ ex_w("/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;$D$D");
 
  $sth=db_query("show tables from `$DB[db]`");
- while($row=mysql_fetch_row($sth)){
+ while($row=mysqli_fetch_row($sth)){
    if (!$rt||array_key_exists($row[0],$th)) do_export_table($row[0],1,$MAXI);
  }
 
+ ex_w("/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;$D$D");
  ex_w("$D-- phpMiniAdmin dump end$D");
  ex_end();
  exit;
@@ -834,7 +849,7 @@ function do_export_table($t='',$isvar=0,$MAXI=838860){
 
  if($_REQUEST['s']){
   $sth=db_query("show create table `$t`");
-  $row=mysql_fetch_row($sth);
+  $row=mysqli_fetch_row($sth);
   $ct=preg_replace("/\n\r|\r\n|\n|\r/",$D,$row[1]);
   ex_w("DROP TABLE IF EXISTS `$t`;$D$ct;$D$D");
  }
@@ -843,7 +858,7 @@ function do_export_table($t='',$isvar=0,$MAXI=838860){
   $exsql='';
   ex_w("/*!40000 ALTER TABLE `$t` DISABLE KEYS */;$D");
   $sth=db_query("select * from `$t`");
-  while($row=mysql_fetch_row($sth)){
+  while($row=mysqli_fetch_row($sth)){
     $values='';
     foreach($row as $v) $values.=(($values)?',':'').dbq($v);
     $exsql.=(($exsql)?',':'')."(".$values.")";
@@ -946,7 +961,7 @@ function do_import(){
   }
   if (!$err_msg){
    if (!do_multi_sql('', $filename)){
-      $err_msg='Import Error: '.mysql_error($dbh);
+      $err_msg='Import Error: '.mysqli_error($dbh);
    }else{
       $out_message='Import done successfully';
       do_sql($SHOW_T);
@@ -1064,12 +1079,17 @@ function get_close_char($str, $pos, $ochar){
 }
 
 function do_one_sql($sql){
- global $last_sth,$last_sql,$MAX_ROWS_PER_PAGE,$page,$is_limited_sql;
+ global $last_sth,$last_sql,$MAX_ROWS_PER_PAGE,$page,$is_limited_sql, $last_count;
  $sql=trim($sql);
  $sql=preg_replace("/;$/","",$sql);
  if ($sql){
     $last_sql=$sql;$is_limited_sql=0;
+    $last_count=NULL;
     if (preg_match("/^select/i",$sql) && !preg_match("/limit +\d+/i", $sql)){
+       #get total count
+       $sql1='select count(*) from ('.$sql.') ___count_table';
+       $last_count=db_value($sql1,NULL,'noerr');
+
        $offset=$page*$MAX_ROWS_PER_PAGE;
        $sql.=" LIMIT $offset,$MAX_ROWS_PER_PAGE";
        $is_limited_sql=1;
