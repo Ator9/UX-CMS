@@ -8,7 +8,7 @@
  *
  *
  * Usage:
- * $blade = new Blade('templates'); // dir
+ * $blade = new Blade('templates', ROOT.'/upload/cache'); // dir
  * $replaces = [ 'title' => 'test' ];
  * echo $blade->view()->make('landing.index', $replaces); // file "landing/index"
  *
@@ -22,6 +22,6 @@ class Blade extends Philo\Blade\Blade
 {
     function __construct($viewPaths = array(), $cachePath = '/upload/cache')
     {
-        parent::__construct($viewPaths, ROOT.$cachePath);
+        parent::__construct($viewPaths, $cachePath);
     }
 }
