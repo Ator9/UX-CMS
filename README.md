@@ -6,7 +6,7 @@ git init && git remote add framework https://github.com/Ator9/UX-CMS.git && git 
 ## Bitbucket Mode (SSH Key)
 ```sh
 git init --bare
-sudo chown -R xxx:yyy 
+sudo chown -R xxx:yyy .
 git remote add origin git@bitbucket.org:xxx/yyy.git
 
 sudo -u user ssh-keygen
