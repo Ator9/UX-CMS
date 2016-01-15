@@ -42,10 +42,12 @@ class adminsAdmin extends ConnExtjs
     {
         $response['success'] = true;
         
+        $where = (isset($_GET['active'])) ? ' AND a.active = "'.$_GET['active'].'"' : '';
+        
         $sql = 'SELECT a.adminID, a.username, a.firstname, a.lastname, a.email
                 FROM '.$this->_table.' a
                 INNER JOIN partners_admins p USING (adminID)
-                WHERE p.partnerID IN ('.implode(',', array_keys($GLOBALS['admin']['data']['partners'])).')
+                WHERE p.partnerID IN ('.implode(',', array_keys($GLOBALS['admin']['data']['partners'])).') '.$where.'
                 GROUP BY a.adminID
                 ORDER BY username ASC';
 
