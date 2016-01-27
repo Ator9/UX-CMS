@@ -109,22 +109,26 @@ class Conn extends mysqli
 		if(isset($GLOBALS['admin']['data']['adminID']) && in_array('adminID_created', $this->_fields)) $arr['adminID_created'] = (int) $GLOBALS['admin']['data']['adminID'];
 
 		$sql = 'INSERT IGNORE INTO '.$this->_table.' ('.implode(',', array_keys($arr)).') VALUES ('.implode(',', $arr).')';
-		if($this->query($sql) && $this->insert_id > 0)
+		if($this->query($sql))
 		{
-		    $this->setID($this->insert_id);
+			if($this->insert_id > 0)
+			{
+				$this->setID($this->insert_id);
 
-            // Extended Classes (foreign keys, unique):
-            foreach($this->_extendedClasses as $className)
-    		{
-    			$db = new $className();
-                foreach($db->_fields as $field)
-        		{
-        			if(isset($this->$field)) $db->$field = $this->$field;
-        		}
-                $db->setID($this->getID());
-                $db->insert(false);
-    		}
-		    return true;
+			        // Extended Classes (foreign keys, unique):
+			        foreach($this->_extendedClasses as $className)
+    				{
+    					$db = new $className();
+                			foreach($db->_fields as $field)
+					{
+        					if(isset($this->$field)) $db->$field = $this->$field;
+        				}
+        				$db->setID($this->getID());
+                			$db->insert(false);
+    				}
+			}
+			
+			return true;
 		}
 		return false;
 	}
