@@ -41,11 +41,9 @@ $messenger = new Messenger();
 if(isset($_GET['_class']) && isset($_GET['_method']) && basename($_SERVER['PHP_SELF']) != 'login.php')
 {
     $obj = new $_GET['_class'];
-    $obj->$_GET['_method']();
+    $obj->{$_GET['_method']}();
     exit;
 }
 
 // http://code.google.com/speed/page-speed/docs/rendering.html#SpecifyCharsetEarly
 header('Content-type: text/html; charset=UTF-8');
-
-
