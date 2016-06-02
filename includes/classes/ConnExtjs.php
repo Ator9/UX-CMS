@@ -148,5 +148,3 @@ class ConnExtjs extends Conn
     	echo json_encode($response);
     }
 }
-
-
