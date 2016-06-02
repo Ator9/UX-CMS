@@ -25,5 +25,3 @@ define('UPLOAD'   , HOST.'/upload');
 define('ROOT'     , str_replace(DIRECTORY_SEPARATOR.'includes', '', __DIR__));
 define('COMMON'   , ROOT.'/common');
 define('INCLUDES' , ROOT.'/includes');
-
-
