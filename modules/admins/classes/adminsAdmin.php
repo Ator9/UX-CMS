@@ -43,11 +43,12 @@ class adminsAdmin extends ConnExtjs
         $response['success'] = true;
         
         $where = (isset($_GET['active'])) ? ' AND a.active = "'.$_GET['active'].'"' : '';
+        if(!empty($GLOBALS['admin']['data']['partners'])) $where.= ' AND p.partnerID IN ('.implode(',', array_keys($GLOBALS['admin']['data']['partners'])).')';
         
         $sql = 'SELECT a.adminID, a.username, a.firstname, a.lastname, a.email
                 FROM '.$this->_table.' a
                 INNER JOIN partners_admins p USING (adminID)
-                WHERE p.partnerID IN ('.implode(',', array_keys($GLOBALS['admin']['data']['partners'])).') '.$where.'
+                WHERE 1 '.$where.'
                 GROUP BY a.adminID
                 ORDER BY username ASC';
 
@@ -62,5 +63,3 @@ class adminsAdmin extends ConnExtjs
         echo json_encode($response);
     }
 }
-
-
