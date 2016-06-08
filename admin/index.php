@@ -11,14 +11,14 @@ if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<?php e
 Ext.application({
     name: 'Admin',
     paths: { 'Ext.ux': 'resources/ux', 'ExtCache': 'resources/extjs-cache.php', 'Extensible': 'resources/ux/extensible/src' <?php echo getAdminPaths(); ?> },
-    
+
     launch: function() {
         Admin = this;
         Admin.modules = <?php echo json_encode($modules); ?>; // Modules list
         Admin.loadedModules = []; // Fills with loaded modules
-        
+
         Ext.require([ 'ExtCache' ]);
-        
+
         // Load default module (includes/config_admin.php):
         Admin.firstModule = (location.hash !== '') ? Ext.Array.indexOf(Admin.modules, location.hash.substr(1)) : Ext.Array.indexOf(Admin.modules, '<?php echo $GLOBALS['admin']['default_module']; ?>');
         if(Admin.firstModule === -1) Admin.firstModule = 0;
@@ -52,7 +52,7 @@ Ext.application({
             }
             <?php if($GLOBALS['admin']['partners_enabled']===true) getAdminPartners(); ?>
         });
-        
+
         // Translate function:
         Admin.lang = [];
         Admin.lang._ = [];
@@ -65,12 +65,12 @@ Ext.application({
                 key = key.split('.')[1];
             }
             else if(obj) var module = obj.$className.split('.')[0];
-            
+
             if(module && key in Admin.lang[module]) return Admin.lang[module][key];
             if(key in Admin.lang._) return Admin.lang._[key];
             return key;
         }
-        
+
         // Common renderers/functions:
         Admin.getStatusIcon = function(value) { return '<span class="status-'+value+'"></span>'; }; // status-Y/N icons
         Admin.getModulesUrl = function(module) {
@@ -83,7 +83,7 @@ Ext.application({
             Ext.Msg.show({ title: title, msg: msg, buttons: Ext.Msg.OK, icon: icon });
         }
         <?php echo $GLOBALS['admin']['custom_js']; /* Add custom js (includes/config_admin.php) */ ?>
-        
+
         // Main container:
         Ext.create('Ext.container.Viewport', {
             layout: 'border',
@@ -93,7 +93,7 @@ Ext.application({
                 border: false,
                 tools: [{ type: 'close', handler: function(event, toolEl, panel) { location.href = 'login.php?logout=1'; } }]
             }]
-        });  
+        });
     }
 });
 
