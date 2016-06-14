@@ -26,7 +26,7 @@ function getAdminTree()
         if($k == 'Admins') continue;
         $tree_final[$k] = $v;
     }
-    return $tree;
+    return $tree_final;
 }
 
 
@@ -195,5 +195,3 @@ function checkAdminIpAccess()
         exit('access denied');
     }
 }
-
-
