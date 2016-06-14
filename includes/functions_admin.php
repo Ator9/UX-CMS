@@ -18,7 +18,14 @@ function getAdminTree()
         $tree[$lang->t($panel.'.'.$config['name'])] = array('text'=>$lang->t($panel.'.'.$config['name']), 'id'=>$panel, 'icon'=>'resources/icons/'.$config['icon'], 'leaf'=>true);
     }
     
-    ksort($tree); // Alphabetical order
+    // Alphabetical order:
+    ksort($tree);
+    $tree_final['Admins'] = $tree['Admins'];
+    foreach($tree as $k => $v)
+    {
+        if($k == 'Admins') continue;
+        $tree_final[$k] = $v;
+    }
     return $tree;
 }
 
