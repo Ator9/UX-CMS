@@ -1,7 +1,7 @@
 <?php
 class ConnExtjs extends Conn
 {
-    public $_debug  = false;   // True to save all queries (adminsLog)
+    public $_debug  = false;   // True to save all queries in adminsLog
 	public $_table	= '';      // Table name
 	public $_index	= '';      // Table primary Key
 	public $_fields	= array(); // Table columns (auto filled with "getColumns()" if not set)
