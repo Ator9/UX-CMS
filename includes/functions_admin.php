@@ -20,11 +20,14 @@ function getAdminTree()
     
     // Alphabetical order:
     ksort($tree);
-    $tree_final['Admins'] = $tree['Admins'];
-    foreach($tree as $k => $v)
+    if(isset($tree['Admins']))
     {
-        if($k == 'Admins') continue;
-        $tree_final[$k] = $v;
+        $tree_final['Admins'] = $tree['Admins'];
+        foreach($tree as $k => $v)
+        {
+            if($k == 'Admins') continue;
+            $tree_final[$k] = $v;
+        }
     }
     return $tree_final;
 }
