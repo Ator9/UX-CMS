@@ -19,6 +19,9 @@ $GLOBALS['admin']['partners_enabled'] = false;
 // Header (admin/common/):
 $GLOBALS['admin']['header'] = 'header.extjs6.php';
 
+// Extjs Charts needed:
+$GLOBALS['admin']['header_charts'] = false;
+
 // Languages (Default first position):
 $GLOBALS['admin']['locale'] = array('es'=>'Español', 'en'=>'English');
 
