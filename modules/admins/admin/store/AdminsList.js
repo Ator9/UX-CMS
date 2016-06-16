@@ -14,7 +14,7 @@ Ext.define('admins.store.AdminsList', {
             read: 'index.php?_class=adminsAdmin&_method=extAdminsList' // reader
         },
         reader: {
-            root: 'data', // php response name
+            rootProperty: 'data', // php response name
             totalProperty: 'totalCount' // PagingToolbar (php response name)
         }
     }
