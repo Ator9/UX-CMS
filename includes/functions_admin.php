@@ -29,7 +29,7 @@ function getAdminTree()
             $tree_final[$k] = $v;
         }
     }
-    return $tree_final;
+    return (isset($tree_final)) ? $tree_final : $tree;
 }
 
 
