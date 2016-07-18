@@ -199,6 +199,7 @@ function checkAdminIpAccess()
     }
 }
 
+
 // Host restriction (admin config.php):
 function checkAdminHostAccess()
 {
