@@ -34,6 +34,9 @@ $GLOBALS['admin']['fbar_buttons'][] = array('url' => HOST, 'text' => 'Home Page'
 // IP restriction:
 $GLOBALS['admin']['allowed_ips'] = array(); // Example: array('192.168.1.1', '200.55.*.*', '200.100.*.50');
 
+// Host restriction:
+$GLOBALS['admin']['allowed_hosts'] = array(); // Example: array('example.com', 'admin.product.com');
+
 // Custom javascript (admin/index.php):
 $GLOBALS['admin']['custom_js'] = <<<js
 
