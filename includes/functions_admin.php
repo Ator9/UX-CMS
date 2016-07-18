@@ -198,3 +198,15 @@ function checkAdminIpAccess()
         exit('access denied');
     }
 }
+
+// Host restriction (admin config.php):
+function checkAdminHostAccess()
+{
+    if(!empty($GLOBALS['admin']['allowed_hosts']))
+    {
+        if(in_array($_SERVER['HTTP_HOST'], $GLOBALS['admin']['allowed_hosts'])) return true;
+
+        header('HTTP/1.0 403 Forbidden');
+        exit('access denied');
+    }
+}
