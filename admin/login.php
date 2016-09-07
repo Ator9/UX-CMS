@@ -1,8 +1,8 @@
 <?php
 require(__DIR__.'/common/init.php');
 
-// IP restriction:
-checkAdminIpAccess();
+// IP/Host restriction:
+checkAdminIpAccess(); checkAdminHostAccess();
 
 // Login:
 if(isset($_POST['login']) && trim($_POST['name']) != '' && trim($_POST['pass']) != '')
