@@ -28,8 +28,8 @@ Ext.define('admins.view.Admins', {
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
                 { header: 'ID', dataIndex: 'adminID', width: 50 },
-                { header: 'Username', dataIndex: 'username', width: 140 },
-                { header: 'E-mail', dataIndex: 'email', width: 160 },
+                { header: 'Username', dataIndex: 'username', width: 200 },
+                { header: 'E-mail', dataIndex: 'email', width: 200 },
                 { header: 'Role', dataIndex: 'roleID', flex: 1, renderer: this.getRole, scope: this },
                 { header: 'Superuser', dataIndex: 'superuser', width: 64, align: 'center', renderer: Admin.getStatusIcon },
                 { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon },
