@@ -39,14 +39,14 @@ Ext.define('Ext.ux.GridRowDelete', {
     rowDelete: function(btn) {
         if(btn=='yes') {
             this.grid.setLoading(); // Show loading mask
-            this.grid.getStore().remove(this.grid.getSelectionModel().getSelection()); // remove from grid
-            this.grid.getStore().sync({ // Sync store (calling delete method)
+            this.grid.store.remove(this.grid.getSelectionModel().getSelection()); // remove from grid
+            this.grid.store.sync({ // Sync store (calling delete method)
                 scope: this,
                 success: function(form, action) { this.grid.setLoading(false); },
                 failure: function(form, action) {
                     this.grid.setLoading(false); // Hide loading mask
                     Admin.Msg('Delete error ocurred', false);
-                    this.grid.getStore().reload();
+                    this.grid.store.reload();
                 }
             });
             this.disableComponents();
