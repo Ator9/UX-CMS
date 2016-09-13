@@ -12,6 +12,7 @@
 Ext.define('Ext.ux.Filesystem', {
     extend: 'Ext.grid.Panel',
 
+    border: false,
     upload_dir:   '', // files read path
     parent_class: '', // php class with "ExtjsFilesystem" trait
 
