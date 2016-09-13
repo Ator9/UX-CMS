@@ -115,19 +115,18 @@ class Conn extends mysqli
 			{
 				$this->setID($this->insert_id);
 
-			        // Extended Classes (foreign keys, unique):
-			        foreach($this->_extendedClasses as $className)
-    				{
-    					$db = new $className();
-                			foreach($db->_fields as $field)
+		        // Extended Classes (foreign keys, unique):
+		        foreach($this->_extendedClasses as $className)
+				{
+					$db = new $className();
+            		foreach($db->_fields as $field)
 					{
-        					if(isset($this->$field)) $db->$field = $this->$field;
-        				}
-        				$db->setID($this->getID());
-                			$db->insert(false);
+    					if(isset($this->$field)) $db->$field = $this->$field;
     				}
+    				$db->setID($this->getID());
+            		$db->insert(false);
+				}
 			}
-			
 			return true;
 		}
 		return false;

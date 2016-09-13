@@ -19,8 +19,8 @@ class Captcha
 	public $private_key = ''; // You got this from the signup page
 	public $lang  	    = 'es';
 	public $theme 	    = 'white';
-	
-	
+
+
 	public function __construct($config = array())
     {
         foreach($config as $key => $value)
@@ -28,7 +28,7 @@ class Captcha
             if(isset($this->$key)) $this->$key = $value;
         }
     }
-    
+
 
 	public function get()
 	{
@@ -50,12 +50,10 @@ class Captcha
 	{
 	    if($challenge == '') $challenge = $_POST['recaptcha_challenge_field'];
 	    if($response == '')  $response  = $_POST['recaptcha_response_field'];
-	    
+
 		$resp = recaptcha_check_answer($this->private_key, $_SERVER['REMOTE_ADDR'], $challenge, $response);
 		return $resp->is_valid;
 	}
 }
 
 require(INCLUDES.'/lib/recaptcha/recaptchalib.php');
-
-

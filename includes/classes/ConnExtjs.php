@@ -7,7 +7,7 @@ class ConnExtjs extends Conn
 	public $_fields	= array(); // Table columns (auto filled with "getColumns()" if not set)
 
 	protected $_dependantClasses = array(); // Delete childrens
-	
+
 
 	// ------------------------------------------------------------------------------- //
 
@@ -33,7 +33,7 @@ class ConnExtjs extends Conn
     {
         $response['success'] = false;
         $response['data']    = 'Record not found';
-            
+
         if($sql != '')
         {
             $res = $this->query($sql);
@@ -47,19 +47,19 @@ class ConnExtjs extends Conn
         {
             $response['success'] = true;
             $response['data']    = $this->getArray();
-            
+
         }
-        
+
         echo json_encode($response);
     }
-    
-    
+
+
     // Save (Form):
     public function extSave()
     {
         if(isset($_POST[$this->_index])) $this->get($_POST[$this->_index]);
         $this->set($_POST);
-        
+
         if($this->save()) $response['success'] = true;
         else $response['success'] = false;
 
@@ -71,10 +71,10 @@ class ConnExtjs extends Conn
     public function extCreate()
     {
         $data = json_decode($_POST['data'], true);
-        
+
         if(isset($data[$this->_index])) $this->get($data[$this->_index]);
         $this->set($data);
-        
+
         if($this->save())
         {
             $response['success'] = true;
@@ -108,7 +108,7 @@ class ConnExtjs extends Conn
         if($filter && isset($_REQUEST['search']) && trim($_REQUEST['search']) != '')
         {
             if(!isset($_REQUEST['columns'])) $_REQUEST['columns'] = array($this->_index);
-            
+
             foreach($_REQUEST['columns'] as $field)
             {
             	$where[] = (is_numeric($_REQUEST['search'])) ? $field.'='.$this->escape($_REQUEST['search']) : $field.' LIKE "%'.$this->escape($_REQUEST['search']).'%"';
@@ -119,7 +119,7 @@ class ConnExtjs extends Conn
 
         if(strpos($sql, 'ORDER BY')===false && $_REQUEST['sort'] != '') $sql.= ' ORDER BY '.$this->escape($_REQUEST['sort']).' '.$this->escape($_REQUEST['dir']);
         if(!isset($_REQUEST['csvExport']) && strpos($sql, 'LIMIT')===false) $sql.= ' LIMIT '.(int) $_REQUEST['start'].', '.(int) $_REQUEST['limit'];
-        
+
         // Query SQL_CALC_FOUND_ROWS:
         $sql = preg_replace('/SELECT /', 'SELECT SQL_CALC_FOUND_ROWS ', $sql, 1); // 1 = only first match
         $rs  = $this->query($sql);
@@ -144,7 +144,7 @@ class ConnExtjs extends Conn
 
         $rs = $this->query('SELECT FOUND_ROWS()');
         list($response['totalCount']) = $rs->fetch_row();
-        
+
     	echo json_encode($response);
     }
 }

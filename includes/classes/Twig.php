@@ -23,5 +23,3 @@ class Twig extends Twig_Environment
         parent::__construct($loader, $options);
     }
 }
-
-
