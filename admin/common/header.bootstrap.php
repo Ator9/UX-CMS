@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
 <title><?php echo $GLOBALS['admin']['title']; ?></title>
