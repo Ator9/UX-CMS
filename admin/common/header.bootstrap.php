@@ -2,7 +2,7 @@
 <html>
 <head>
 <title><?php echo $GLOBALS['admin']['title']; ?></title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" type="text/css" href="<?php echo staticLoader('resources/lib/bootstrap/css/bootstrap.min.css'); ?>">
 <?php if(is_file(__DIR__.'/../resources/styles.css')) { ?>
 <link rel="stylesheet" type="text/css" href="<?php echo staticLoader('admin/resources/styles.css'); ?>">
