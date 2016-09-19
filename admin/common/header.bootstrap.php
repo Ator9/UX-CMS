@@ -7,5 +7,5 @@
 <?php if(is_file(__DIR__.'/../resources/styles.css')) { ?>
 <link rel="stylesheet" type="text/css" href="<?php echo staticLoader('admin/resources/styles.css'); ?>">
 <?php } ?>
-<script type="text/javascript" src="<?php echo staticLoader('resources/lib/jquery/jquery-1.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo staticLoader('resources/lib/jquery/jquery-3.min.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo staticLoader('resources/lib/bootstrap/js/bootstrap.min.js'); ?>"></script>
