@@ -21,9 +21,9 @@ function query($sql)
 }
 
 // Get current URL:
-function getCurrentUrl($strip_query=false)
+function getCurrentUrl($strip_query = false)
 {
-    $url = HOST.substr($_SERVER['REQUEST_URI'], 1);
+    $url = HOST.$_SERVER['REQUEST_URI'];
     if($strip_query) $url = current(explode('?', $url));
 
     return $url;
