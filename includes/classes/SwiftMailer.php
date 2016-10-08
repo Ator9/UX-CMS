@@ -2,7 +2,7 @@
 /**
  * Swift Mailer
  *
- * @version 5.4.1
+ * @version 5.4.3
  * @author http://swiftmailer.org/
  * @link https://packagist.org/packages/swiftmailer/swiftmailer
  * Install: composer require swiftmailer/swiftmailer
