@@ -136,12 +136,11 @@ class RestApiClient
 	    curl_setopt_array($ch, $opts);
 	    if($this->api_username != '' && $this->api_password != '') curl_setopt($ch, CURLOPT_USERPWD, $this->api_username.':'.$this->api_password); 
 	    
-	    $return['data']   = json_decode(curl_exec($ch));
-        $return['status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		$return['data']   = json_decode(curl_exec($ch));
+		$return['info']   = curl_getinfo($ch);
+		$return['status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         
         return $return;
 	}
 }
-
-
