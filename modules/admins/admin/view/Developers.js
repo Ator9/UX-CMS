@@ -15,6 +15,11 @@ Ext.define('admins.view.Developers', {
         }));
         
         items.push(Ext.create('Ext.ux.IFrame', {
+            title: 'Error Log',
+            src: Admin.getModulesUrl(this)+'/error_log.php'
+        }));
+        
+        items.push(Ext.create('Ext.ux.IFrame', {
             title: 'Documentation',
             src: Admin.getModulesUrl(this)+'/documentation.php'
         }));
