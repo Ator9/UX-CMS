@@ -59,11 +59,14 @@ class Tree extends ConnExtjs
         $orig = new $this;
         $orig->get($this->getID());
         
-	    // Same parent, normal update:
-	    if($orig->parentID == $this->parentID) return parent::update();
+	// Check que no cambien el parent del root:
+	if($orig->getID() == 1 && $this->parentID != 0) return false;
+		
+	// Same parent, normal update:
+	if($orig->parentID == $this->parentID) return parent::update();
 
         // Parent change. Need parent info:
-	    $parent = new $this;
+	$parent = new $this;
         if($parent->get($this->parentID))
         {
 	        // Chequeo que no quiera mover el nodo a uno de sus hijos:
