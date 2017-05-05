@@ -35,7 +35,7 @@ class adminsLog extends ConnExtjs
         $this->set($data);
 
         if(isset($GLOBALS['admin']['data']['adminID'])) $this->adminID = (int) $GLOBALS['admin']['data']['adminID'];
-        $this->ip        = $_SERVER['REMOTE_ADDR'];
+        if(isset($_SERVER['REMOTE_ADDR'])) $this->ip = $_SERVER['REMOTE_ADDR'];
 
         return parent::insert();
     }
