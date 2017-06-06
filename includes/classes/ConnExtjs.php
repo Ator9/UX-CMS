@@ -126,7 +126,7 @@ class ConnExtjs extends Conn
 
         if(isset($_REQUEST['csvExport']))
         {
-            $csv = new CSVExport($_REQUEST['csvName']);
+            $csv = new CSVExport($_REQUEST['csvName'], $_REQUEST['csvDelimiter']);
             $csv->putResultset($rs);
             $csv->export($_REQUEST['csvZip']=='true'); // Force boolean (true/false)
             exit;
