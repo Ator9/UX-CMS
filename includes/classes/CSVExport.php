@@ -1,7 +1,6 @@
 <?php
 
 /**
-    Powered by Ator:
     Clase para utilizar en todos los exports de CSV.
     Así están unificados los delimitadores, etc.
 
@@ -45,24 +44,25 @@
 
 class CSVExport
 {
+    public $filename   = 'export';     // Filename
     public $delimiter  = ';';          // Separador de columnas
     public $enclosure  = '"';          // Encapsulador de datos
-    public $filename   = 'export';     // Filename
     protected $path;                   // Path
     protected $fp;
 
 
     // Inicio:
-    public function __construct($filename='')
+    public function __construct($filename = '', $delimiter = '')
     {
-        if($filename!='') $this->filename = $filename;
+        if($filename!='')  $this->filename  = $filename;
+        if($delimiter!='') $this->delimiter = $delimiter;
 
         $this->path = ROOT.'/upload/'.$this->filename.'.csv';
         $this->fp   = fopen($this->path, 'w');
     }
 
     // Agrego resultset completo de la consulta:
-    public function putResultset($resultset, $firstLineIsHeader=true)
+    public function putResultset($resultset, $firstLineIsHeader = true)
     {
         if($firstLineIsHeader) $this->firstLine($resultset);
         while($row = $resultset->fetch_assoc()) $this->put($row);
@@ -76,7 +76,7 @@ class CSVExport
     }
 
     // Agrego fila:
-    public function put($row=array())
+    public function put($row = array())
     {
         // Esto se hace porque el fputcsv no encierra todos los campos con el enclosure. Y algunos campos después se ven mal.
         // Entonces le agregamos este string para forzar el enclosure y después se lo quitamos.
@@ -85,13 +85,13 @@ class CSVExport
     }
 
     // Agrego todas las filas:
-    public function putAll($rows=array())
+    public function putAll($rows = array())
     {
         foreach($rows as $row) $this->put($row);
     }
 
     // Export / Download:
-    function export($zip=true)
+    function export($zip = true)
     {
         fclose($this->fp);
 
