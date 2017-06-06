@@ -17,6 +17,7 @@ Ext.define('Ext.ux.GridExport', {
     icon: 'resources/icons/table-export.png',
     
     csvName: 'csv_export',
+    csvDelimiter: ';',
     csvZip: false,
 
     handler: function() {
@@ -30,7 +31,7 @@ Ext.define('Ext.ux.GridExport', {
         var sorters     = '&sort='+sort+'&dir='+dir;
         var extraParams = '&'+Ext.urlEncode(store.getProxy().extraParams);
         
-        var url = store.getProxy().api.read+sorters+extraParams+'&csvExport=Y&csvName='+this.csvName+'&csvZip='+this.csvZip;
+        var url = store.getProxy().api.read+sorters+extraParams+'&csvExport=Y&csvName='+this.csvName+'&csvZip='+this.csvZip+'&csvDelimiter='+this.csvDelimiter;
         window.location = url;
     },
     
