@@ -47,7 +47,7 @@ class adminsAdmin extends ConnExtjs
         
         $sql = 'SELECT a.adminID, a.username, a.firstname, a.lastname, a.email
                 FROM '.$this->_table.' a
-                INNER JOIN partners_admins p USING (adminID)
+                LEFT JOIN partners_admins p USING (adminID)
                 WHERE 1 '.$where.'
                 GROUP BY a.adminID
                 ORDER BY username ASC';
