@@ -9,6 +9,12 @@ if(LOCAL)
 	define('DB_USER', 'root');
 	define('DB_PASS', '1');
 	define('DB_NAME', 'cmspro');
+
+	// PHP Error handler - https://github.com/filp/whoops
+	require(__DIR__.'/lib/whoops/vendor/autoload.php');
+	$whoops = new \Whoops\Run;
+	$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+	$whoops->register();
 }
 else
 {
@@ -24,5 +30,3 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 // Marks the cookie as accessible only through the HTTP protocol (won't be accessible by JavaScript).
 // This setting can effectively help to reduce identity theft through XSS attacks.
 ini_set('session.cookie_httponly', 1);
-
-
