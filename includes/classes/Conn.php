@@ -248,7 +248,7 @@ class Conn extends mysqli
      */
     public function getArray()
     {
-        foreach($this->_fields as $field) $arr[$field] = $this->$field;
+        foreach($this->_fields as $field) $arr[$field] = isset($this->$field) ?  $this->$field : '';
         return $arr;
     }
 
