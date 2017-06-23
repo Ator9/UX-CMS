@@ -31,7 +31,7 @@ trait ExtjsFilesystem
         {
             // Rename if exists:
             $filename = $_FILES['files']['name'][$i];
-            if($fs->has($filename)) $filename.= '_'.time();
+            if($fs->has($filename)) $filename = time().'_'.$filename;
 
             $fs->write($filename, file_get_contents($_FILES['files']['tmp_name'][$i]));
         }
