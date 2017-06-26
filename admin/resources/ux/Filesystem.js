@@ -48,7 +48,7 @@ Ext.define('Ext.ux.Filesystem', {
                         Admin.Msg(json.message, false);
                     }
                 });
-                context.store.reload();
+                context.store.reload(); // bug cuando se renombra y se intenta borrar (queda seleccionado raro)
             },
             itemclick: {
                 fn: function(view, record, item, index, e) {
