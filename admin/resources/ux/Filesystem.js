@@ -48,6 +48,7 @@ Ext.define('Ext.ux.Filesystem', {
                         Admin.Msg(json.message, false);
                     }
                 });
+                context.store.reload();
             },
             itemclick: {
                 fn: function(view, record, item, index, e) {
