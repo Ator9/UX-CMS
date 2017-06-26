@@ -23,7 +23,7 @@ Ext.define('Ext.ux.Filesystem', {
         this.store.load();
 
         this.columns = [
-            { header: Admin.t('Name'), dataIndex: 'path', width: 250 },
+            { header: Admin.t('Name'), dataIndex: 'path', width: 250, editor: { allowBlank: false } },
             { header: Admin.t('Size'), dataIndex: 'size', width: 100, align: 'right' },
             { header: Admin.t('Path'), dataIndex: 'linkpath', flex: 1 },
             { header: Admin.t('Date Created'), dataIndex: 'timestamp', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
@@ -37,9 +37,18 @@ Ext.define('Ext.ux.Filesystem', {
             store: this.store
         }, '-', Ext.create('Ext.ux.GridRowDelete') ];
 
+        this.plugins = [ Ext.create('Ext.grid.plugin.RowEditing') ];
         this.viewConfig = { enableTextSelection: true };
         this.bbar       = Ext.create('Ext.toolbar.Paging', { store: this.store, displayInfo: true });
         this.listeners  = {
+            edit: function(editor, context, eOpts) {
+                context.store.sync({ // Synchronizes the store with its proxy (new, updated and deleted records)
+                    failure: function(form, action) {
+                        var json = JSON.parse(form.operations[0].getResponse().responseText);
+                        Admin.Msg(json.message, false);
+                    }
+                });
+            },
             itemclick: {
                 fn: function(view, record, item, index, e) {
                     this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
@@ -65,6 +74,7 @@ Ext.define('Ext.ux.Filesystem', {
                 simpleSortMode: true, // Default false (enable multiple sorts)
                 api: {
                     read: 'index.php?_class='+this.parent_class+'&_method=extGridFilesystem', // reader
+                    update: 'index.php?_class='+this.parent_class+'&_method=extGridFilesystemRename', // writer (grid RowEditing)
                     destroy: 'index.php?_class='+this.parent_class+'&_method=extGridFilesystemDelete' // writer
                 },
                 reader: {
