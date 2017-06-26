@@ -40,6 +40,22 @@ trait ExtjsFilesystem
         echo json_encode($response);
     }
 
+    
+    // Rename:
+    public function extGridFilesystemRename()
+    {
+        $response['success'] = false;
+
+        $data = json_decode($_POST['data'], true);
+
+        $fs = new Filesystem(null, [ 'upload_dir' => ROOT.'/'.$data['upload_dir'] ]);
+
+        if($fs->has($data['path'])) $response['message'] = 'File already exists';
+        elseif($fs->rename(basename($data['linkpath']), $data['path'])) $response['success'] = true;
+
+        echo json_encode($response);
+    }
+    
 
     // Delete:
     public function extGridFilesystemDelete()
