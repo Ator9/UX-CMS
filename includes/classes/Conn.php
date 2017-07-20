@@ -49,7 +49,7 @@ class Conn extends mysqli
 	// mysqli_query returns FALSE on failure.
 	// For successful SELECT, SHOW, DESCRIBE or EXPLAIN queries mysqli_query() will return a result object.
 	// For other successful queries mysqli_query() will return TRUE.
-	public function query($sql)
+	public function query($sql, $resultmode = MYSQLI_STORE_RESULT)
 	{
 		if($this->_debug) $this->logQuery($sql, 'SQL Debug');
 		if($result = parent::query($sql)) return $result;
