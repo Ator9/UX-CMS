@@ -45,7 +45,11 @@ Ext.define('Ext.ux.GridRowDelete', {
                 success: function(form, action) { this.grid.setLoading(false); },
                 failure: function(form, action) {
                     this.grid.setLoading(false); // Hide loading mask
-                    Admin.Msg('Delete error ocurred', false);
+                 
+                    var json = JSON.parse(form.operations[0].getResponse().responseText);
+                    if(json.message != '') Admin.Msg(json.message, false);
+                    else Admin.Msg('Delete error ocurred', false);
+                 
                     this.grid.store.reload();
                 }
             });
