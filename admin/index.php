@@ -104,6 +104,11 @@ Ext.application({
 Ext.Ajax.on('requestexception', function(conn, response, options, eOpts) {
     if(response.status === 401) window.location = 'login.php';
 });
+    
+// Keep Login every 5min:
+setInterval(function() {
+    Ext.Ajax.request({ url: 'index.php?keep_login=1' });
+}, 300000);
 </script>
 </head>
 <body></body>
