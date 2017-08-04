@@ -8,6 +8,9 @@ else require(INCLUDES.'/config_admin.default.php');
 // Admin Session:
 $aSession = new Session('admin');
 
+// Admin Session - Keep login every 5min:
+if(isset($_REQUEST['keep_login'])) exit(true);
+
 // Admin Lang:
 if(!$aSession->exists('locale')) $aSession->set('locale', key($GLOBALS['admin']['locale']));
 $lang = new Lang($aSession->get('locale'));
