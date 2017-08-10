@@ -10,6 +10,7 @@ if($GLOBALS['admin']['favicon']!='') { ?><link type="image/x-icon" href="<?php e
 <script>
 var LOCAL = <?php echo var_export(LOCAL); ?>;
 var EMAIL = "<?php echo $GLOBALS['admin']['data']['email']; ?>";
+var HOST  = "<?php echo HOST; ?>";
     
 Ext.application({
     name: 'Admin',
