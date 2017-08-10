@@ -39,7 +39,7 @@ class Conn extends mysqli
 	{
 		@parent::__construct($host, $user, $pass, $db);
 		if(mysqli_connect_errno()) exit('Database connection error');
-		if(!parent::set_charset('utf8')) exit('Database utf8 error');
+		if(!parent::set_charset('utf8mb4')) exit('Database utf8mb4 error');
 
 		if($this->_table != '' && empty($this->_fields)) $this->_fields = $this->getColumns(); // automatic fields
 		elseif($this->_index != '') array_unshift($this->_fields, $this->_index); // adds index to field list
