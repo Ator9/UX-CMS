@@ -29,7 +29,7 @@ Ext.define('admins.view.Admins', {
     
     createGrid: function() {
         
-        this.store = Ext.create(this.module+'.store.Admins').load(); // Store + Load
+        this.store = Ext.create(this.self.getName().replace('view','store')).load(); // Store + Load
         this.grid  = Ext.create('Ext.grid.Panel', {
             store: this.store,
             region: 'center', // There must be a component with region: "center" in every border layout
