@@ -1,6 +1,12 @@
 Ext.define('admins.view.Partners', {
     extend: 'Ext.panel.Panel',
     
+    config: {
+        module: 'admins',
+        phpclass: 'adminsPartners',
+        primaryID: 'partnerID'
+    },
+    
     initComponent: function() {
         this.layout = 'border'; // Any Container using the Border layout must have a child item with region: 'center'
         this.items  = [ this.createTabPanel(), this.createGridPanel() ];
@@ -8,7 +14,8 @@ Ext.define('admins.view.Partners', {
     },
     
     createGridPanel: function() {
-        var partnerStore = Ext.create('admins.store.Partners').load(); // Store + Load
+        
+        var partnerStore = Ext.create(this.self.getName().replace('view','store')).load(); // Store + Load
 
         var grid = Ext.create('Ext.grid.Panel', {
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing') ],
@@ -16,14 +23,14 @@ Ext.define('admins.view.Partners', {
             tbar: [
                 Ext.create('Ext.ux.GridRowInsert'), '-',
                 Ext.create('Ext.ux.GridRowDelete', { form: this.config.up() }), '-',
-                Ext.create('Ext.ux.GridSearch', { columns: [ 'partnerID', 'name' ] }) 
+                Ext.create('Ext.ux.GridSearch', { columns: [ this.primaryID, 'name' ] }) 
             ],
             region: 'west', // There must be a component with region: "center" in every border layout
             width: 420,
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
-                { header: 'ID', dataIndex: 'partnerID', width: 50 },
+                { header: 'ID', dataIndex: this.primaryID, width: 50 },
                 { header: Admin.t('Name'), dataIndex: 'name', flex: 1, editor: { allowBlank: false } },
                 { header: Admin.t('Active'), dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon, editor: { xtype: 'combo', store: [ 'Y', 'N' ], allowBlank: false } },
                 { header: Admin.t('Date Created'), dataIndex: 'date_created', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
@@ -37,10 +44,10 @@ Ext.define('admins.view.Partners', {
                         this.config.setTitle('Config - ' + record.get('name'));
                         this.admins.setTitle('Admins - ' + record.get('name'));
                         
-                        this.partnersConfigStore.getProxy().extraParams = { partnerID: record.get('partnerID') }; // set partnerID
+                        this.partnersConfigStore.getProxy().extraParams = { partnerID: record.get(this.primaryID) }; // set partnerID
                         this.partnersConfigStore.load(); // get results from partnerID
 
-                        this.partnersAdminsStore.getProxy().extraParams = { partnerID: record.get('partnerID') }; // set partnerID
+                        this.partnersAdminsStore.getProxy().extraParams = { partnerID: record.get(this.primaryID) }; // set partnerID
                         this.partnersAdminsStore.load(); // get results from partnerID
                         
                         this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
@@ -56,8 +63,8 @@ Ext.define('admins.view.Partners', {
     },
     
     createTabPanel: function() {
-        this.partnersConfigStore = Ext.create('admins.store.PartnersConfig');
-        this.partnersAdminsStore = Ext.create('admins.store.PartnersAdmins');
+        this.partnersConfigStore = Ext.create(this.module+'.store.PartnersConfig');
+        this.partnersAdminsStore = Ext.create(this.module+'.store.PartnersAdmins');
 
         this.config =  Ext.create('Ext.grid.Panel', {
             plugins: [ Ext.create('Ext.grid.plugin.RowEditing') ],
@@ -90,14 +97,14 @@ Ext.define('admins.view.Partners', {
                 defaultType: 'textfield',
                 items: [
                     { name: 'key', fieldLabel: 'Username', labelWidth: 120, allowBlank: false },
-                    { name: 'partnerID', xtype: 'hidden' }
+                    { name: this.primaryID, xtype: 'hidden' }
                 ],
                 bbar: ['->', {
                     text: Admin.t('Add'),
                     icon: 'resources/icons/plus.png',
                     scope: this,
                     handler: function() {
-                        add_admin.down('form').getForm().setValues({ partnerID: this.down('grid[region=west]').getSelectionModel().getSelection()[0].get('partnerID') });
+                        add_admin.down('form').getForm().setValues({ partnerID: this.down('grid[region=west]').getSelectionModel().getSelection()[0].get(this.primaryID) });
                         if(add_admin.down('form').isValid()) {
                             add_admin.down('form').submit({
                                 scope: this,
