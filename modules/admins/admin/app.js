@@ -10,11 +10,11 @@ Ext.define('admins.app', {
         
         this.title = '';
         this.items = [
-            Ext.create(this.module+'.view.Admins', { title: 'Admins', roleStore: roleStore }),
-            Ext.create(this.module+'.view.Roles', { title: 'Roles', store: roleStore }),
-            Ext.create(this.module+'.view.Partners', { title: 'Partners' }),
-            Ext.create(this.module+'.view.Logs', { title: 'Logs' }),
-            Ext.create(this.module+'.view.Developers', { title: 'Developers' })
+            Ext.create(this.module+'.view.Admins', { title: Admin.t('Admins'), roleStore: roleStore }),
+            Ext.create(this.module+'.view.Roles', { title: Admin.t('Roles'), store: roleStore }),
+            Ext.create(this.module+'.view.Partners', { title: Admin.t('Partners') }),
+            Ext.create(this.module+'.view.Logs', { title: Admin.t('Logs') }),
+            Ext.create(this.module+'.view.Developers', { title: Admin.t('Developers') })
         ];
         
         this.callParent(arguments);
