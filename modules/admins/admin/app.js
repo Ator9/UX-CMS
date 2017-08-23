@@ -1,16 +1,20 @@
 Ext.define('admins.app', {
     extend: 'Ext.tab.Panel',
     
+    config: {
+        module: 'admins'
+    },
+    
     initComponent: function() {
-        var roleStore = Ext.create('admins.store.Roles').load(); // Shared store: try to avoid filters (pageSize/restrictions)
+        var roleStore = Ext.create(this.module+'.store.Roles').load(); // Shared store: try to avoid filters (pageSize/restrictions)
         
         this.title = '';
         this.items = [
-            Ext.create('admins.view.Admins', { title: 'Admins', roleStore: roleStore }),
-            Ext.create('admins.view.Roles', { title: 'Roles', store: roleStore }),
-            Ext.create('admins.view.Partners', { title: 'Partners' }),
-            Ext.create('admins.view.Logs', { title: 'Logs' }),
-            Ext.create('admins.view.Developers', { title: 'Developers' })
+            Ext.create(this.module+'.view.Admins', { title: 'Admins', roleStore: roleStore }),
+            Ext.create(this.module+'.view.Roles', { title: 'Roles', store: roleStore }),
+            Ext.create(this.module+'.view.Partners', { title: 'Partners' }),
+            Ext.create(this.module+'.view.Logs', { title: 'Logs' }),
+            Ext.create(this.module+'.view.Developers', { title: 'Developers' })
         ];
         
         this.callParent(arguments);
