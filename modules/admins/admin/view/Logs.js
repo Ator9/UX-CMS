@@ -15,26 +15,10 @@ Ext.define('admins.view.Logs', {
     initComponent: function() {
         
         var admins_combo = Ext.create('Ext.form.ComboBox', {
-            width: 250,
             name: 'adminID',
             valueField: 'adminID',
             displayField: 'username',
-            emptyText: Admin.t('Users')+'...',
-            queryMode: 'local', // 'remote' is typically used for "autocomplete" type inputs.
-            forceSelection: true, // true to restrict the selected value to one of the values in the list, false to allow the user to set arbitrary text into the field.
             store: Ext.create('admins.store.AdminsList').load(),
-            triggers: {
-                clear: {
-                    cls: 'x-form-clear-trigger',
-                    weight: -1,
-                    handler: function(obj) {
-                        this.clearValue();
-                        delete(this.up().up().store.getProxy().extraParams[obj.name]);
-                        this.up().up().store.reload(); // Reload
-                    }
-                }
-            },
-            listeners: { scope: this, select: this.onSelectArea }
         });
         
         this.store = Ext.create(this.self.getName().replace('view','store')).load(); // Store + Load
@@ -96,11 +80,5 @@ Ext.define('admins.view.Logs', {
         afterrender: function(view, model) {
             setInterval(function() { view.store.load(); }, 60000); // actualizo la lista cada 1 minuto
         }
-    },
-    
-    // Selects - Store reload:
-    onSelectArea: function(combo, records, eOpts) {
-        this.store.getProxy().extraParams[combo.name] = combo.getValue(); // Add extra param
-        this.store.reload(); // Reload
     }
 });
