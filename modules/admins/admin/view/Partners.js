@@ -44,11 +44,11 @@ Ext.define('admins.view.Partners', {
                         this.config.setTitle('Config - ' + record.get('name'));
                         this.admins.setTitle('Admins - ' + record.get('name'));
                         
-                        this.partnersConfigStore.getProxy().extraParams[this.primaryID] = record.get(this.primaryID); // set partnerID
-                        this.partnersConfigStore.load(); // get results from partnerID
+                        this.partnersConfigStore.getProxy().extraParams[this.primaryID] = record.get(this.primaryID); // set primaryID
+                        this.partnersConfigStore.load(); // get results from primaryID
 
-                        this.partnersAdminsStore.getProxy().extraParams[this.primaryID] = record.get(this.primaryID); // set partnerID
-                        this.partnersAdminsStore.load(); // get results from partnerID
+                        this.partnersAdminsStore.getProxy().extraParams[this.primaryID] = record.get(this.primaryID); // set primaryID
+                        this.partnersAdminsStore.load(); // get results from primaryID
                         
                         this.down('#gridDeleteButton').setDisabled(false); // Enable delete button
                     }
