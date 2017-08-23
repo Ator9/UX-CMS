@@ -35,7 +35,7 @@ Ext.define('admins.view.Admins', {
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
-                { header: Admin.t('ID'), dataIndex: 'adminID', width: 50 },
+                { header: Admin.t('ID'), dataIndex: this.primaryID, width: 50 },
                 { header: Admin.t('Username'), dataIndex: 'username', width: 200 },
                 { header: Admin.t('E-mail'), dataIndex: 'email', width: 200 },
                 { header: Admin.t('Role'), dataIndex: 'roleID', flex: 1, renderer: this.getRole, scope: this },
