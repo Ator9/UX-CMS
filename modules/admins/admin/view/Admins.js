@@ -1,5 +1,11 @@
 Ext.define('admins.view.Admins', {
     extend: 'Ext.panel.Panel',
+    
+    config: {
+        module: 'admins',
+        primaryID: 'adminID'
+    },
+    
     requires: ['Ext.ux.DualCheckbox'],
 
     // Renderers:
@@ -9,31 +15,33 @@ Ext.define('admins.view.Admins', {
     },
     
     initComponent: function() {
+        
         this.layout = 'border'; // Any Container using the Border layout must have a child item with region: 'center'
         this.items  = [ this.createGrid(), this.createForm() ];
         this.tbar   = [
             Ext.create('Ext.ux.GridRowInsert', { grid: this.grid, form: this.form }), '-',
             Ext.create('Ext.ux.GridRowDelete', { grid: this.grid, form: this.form }), '-',
-            Ext.create('Ext.ux.GridSearch', { store: this.store, columns: [ 'adminID', 'username', 'firstname', 'lastname', 'email' ] })
+            Ext.create('Ext.ux.GridSearch', { store: this.store, columns: [ this.primaryID, 'username', 'firstname', 'lastname', 'email' ] })
         ];
         this.callParent(arguments);
     },
     
     createGrid: function() {
-        this.store = Ext.create('admins.store.Admins').load(); // Store + Load
+        
+        this.store = Ext.create(this.module+'.store.Admins').load(); // Store + Load
         this.grid  = Ext.create('Ext.grid.Panel', {
             store: this.store,
             region: 'center', // There must be a component with region: "center" in every border layout
             border: false,
             style: { borderRight: '1px solid #99bce8' }, // A custom style specification to be applied to this component's Element
             columns: [
-                { header: 'ID', dataIndex: 'adminID', width: 50 },
-                { header: 'Username', dataIndex: 'username', width: 200 },
-                { header: 'E-mail', dataIndex: 'email', width: 200 },
-                { header: 'Role', dataIndex: 'roleID', flex: 1, renderer: this.getRole, scope: this },
-                { header: 'Superuser', dataIndex: 'superuser', width: 64, align: 'center', renderer: Admin.getStatusIcon },
-                { header: 'Active', dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon },
-                { header: 'Last Login', dataIndex: 'last_login', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
+                { header: Admin.t('ID'), dataIndex: 'adminID', width: 50 },
+                { header: Admin.t('Username'), dataIndex: 'username', width: 200 },
+                { header: Admin.t('E-mail'), dataIndex: 'email', width: 200 },
+                { header: Admin.t('Role'), dataIndex: 'roleID', flex: 1, renderer: this.getRole, scope: this },
+                { header: Admin.t('Superuser'), dataIndex: 'superuser', width: 64, align: 'center', renderer: Admin.getStatusIcon },
+                { header: Admin.t('Active'), dataIndex: 'active', width: 44, align: 'center', renderer: Admin.getStatusIcon },
+                { header: Admin.t('Last Login'), dataIndex: 'last_login', xtype: 'datecolumn', format: 'd/m/Y H:i:s', width: 120 }
             ],
             viewConfig: { enableTextSelection: true },
             bbar: Ext.create('Ext.toolbar.Paging', { store: this.store, displayInfo: true }),
@@ -73,7 +81,7 @@ Ext.define('admins.view.Admins', {
                         this.store.load({ // Use reload() if callback is not needed
                             scope: this,
                             callback: function(records, operation, success) {
-                                var index = this.store.findExact('adminID', form.getValues()['adminID']); // Search modified row grid position
+                                var index = this.store.findExact(this.primaryID, form.getValues()[this.primaryID]); // Search modified row grid position
                                 this.grid.getSelectionModel().select(Math.max(0, index)); // Select modified row (need "0" for new inserts)
                                 this.grid.fireEvent('itemclick', this.grid, this.grid.getSelectionModel().getLastSelected()); // Keep new inserted id
                             }
@@ -105,7 +113,7 @@ Ext.define('admins.view.Admins', {
                       roles_combo,
                     { name: 'superuser', fieldLabel: 'Superuser', xtype: 'dualcheckbox' },
                     { name: 'active', fieldLabel: 'Active', xtype: 'dualcheckbox' },
-                    { name: 'adminID', xtype: 'hidden' }
+                    { name: this.primaryID, xtype: 'hidden' }
                 ]
             }],
             bbar: ['->', {
