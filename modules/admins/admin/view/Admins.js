@@ -3,6 +3,7 @@ Ext.define('admins.view.Admins', {
     
     config: {
         module: 'admins',
+        phpclass: 'adminsAdmin',
         primaryID: 'adminID'
     },
     
@@ -95,7 +96,7 @@ Ext.define('admins.view.Admins', {
         }
     
         this.form = Ext.create('Ext.form.Panel', {
-            url: 'index.php?_class=adminsAdmin&_method=extSave',
+            url: 'index.php?_class='+this.phpclass+'&_method=extSave',
             region: 'east',
             border: false,
             disabled: true,
