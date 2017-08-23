@@ -14,7 +14,7 @@ Ext.define('admins.view.Logs', {
     
     initComponent: function() {
         
-        var admins_combo = Ext.create('Ext.form.ComboBox', {
+        var admins_combo = Ext.create('Ext.ux.ComboBox', {
             name: 'adminID',
             valueField: 'adminID',
             displayField: 'username',
