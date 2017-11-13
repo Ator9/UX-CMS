@@ -15,7 +15,7 @@ sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/priva
 ```
 
 ## Push online from local repository (SSH)
-Create online repository and setup hook:
+Create online repository and setup the hook:
 ```sh
 git init --bare && touch hooks/post-receive && chmod +x hooks/post-receive
 printf '#!/bin/sh'"\ngit --work-tree=/var/www --git-dir=$(pwd) checkout -f" >> hooks/post-receive
