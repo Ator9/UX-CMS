@@ -50,11 +50,11 @@ class Webhook
         echo 'Current Path: '.exec('pwd').'<br><br>';
         
         echo $command = 'git --work-tree='.$this->work_dir.' --git-dir='.$this->git_dir.' checkout -f';
-        exec($command, $output);
+        exec($command." 2>&1", $output);
         vd($output);
 
         echo $command = 'git --work-tree='.$this->work_dir.' --git-dir='.$this->git_dir.' pull origin master';
-        exec($command, $output);
+        exec($command." 2>&1", $output);
         vd($output);
     }
 }
