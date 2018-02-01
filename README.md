@@ -3,7 +3,7 @@ Create local repository and add UX-CMS as remote repository:
 ```sh
 git init && git remote add framework https://github.com/Ator9/UX-CMS.git && git pull framework master
 ```
-## Bitbucket Mode (SSH Key)
+## Bitbucket with SSH Key
 ```sh
 git init --bare
 git remote add origin git@bitbucket.org:xxx/yyy.git
@@ -12,6 +12,12 @@ sudo chown -R xxx:yyy .
 sudo -u user ssh-keygen
 sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/private pull origin master
 sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/private checkout -f
+```
+
+## Bitbucket with HTTPS
+Keep password stored for XXX seconds:
+```sh
+git config --global credential.helper 'cache --timeout 3600'
 ```
 
 ## Push online from local repository (SSH)
