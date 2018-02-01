@@ -15,14 +15,10 @@ sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/priva
 ```
 
 ## Bitbucket with HTTPS
-Keep password stored:
-```sh
-git config --global credential.helper store
-```
 Git "config" file example:
 ```sh
 [credential "https://bitbucket.org"]
-    helper = store -- file /var/www/domain/web/includes/.git-credentials
+    helper = store --file /var/www/domain/web/includes/.git-credentials
 ```
 .git-credentials example:
 ```sh
