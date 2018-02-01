@@ -15,11 +15,9 @@ sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/priva
 ```
 
 ## Bitbucket with HTTPS
-Keep password stored for XXX seconds:
-- 3600 = 1 hour
-- 315569260 = 10 years
+Keep password stored:
 ```sh
-git config --global credential.helper 'cache --timeout 3600'
+git config --global credential.helper store
 ```
 
 ## Push online from local repository (SSH)
