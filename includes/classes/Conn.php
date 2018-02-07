@@ -86,10 +86,10 @@ class Conn extends mysqli
 	}
 
 
-	public function save()
+	public function save($auto_increment = true)
 	{
 		if($this->getID()) return $this->update();
-		return $this->insert();
+		return $this->insert($auto_increment);
 	}
 
 
