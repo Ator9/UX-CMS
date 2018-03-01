@@ -35,8 +35,10 @@
  */
 class RestApiServer
 {
-    public function __construct($url = '')
+    public function __construct($url = '', $local_access = false)
     {
+        if($local_access) return true;
+            
         $method = strtolower($_SERVER['REQUEST_METHOD']).ucfirst(trim($url, '/'));
         
         if(!method_exists($this, $method)) return $this->response(array('error' => 'Service Not found'), 404);
