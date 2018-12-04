@@ -13,7 +13,7 @@ if(isset($_POST['login']) && trim($_POST['name']) != '' && trim($_POST['pass']) 
     $db = new $GLOBALS['admin']['class']();
     if($db->login($_POST['name'], $_POST['pass']))
     {
-        header('Location: '.ADMIN);
+        header('Location: '.ADMIN.'/');
         exit;
     }
     $error = true;
