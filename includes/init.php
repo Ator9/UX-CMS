@@ -3,6 +3,8 @@
 if(is_file(__DIR__.'/config.php')) require(__DIR__.'/config.php');
 else require(__DIR__.'/config.default.php');
 
+define('ROOT'     , str_replace(DIRECTORY_SEPARATOR.'includes', '', __DIR__));
+
 // Functions:
 require(__DIR__.'/functions_admin.php');
 require(__DIR__.'/functions_core.php');
@@ -22,6 +24,5 @@ define('MODULES'  , HOST.'/modules');
 define('RESOURCES', HOST.'/resources');
 define('UPLOAD'   , HOST.'/upload');
 
-define('ROOT'     , str_replace(DIRECTORY_SEPARATOR.'includes', '', __DIR__));
 define('COMMON'   , ROOT.'/common');
 define('INCLUDES' , ROOT.'/includes');
