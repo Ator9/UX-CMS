@@ -270,7 +270,7 @@ class Conn extends mysqli
 
 	public function escape($str)
     {
-        if(get_magic_quotes_gpc()) $str = stripslashes($str);
+        // if(get_magic_quotes_gpc()) $str = stripslashes($str);
         $str = trim($str);
         return parent::real_escape_string($str);
     }
