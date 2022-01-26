@@ -139,6 +139,9 @@ class RestApiClient
 		$return['data']   = json_decode(curl_exec($ch));
 		$return['info']   = curl_getinfo($ch);
 		$return['status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+	    
+	    if(curl_errno($ch)) $return['error'] = curl_error($ch);
+	    
         curl_close($ch);
         
         return $return;
