@@ -9,9 +9,9 @@ sudo -u web3 git init --bare
 sudo -u web3 git remote add origin git@bitbucket.org:xxx/yyy.git
 sudo chown -R xxx:yyy .
 
-sudo -u user ssh-keygen
-sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/private pull origin master
-sudo -u user git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/private checkout -f
+sudo -u web3 ssh-keygen
+sudo -u web3 git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/private pull origin master
+sudo -u web3 git --work-tree=/var/www/domain/web --git-dir=/var/www/domain/private checkout -f
 ```
 
 ## Bitbucket with HTTPS
